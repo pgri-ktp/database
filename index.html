@@ -54,6 +54,40 @@
     .badge-pgri {
       background: linear-gradient(135deg, #e52d27 0%, #b31217 100%);
     }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #ktaModal, #ktaModal * {
+        visibility: visible;
+      }
+      #ktaModal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        background: transparent !important;
+        display: block !important;
+        padding: 0 !important;
+      }
+      #ktaModal .bg-white {
+        box-shadow: none !important;
+        border: none !important;
+        max-width: 100% !important;
+      }
+      #ktaCard {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        max-width: 480px !important;
+        margin: 20px auto !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body class="bg-fb-bg text-[#050505] min-h-screen flex flex-col font-sans">
@@ -128,6 +162,15 @@
 
     <!-- Kanan: Status & Shortcut -->
     <div class="flex items-center space-x-2">
+      <!-- Tombol Chat WA Admin (Desktop) -->
+      <a href="https://wa.me/6285797817050?text=hallo%20admin%20web%20database%20pgri%20cabang%20katapang%20izin%20bertanya" 
+         target="_blank" 
+         rel="noopener noreferrer" 
+         class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold text-xs border border-emerald-200 transition">
+        <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
+        <span>Chat Admin</span>
+      </a>
+
       <!-- Quick Action Mobile -->
       <button onclick="switchTab('form')" class="bg-fb-blue hover:bg-fb-hover text-white px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center md:hidden">
         <i class="fa-solid fa-plus mr-1"></i> Daftar
@@ -157,11 +200,31 @@
       <i class="fa-solid fa-user-plus text-lg"></i>
       <span class="text-[11px] font-medium mt-0.5">Formulir</span>
     </button>
+    <a href="https://wa.me/6285797817050?text=hallo%20admin%20web%20database%20pgri%20cabang%20katapang%20izin%20bertanya" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="flex flex-col items-center text-emerald-600">
+      <i class="fa-brands fa-whatsapp text-lg"></i>
+      <span class="text-[11px] font-medium mt-0.5">Chat WA</span>
+    </a>
     <button onclick="handleMobileAdminClick()" id="mob-nav-admin" class="flex flex-col items-center text-gray-500">
       <i class="fa-solid fa-chart-pie text-lg"></i>
       <span class="text-[11px] font-medium mt-0.5">Admin</span>
     </button>
   </div>
+
+  <!-- ================= FLOATING WHATSAPP CHAT BUTTON ================= -->
+  <aside class="fixed bottom-16 md:bottom-6 right-4 sm:right-6 z-40 no-print" aria-label="Bantuan WhatsApp">
+    <a href="https://wa.me/6285797817050?text=hallo%20admin%20web%20database%20pgri%20cabang%20katapang%20izin%20bertanya"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="group flex items-center bg-[#25D366] hover:bg-[#20ba59] text-white p-3 md:px-4 md:py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+      <i class="fa-brands fa-whatsapp text-2xl"></i>
+      <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-in-out whitespace-nowrap text-xs font-bold md:max-w-none md:ml-2">
+        Chat Admin PGRI
+      </span>
+    </a>
+  </aside>
 
   <!-- ================= NOTIFIKASI TOAST ================= -->
   <div id="toast" class="fixed top-20 right-4 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 max-w-sm"></div>
@@ -567,7 +630,7 @@
   <div id="ktaModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden fb-shadow transform transition-all">
       <!-- Modal Header -->
-      <div class="px-5 py-3 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+      <div class="px-5 py-3 border-b border-gray-100 flex items-center justify-between bg-gray-50 no-print">
         <h3 class="font-bold text-sm text-gray-800 flex items-center">
           <i class="fa-solid fa-id-badge text-red-600 mr-2 text-base"></i> Kartu Profil Anggota PGRI
         </h3>
@@ -584,14 +647,52 @@
             <i class="fa-solid fa-award text-9xl"></i>
           </div>
 
-          <!-- KTA Header -->
+          <!-- KTA Header dengan Logo PGRI Resmi -->
           <div class="flex items-center space-x-3 pb-3 border-b border-white/20">
-            <div class="w-10 h-10 bg-white rounded-full p-1 flex items-center justify-center flex-shrink-0">
-              <i class="fa-solid fa-graduation-cap text-red-600 text-lg"></i>
+            <div class="w-12 h-12 bg-white rounded-full p-0.5 flex items-center justify-center flex-shrink-0 shadow-md">
+              <svg viewBox="0 0 100 100" class="w-full h-full">
+                <!-- Lingkaran Luar Merah -->
+                <circle cx="50" cy="50" r="48" fill="#D62828" stroke="#FFFFFF" stroke-width="2.5"/>
+                <!-- Lingkaran List Putih -->
+                <circle cx="50" cy="50" r="41" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+                <!-- Lingkaran Tengah Hijau -->
+                <circle cx="50" cy="50" r="33" fill="#1B7A3D" stroke="#FFFFFF" stroke-width="1.8"/>
+                <!-- Teks Melingkar Atas -->
+                <path id="ktaTextCircleTop" d="M 17,50 A 33,33 0 1,1 83,50" fill="none"/>
+                <text font-size="7.5" font-weight="900" fill="#FFFFFF" letter-spacing="1">
+                  <textPath href="#ktaTextCircleTop" startOffset="50%" text-anchor="middle">PERSATUAN GURU</textPath>
+                </text>
+                <!-- Teks Melingkar Bawah -->
+                <path id="ktaTextCircleBottom" d="M 82,50 A 32,32 0 0,1 18,50" fill="none"/>
+                <text font-size="7.5" font-weight="900" fill="#FFFFFF" letter-spacing="1">
+                  <textPath href="#ktaTextCircleBottom" startOffset="50%" text-anchor="middle">REPUBLIK INDONESIA</textPath>
+                </text>
+                <!-- Sayap / Gerbang Putih Kiri & Kanan -->
+                <rect x="29" y="42" width="3.5" height="18" rx="1.5" fill="#FFFFFF" />
+                <line x1="29" y1="46" x2="32.5" y2="46" stroke="#1B7A3D" stroke-width="1"/>
+                <line x1="29" y1="50" x2="32.5" y2="50" stroke="#1B7A3D" stroke-width="1"/>
+                <line x1="29" y1="54" x2="32.5" y2="54" stroke="#1B7A3D" stroke-width="1"/>
+
+                <rect x="67.5" y="42" width="3.5" height="18" rx="1.5" fill="#FFFFFF" />
+                <line x1="67.5" y1="46" x2="71" y2="46" stroke="#1B7A3D" stroke-width="1"/>
+                <line x1="67.5" y1="50" x2="71" y2="50" stroke="#1B7A3D" stroke-width="1"/>
+                <line x1="67.5" y1="54" x2="71" y2="54" stroke="#1B7A3D" stroke-width="1"/>
+
+                <!-- Buku Terbuka Putih -->
+                <path d="M 36 54 Q 50 51 50 56 Q 50 51 64 54 L 64 62 Q 50 59 50 63 Q 50 59 36 62 Z" fill="#FFFFFF" stroke="#000000" stroke-width="0.5"/>
+                <!-- Tiang Obor Kuning Emas -->
+                <polygon points="46,45 54,45 52.5,70 47.5,70" fill="#FFDC00" stroke="#E6B800" stroke-width="0.8"/>
+                <circle cx="50" cy="72" r="2.5" fill="#FFDC00"/>
+                <!-- Lidah Api Obor Merah & Putih -->
+                <path d="M 50 20 C 44 26 43 32 46 38 C 47.5 35 49 35 50 33 C 51 35 52.5 35 54 38 C 57 32 56 26 50 20 Z" fill="#FF3333" stroke="#D62828" stroke-width="0.8"/>
+                <!-- Teks PGRI bawah -->
+                <text x="50" y="88" font-size="7.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">PGRI</text>
+              </svg>
             </div>
             <div>
               <h4 class="font-black text-sm uppercase tracking-wider leading-none">PGRI CABANG KATAPANG</h4>
-              <p class="text-[10px] text-red-200 mt-0.5">KABUPATEN BANDUNG - JAWA BARAT</p>
+              <p class="text-[10px] text-red-200 mt-1 font-medium">KARTU TANDA ANGGOTA ELEKTRONIK (E-KTA)</p>
+              <p class="text-[9px] text-white/80">Kec. Katapang, Kab. Bandung - Jawa Barat</p>
             </div>
           </div>
 
@@ -627,7 +728,7 @@
           </div>
         </div>
 
-        <div class="mt-4 flex gap-2">
+        <div class="mt-4 flex gap-2 no-print">
           <button onclick="window.print()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 rounded-xl font-semibold text-xs transition flex items-center justify-center">
             <i class="fa-solid fa-print mr-1.5"></i> Cetak Kartu
           </button>
@@ -793,7 +894,7 @@
       const user = document.getElementById('adminUsername').value.trim();
       const pass = document.getElementById('adminPassword').value.trim();
 
-      if (user === 'admin' && pass === 'admin') {
+      if (user === 'admin' && pass === 'admin1985') {
         isAdminLoggedIn = true;
         localStorage.setItem(STORAGE_KEY_ADMIN, 'true');
         closeAdminLoginModal();
@@ -802,7 +903,7 @@
         renderMembersGrid(membersList);
         showToast("Login Admin Berhasil! Mode administrasi & grafik aktif.", "success");
       } else {
-        showToast("Username atau Password Admin salah! (Gunakan admin/admin)", "error");
+        showToast("Username atau Password Admin salah! Periksa kembali.", "error");
       }
     }
 
