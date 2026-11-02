@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Database Anggota PGRI Cabang Kecamatan Katapang</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            fb: {
+              blue: '#1877F2',
+              hover: '#166fe5',
+              bg: '#F0F2F5',
+              surface: '#FFFFFF',
+              border: '#CED0D4',
+              secondary: '#65676B',
+              dark: '#050505',
+              green: '#42B72A',
+              red: '#E41E3F',
+            }
+          },
+          fontFamily: {
+            sans: ['Segoe UI Historic', 'Segoe UI', 'Helvetica', 'Arial', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar ala Facebook */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #bcc0c4;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8c9096;
+    }
+    .fb-shadow {
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .badge-pgri {
+      background: linear-gradient(135deg, #e52d27 0%, #b31217 100%);
+    }
+  </style>
+</head>
+<body class="bg-fb-bg text-[#050505] min-h-screen flex flex-col font-sans">
+
+  <!-- ================= TOP NAVIGATION BAR (FACEBOOK STYLE) ================= -->
+  <header class="bg-white sticky top-0 z-40 px-3 md:px-6 h-16 border-b border-[#e4e6eb] fb-shadow flex items-center justify-between">
+    <!-- Kiri: Logo & Nama Organisasi -->
+    <div class="flex items-center space-x-3">
+      <!-- Logo PGRI Vector/SVG Akurat sesuai dokumen resmi PGRI -->
+      <div class="w-11 h-11 flex-shrink-0 relative cursor-pointer" onclick="switchTab('feed')">
+        <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-sm">
+          <!-- Lingkaran Luar Merah -->
+          <circle cx="50" cy="50" r="48" fill="#D62828" stroke="#FFFFFF" stroke-width="2.5"/>
+          <!-- Lingkaran List Putih -->
+          <circle cx="50" cy="50" r="41" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+          <!-- Lingkaran Tengah Hijau -->
+          <circle cx="50" cy="50" r="33" fill="#1B7A3D" stroke="#FFFFFF" stroke-width="1.8"/>
+          <!-- Teks Melingkar Atas -->
+          <path id="textCircle" d="M 17,50 A 33,33 0 1,1 83,50" fill="none"/>
+          <text font-size="7.5" font-weight="900" fill="#FFFFFF" letter-spacing="1">
+            <textPath href="#textCircle" startOffset="50%" text-anchor="middle">PERSATUAN GURU</textPath>
+          </text>
+          <!-- Teks Melingkar Bawah -->
+          <path id="textCircleBottom" d="M 82,50 A 32,32 0 0,1 18,50" fill="none"/>
+          <text font-size="7.5" font-weight="900" fill="#FFFFFF" letter-spacing="1">
+            <textPath href="#textCircleBottom" startOffset="50%" text-anchor="middle">REPUBLIK INDONESIA</textPath>
+          </text>
+          <!-- Gambar Obor & Buku (Simbol PGRI) -->
+          <!-- Sayap / Gerbang Putih Kiri & Kanan -->
+          <rect x="29" y="42" width="3.5" height="18" rx="1.5" fill="#FFFFFF" />
+          <line x1="29" y1="46" x2="32.5" y2="46" stroke="#1B7A3D" stroke-width="1"/>
+          <line x1="29" y1="50" x2="32.5" y2="50" stroke="#1B7A3D" stroke-width="1"/>
+          <line x1="29" y1="54" x2="32.5" y2="54" stroke="#1B7A3D" stroke-width="1"/>
+
+          <rect x="67.5" y="42" width="3.5" height="18" rx="1.5" fill="#FFFFFF" />
+          <line x1="67.5" y1="46" x2="71" y2="46" stroke="#1B7A3D" stroke-width="1"/>
+          <line x1="67.5" y1="50" x2="71" y2="50" stroke="#1B7A3D" stroke-width="1"/>
+          <line x1="67.5" y1="54" x2="71" y2="54" stroke="#1B7A3D" stroke-width="1"/>
+
+          <!-- Buku Terbuka Putih -->
+          <path d="M 36 54 Q 50 51 50 56 Q 50 51 64 54 L 64 62 Q 50 59 50 63 Q 50 59 36 62 Z" fill="#FFFFFF" stroke="#000000" stroke-width="0.5"/>
+          <!-- Tiang Obor Kuning Emas -->
+          <polygon points="46,45 54,45 52.5,70 47.5,70" fill="#FFDC00" stroke="#E6B800" stroke-width="0.8"/>
+          <circle cx="50" cy="72" r="2.5" fill="#FFDC00"/>
+          <!-- Lidah Api Obor Merah & Putih -->
+          <path d="M 50 20 C 44 26 43 32 46 38 C 47.5 35 49 35 50 33 C 51 35 52.5 35 54 38 C 57 32 56 26 50 20 Z" fill="#FF3333" stroke="#D62828" stroke-width="0.8"/>
+          <!-- Teks PGRI bawah -->
+          <text x="50" y="88" font-size="7.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">PGRI</text>
+        </svg>
+      </div>
+
+      <div class="leading-tight">
+        <h1 class="font-extrabold text-base md:text-lg text-gray-900 tracking-tight flex items-center gap-1.5">
+          PGRI KATAPANG
+          <span class="bg-red-600 text-white text-[10px] uppercase font-bold px-1.5 py-0.5 rounded">Cabang</span>
+        </h1>
+        <p class="text-xs text-gray-500 hidden sm:block">Kecamatan Katapang, Kabupaten Bandung</p>
+      </div>
+    </div>
+
+    <!-- Tengah: Tab Navigasi Facebook (Icons & Active Bar) -->
+    <nav class="hidden md:flex items-center space-x-2 h-full">
+      <button onclick="switchTab('feed')" id="nav-feed" class="nav-btn h-full px-8 flex items-center border-b-[3px] border-fb-blue text-fb-blue transition-all">
+        <i class="fa-solid fa-users text-xl"></i>
+        <span class="ml-2 font-semibold text-sm">Database Anggota</span>
+      </button>
+      <button onclick="switchTab('form')" id="nav-form" class="nav-btn h-full px-8 flex items-center border-b-[3px] border-transparent text-fb-secondary hover:bg-gray-100 transition-all">
+        <i class="fa-solid fa-user-plus text-xl"></i>
+        <span class="ml-2 font-semibold text-sm">Form Pendaftaran</span>
+      </button>
+    </nav>
+
+    <!-- Kanan: Status & Shortcut -->
+    <div class="flex items-center space-x-2">
+      <!-- Quick Action Mobile -->
+      <button onclick="switchTab('form')" class="bg-fb-blue hover:bg-fb-hover text-white px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center md:hidden">
+        <i class="fa-solid fa-plus mr-1"></i> Daftar
+      </button>
+
+      <button id="refreshDataBtn" onclick="refreshDatabase()" title="Segarkan Data" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 transition">
+        <i class="fa-solid fa-rotate text-sm"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Bottom Tab Navigation -->
+  <div class="md:hidden bg-white border-t border-gray-200 fixed bottom-0 left-0 right-0 z-40 flex justify-around py-2 shadow-lg">
+    <button onclick="switchTab('feed')" id="mob-nav-feed" class="flex flex-col items-center text-fb-blue">
+      <i class="fa-solid fa-users text-lg"></i>
+      <span class="text-[11px] font-medium mt-0.5">Database</span>
+    </button>
+    <button onclick="switchTab('form')" id="mob-nav-form" class="flex flex-col items-center text-gray-500">
+      <i class="fa-solid fa-user-plus text-lg"></i>
+      <span class="text-[11px] font-medium mt-0.5">Formulir</span>
+    </button>
+  </div>
+
+  <!-- ================= NOTIFIKASI TOAST ================= -->
+  <div id="toast" class="fixed top-20 right-4 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 max-w-sm"></div>
+
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 md:p-6 mb-16 md:mb-6">
+
+    <!-- ================= TAB 1: FORMULIR DATABASE ANGGOTA ================= -->
+    <section id="tab-form" class="hidden">
+      <div class="max-w-2xl mx-auto bg-white rounded-2xl fb-shadow border border-gray-200 overflow-hidden">
+        <!-- Form Header (Facebook Post Composer Style) -->
+        <div class="p-4 sm:p-6 border-b border-gray-100 bg-gradient-to-r from-red-50 via-white to-blue-50">
+          <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 rounded-full badge-pgri p-0.5 flex-shrink-0">
+              <div class="w-full h-full rounded-full bg-white flex items-center justify-center">
+                <i class="fa-solid fa-id-card text-red-600 text-xl"></i>
+              </div>
+            </div>
+            <div>
+              <h2 class="text-lg sm:text-xl font-bold text-gray-900 leading-snug">Formulir Pendaftaran & Mutasi Data Anggota</h2>
+              <p class="text-xs sm:text-sm text-gray-500">PGRI Cabang Katapang - Kuatkan Solidaritas & Martabat Guru</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Body -->
+        <form id="memberForm" class="p-4 sm:p-6 space-y-4 sm:space-y-5" onsubmit="handleFormSubmit(event)">
+
+          <!-- 1. Nama Lengkap & Gelar -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5" for="namaLengkap">
+              Nama Lengkap beserta Gelar <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                <i class="fa-solid fa-user"></i>
+              </span>
+              <input type="text" id="namaLengkap" required placeholder="Contoh: Dra. Hj. Siti Aminah, M.Pd."
+                     class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-fb-blue focus:border-fb-blue outline-none transition">
+            </div>
+          </div>
+
+          <!-- 2 Kolom: E-Mail & Nomor KTA -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Email -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5" for="email">
+                E-Mail Aktif <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                  <i class="fa-solid fa-envelope"></i>
+                </span>
+                <input type="email" id="email" required placeholder="guru@gmail.com"
+                       class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-fb-blue focus:border-fb-blue outline-none transition">
+              </div>
+            </div>
+
+            <!-- Nomor KTA -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5" for="noKTA">
+                Nomor KTA PGRI <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                  <i class="fa-solid fa-hashtag"></i>
+                </span>
+                <input type="text" id="noKTA" required placeholder="Contoh: 320412345678"
+                       class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-fb-blue focus:border-fb-blue outline-none transition">
+              </div>
+            </div>
+          </div>
+
+          <!-- 2 Kolom: Status Anggota & Asal Gugus -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Status Anggota -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5" for="statusAnggota">
+                Status Kepegawaian / Anggota <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                  <i class="fa-solid fa-briefcase"></i>
+                </span>
+                <select id="statusAnggota" required
+                        class="w-full pl-10 pr-8 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-fb-blue focus:border-fb-blue outline-none transition appearance-none">
+                  <option value="" disabled selected>Pilih Status Anggota</option>
+                  <option value="Guru PNS">Guru PNS</option>
+                  <option value="Guru PPPK">Guru PPPK</option>
+                  <option value="Guru Honorer / GTT">Guru Honorer / GTT</option>
+                  <option value="Guru Tetap Yayasan (GTY)">Guru Tetap Yayasan (GTY)</option>
+                  <option value="Tenaga Kependidikan (Tendik)">Tenaga Kependidikan (Tendik)</option>
+                  <option value="Pensiunan PGRI">Pensiunan PGRI</option>
+                </select>
+                <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-400">
+                  <i class="fa-solid fa-chevron-down text-xs"></i>
+                </span>
+              </div>
+            </div>
+
+            <!-- Asal Gugus -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5" for="asalGugus">
+                Asal Gugus Wilayah <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                  <i class="fa-solid fa-network-wired"></i>
+                </span>
+                <select id="asalGugus" required
+                        class="w-full pl-10 pr-8 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-fb-blue focus:border-fb-blue outline-none transition appearance-none">
+                  <option value="" disabled selected>Pilih Asal Gugus Katapang</option>
+                  <option value="Gugus 1 Katapang">Gugus 1 Katapang</option>
+                  <option value="Gugus 2 Katapang">Gugus 2 Katapang</option>
+                  <option value="Gugus 3 Katapang">Gugus 3 Katapang</option>
+                  <option value="Gugus 4 Katapang">Gugus 4 Katapang</option>
+                  <option value="Gugus 5 Katapang">Gugus 5 Katapang</option>
+                  <option value="Gugus SMP / MTs">Gugus SMP / MTs Katapang</option>
+                  <option value="Gugus SMA / SMK / MA">Gugus SMA / SMK / MA Katapang</option>
+                  <option value="Gugus PAUD / TK / RA">Gugus PAUD / TK / RA Katapang</option>
+                </select>
+                <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-400">
+                  <i class="fa-solid fa-chevron-down text-xs"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Asal Sekolah (Unit Kerja) -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5" for="asalSekolah">
+              Asal Sekolah (Unit Kerja) <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                <i class="fa-solid fa-school"></i>
+              </span>
+              <input type="text" id="asalSekolah" required placeholder="Contoh: SDN Katapang 01 / SMP PGRI Katapang"
+                     class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-fb-blue focus:border-fb-blue outline-none transition">
+            </div>
+          </div>
+
+          <!-- Upload Foto Pasfoto PGRI (Max 500 KB) -->
+          <div class="border-2 border-dashed border-gray-300 rounded-2xl p-4 bg-gray-50 hover:bg-gray-100/70 transition">
+            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+              Foto Pasfoto PGRI Resmi (Baju Batik PGRI) <span class="text-red-500">*</span>
+            </label>
+            <p class="text-xs text-gray-500 mb-3">Format JPG/PNG/WEBP, Maksimal ukuran file <strong>500 KB</strong></p>
+
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+              <!-- Preview Pasfoto -->
+              <div class="w-24 h-32 bg-gray-200 border-2 border-white rounded-lg shadow-md flex items-center justify-center overflow-hidden relative flex-shrink-0">
+                <img id="imagePreview" src="https://placehold.co/120x160/e2e8f0/64748b?text=Pasfoto+3x4" alt="Preview Pasfoto" class="w-full h-full object-cover">
+                <div id="imagePlaceholderText" class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 text-center p-2 hidden">
+                  <i class="fa-solid fa-camera text-2xl mb-1"></i>
+                  <span class="text-[10px]">Preview</span>
+                </div>
+              </div>
+
+              <!-- Input File & Helper -->
+              <div class="w-full">
+                <input type="file" id="pasfotoInput" accept="image/jpeg,image/png,image/webp" required onchange="handleFileSelected(event)"
+                       class="block w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-fb-blue file:text-white hover:file:bg-fb-hover cursor-pointer"/>
+                <div id="fileInfo" class="text-xs text-gray-500 mt-2 flex items-center">
+                  <i class="fa-solid fa-circle-info text-blue-500 mr-1.5"></i> Disarankan memakai seragam batik Kusuma Bangsa PGRI.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tombol Kirim Form -->
+          <div class="pt-3">
+            <button type="submit" id="submitBtn"
+                    class="w-full bg-fb-blue hover:bg-fb-hover text-white py-3 px-6 rounded-xl font-bold text-sm tracking-wide shadow-md transition flex items-center justify-center space-x-2">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Kirim Data ke Database & Spreadsheet</span>
+            </button>
+            <p class="text-[11px] text-gray-500 text-center mt-2">
+              Data yang dikirim akan otomatis masuk ke daftar anggota dan tersimpan ke Google Spreadsheet PGRI.
+            </p>
+          </div>
+
+        </form>
+      </div>
+    </section>
+
+    <!-- ================= TAB 2: DATABASE ANGGOTA (FACEBOOK PROFILES & FEED) ================= -->
+    <section id="tab-feed" class="space-y-4">
+
+      <!-- Header & Kontrol Filter / Pencarian -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-200 fb-shadow">
+        <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+          <!-- Judul & Badge Jumlah -->
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-address-book text-lg"></i>
+            </div>
+            <div>
+              <h2 class="text-lg font-bold text-gray-900 leading-tight">Database Anggota Terdaftar</h2>
+              <p class="text-xs text-gray-500">
+                Total Anggota Terverifikasi: <span id="totalBadge" class="font-bold text-fb-blue">0</span> Guru/Tendik
+              </p>
+            </div>
+          </div>
+
+          <!-- Controls: Search & Filters -->
+          <div class="flex flex-wrap sm:flex-nowrap items-center gap-2.5">
+            <!-- Search Bar -->
+            <div class="relative w-full sm:w-64">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                <i class="fa-solid fa-magnifying-glass text-xs"></i>
+              </span>
+              <input type="text" id="searchInput" oninput="applyFilters()" placeholder="Cari Nama, KTA, Sekolah..."
+                     class="w-full pl-9 pr-3 py-2 bg-gray-100 hover:bg-gray-200/70 focus:bg-white border border-transparent focus:border-fb-blue rounded-full text-xs outline-none transition">
+            </div>
+
+            <!-- Filter Gugus -->
+            <select id="filterGugus" onchange="applyFilters()" class="w-full sm:w-auto px-3 py-2 bg-gray-100 hover:bg-gray-200/70 text-gray-700 rounded-full text-xs border border-transparent focus:border-fb-blue outline-none cursor-pointer">
+              <option value="ALL">Semua Gugus</option>
+              <option value="Gugus 1 Katapang">Gugus 1</option>
+              <option value="Gugus 2 Katapang">Gugus 2</option>
+              <option value="Gugus 3 Katapang">Gugus 3</option>
+              <option value="Gugus 4 Katapang">Gugus 4</option>
+              <option value="Gugus 5 Katapang">Gugus 5</option>
+              <option value="SMP">Gugus SMP/MTs</option>
+              <option value="SMA">Gugus SMA/SMK</option>
+              <option value="PAUD">Gugus PAUD/TK</option>
+            </select>
+
+            <!-- Filter Status -->
+            <select id="filterStatus" onchange="applyFilters()" class="w-full sm:w-auto px-3 py-2 bg-gray-100 hover:bg-gray-200/70 text-gray-700 rounded-full text-xs border border-transparent focus:border-fb-blue outline-none cursor-pointer">
+              <option value="ALL">Semua Status</option>
+              <option value="PNS">Guru PNS</option>
+              <option value="PPPK">Guru PPPK</option>
+              <option value="Honorer">Honorer / GTT</option>
+              <option value="GTY">Guru Tetap Yayasan</option>
+              <option value="Tendik">Tendik</option>
+            </select>
+
+            <!-- Export Data CSV -->
+            <button onclick="exportToCSV()" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full text-xs font-semibold flex items-center transition" title="Unduh File CSV">
+              <i class="fa-solid fa-file-csv text-green-600 mr-1.5 text-sm"></i> Unduh
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid Cards Data Anggota (Facebook Profile Cards) -->
+      <div id="membersContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Akan di-render via JavaScript -->
+      </div>
+
+      <!-- State Jika Data Kosong -->
+      <div id="emptyState" class="hidden bg-white rounded-2xl p-8 border border-gray-200 text-center fb-shadow">
+        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 text-gray-400">
+          <i class="fa-regular fa-folder-open text-2xl"></i>
+        </div>
+        <h3 class="text-base font-bold text-gray-800">Belum Ada Data yang Cocok</h3>
+        <p class="text-xs text-gray-500 mt-1 max-w-sm mx-auto">Tidak ditemukan anggota dengan kriteria pencarian tersebut atau belum ada anggota yang mendaftar.</p>
+        <button onclick="switchTab('form')" class="mt-4 px-4 py-2 bg-fb-blue hover:bg-fb-hover text-white text-xs font-bold rounded-xl transition">
+          + Isi Formulir Sekarang
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= MODAL DETAIL / KTA DIGITAL PREVIEW ================= -->
+  <div id="ktaModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden fb-shadow transform transition-all">
+      <!-- Modal Header -->
+      <div class="px-5 py-3 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+        <h3 class="font-bold text-sm text-gray-800 flex items-center">
+          <i class="fa-solid fa-id-badge text-red-600 mr-2 text-base"></i> Kartu Profil Anggota PGRI
+        </h3>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- KTA Card View (Printable look) -->
+      <div class="p-6">
+        <div id="ktaCard" class="bg-gradient-to-br from-red-600 via-red-700 to-red-900 text-white rounded-2xl p-5 shadow-xl relative overflow-hidden border border-red-400">
+          <!-- Background Watermark -->
+          <div class="absolute -right-8 -bottom-8 opacity-10 pointer-events-none">
+            <i class="fa-solid fa-award text-9xl"></i>
+          </div>
+
+          <!-- KTA Header -->
+          <div class="flex items-center space-x-3 pb-3 border-b border-white/20">
+            <div class="w-10 h-10 bg-white rounded-full p-1 flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-graduation-cap text-red-600 text-lg"></i>
+            </div>
+            <div>
+              <h4 class="font-black text-sm uppercase tracking-wider leading-none">PGRI CABANG KATAPANG</h4>
+              <p class="text-[10px] text-red-200 mt-0.5">KABUPATEN BANDUNG - JAWA BARAT</p>
+            </div>
+          </div>
+
+          <!-- KTA Body -->
+          <div class="flex gap-4 mt-4 items-center">
+            <div class="w-24 h-32 bg-white rounded-xl overflow-hidden border-2 border-white shadow-md flex-shrink-0">
+              <img id="modalFoto" src="" alt="Pasfoto" class="w-full h-full object-cover">
+            </div>
+            <div class="text-xs space-y-1.5 flex-1 min-w-0">
+              <div>
+                <span class="text-[9px] uppercase tracking-wider text-red-200 block">Nama Anggota</span>
+                <p id="modalNama" class="font-bold text-sm leading-tight text-white truncate"></p>
+              </div>
+              <div>
+                <span class="text-[9px] uppercase tracking-wider text-red-200 block">Nomor KTA PGRI</span>
+                <p id="modalKTA" class="font-mono font-bold tracking-wider text-yellow-300"></p>
+              </div>
+              <div>
+                <span class="text-[9px] uppercase tracking-wider text-red-200 block">Status / Unit Kerja</span>
+                <p id="modalSekolah" class="text-xs text-gray-100 truncate"></p>
+              </div>
+              <div>
+                <span class="text-[9px] uppercase tracking-wider text-red-200 block">Gugus Wilayah</span>
+                <p id="modalGugus" class="text-xs font-semibold text-white"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- KTA Footer -->
+          <div class="mt-4 pt-2.5 border-t border-white/20 flex items-center justify-between text-[9px] text-red-200">
+            <span>Solidaritas, Kemitraan, Profesional</span>
+            <span class="font-mono" id="modalTimestamp"></span>
+          </div>
+        </div>
+
+        <div class="mt-4 flex gap-2">
+          <button onclick="window.print()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 rounded-xl font-semibold text-xs transition flex items-center justify-center">
+            <i class="fa-solid fa-print mr-1.5"></i> Cetak Kartu
+          </button>
+          <button onclick="closeModal()" class="flex-1 bg-fb-blue hover:bg-fb-hover text-white py-2.5 rounded-xl font-semibold text-xs transition">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-white border-t border-gray-200 py-5 text-center text-xs text-gray-500 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div class="flex items-center space-x-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block animate-pulse"></span>
+        <span>Aplikasi Sistem Database Pengurus Cabang PGRI Kecamatan Katapang</span>
+      </div>
+      <div>
+        <span>Dukungan Solidaritas Guru Indonesia &bull; Terhubung ke Google Spreadsheet</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // State Aplikasi
+    const SPREADSHEET_ID = '1dVIc9F1Foj4LVEwKaJqIDk6JFcHCwA6l2g6nSRoLfCY';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwpVM6hSqkv4_t6MWllXfEqKR0UR3_0ohbzhgdpihnJjxsx109RessquHY6RfUfAtUx/exec';
+    const STORAGE_KEY_MEMBERS = 'pgri_katapang_members_data';
+
+    let membersList = [];
+    let currentPhotoBase64 = "";
+
+    // Data Awal Mock Contoh untuk Representasi Wilayah Katapang
+    const initialSampleData = [
+      {
+        timestamp: "02/11/2026, 08:30:15",
+        namaLengkap: "Drs. H. Asep Kuswandi, M.M.Pd.",
+        email: "asep.kuswandi@gmail.com",
+        noKTA: "320411002341",
+        statusAnggota: "Guru PNS",
+        asalSekolah: "SMP Negeri 1 Katapang",
+        asalGugus: "Gugus SMP / MTs",
+        pasfoto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80"
+      },
+      {
+        timestamp: "02/11/2026, 09:12:44",
+        namaLengkap: "Rina Marlina, S.Pd.SD.",
+        email: "rina.marlina@sekolah.id",
+        noKTA: "320411004589",
+        statusAnggota: "Guru PPPK",
+        asalSekolah: "SDN Cilampeni 01",
+        asalGugus: "Gugus 1 Katapang",
+        pasfoto: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80"
+      },
+      {
+        timestamp: "02/11/2026, 10:05:20",
+        namaLengkap: "Yayan Sofyan, S.T.",
+        email: "yayan.sofyan@smk.sch.id",
+        noKTA: "320411008812",
+        statusAnggota: "Guru Tetap Yayasan (GTY)",
+        asalSekolah: "SMK Katapang Hebat",
+        asalGugus: "Gugus SMA / SMK / MA",
+        pasfoto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80"
+      }
+    ];
+
+    // Inisialisasi Aplikasi Saat Memuat Halaman
+    window.onload = function() {
+      loadSavedData();
+      renderMembersGrid(membersList);
+      refreshDatabase(false); // Coba sinkronisasi langsung dari Google Apps Script secara otomatis
+      switchTab('feed'); // Buka tab Database Anggota secara default
+    };
+
+    // Muat data lokal dari memory / local cache
+    function loadSavedData() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY_MEMBERS);
+        if (stored) {
+          membersList = JSON.parse(stored);
+        } else {
+          membersList = [...initialSampleData];
+          saveMembersToLocal();
+        }
+      } catch (e) {
+        membersList = [...initialSampleData];
+      }
+    }
+
+    function saveMembersToLocal() {
+      try {
+        localStorage.setItem(STORAGE_KEY_MEMBERS, JSON.stringify(membersList));
+      } catch (e) {
+        console.warn("Storage quota / limitation", e);
+      }
+    }
+
+    // Tab Navigation Logic
+    function switchTab(tabId) {
+      const tabs = ['feed', 'form'];
+      tabs.forEach(t => {
+        const section = document.getElementById(`tab-${t}`);
+        const navBtn = document.getElementById(`nav-${t}`);
+        const mobBtn = document.getElementById(`mob-nav-${t}`);
+
+        if (t === tabId) {
+          if (section) section.classList.remove('hidden');
+          if (navBtn) {
+            navBtn.classList.remove('border-transparent', 'text-fb-secondary');
+            navBtn.classList.add('border-fb-blue', 'text-fb-blue');
+          }
+          if (mobBtn) {
+            mobBtn.classList.remove('text-gray-500');
+            mobBtn.classList.add('text-fb-blue');
+          }
+        } else {
+          if (section) section.classList.add('hidden');
+          if (navBtn) {
+            navBtn.classList.remove('border-fb-blue', 'text-fb-blue');
+            navBtn.classList.add('border-transparent', 'text-fb-secondary');
+          }
+          if (mobBtn) {
+            mobBtn.classList.remove('text-fb-blue');
+            mobBtn.classList.add('text-gray-500');
+          }
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Handle Upload & Compress File Pasfoto (Max 500 KB)
+    function handleFileSelected(event) {
+      const file = event.target.files[0];
+      const preview = document.getElementById('imagePreview');
+      const fileInfo = document.getElementById('fileInfo');
+
+      if (!file) return;
+
+      // Cek tipe file
+      if (!file.type.match('image.*')) {
+        showToast("Format file tidak didukung! Harap unggah format gambar (JPG/PNG).", "error");
+        event.target.value = '';
+        return;
+      }
+
+      // Validasi ukuran: 500 KB (500 * 1024 = 512,000 bytes)
+      const maxSize = 500 * 1024;
+      if (file.size > maxSize) {
+        fileInfo.innerHTML = `<span class="text-amber-600 font-semibold"><i class="fa-solid fa-compress mr-1"></i> Ukuran (${(file.size/1024).toFixed(0)} KB) melebihi 500KB. Gambar sedang dikompresi otomatis...</span>`;
+      } else {
+        fileInfo.innerHTML = `<span class="text-green-600"><i class="fa-solid fa-check mr-1"></i> Ukuran pas: ${(file.size/1024).toFixed(0)} KB</span>`;
+      }
+
+      // Resize & Kompresi Client-side dengan Canvas jika perlu
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // Resize jika terlalu besar (maksimal resolusi 600px)
+          const MAX_DIM = 600;
+          if (width > height && width > MAX_DIM) {
+            height = Math.round((height * MAX_DIM) / width);
+            width = MAX_DIM;
+          } else if (height > MAX_DIM) {
+            width = Math.round((width * MAX_DIM) / height);
+            height = MAX_DIM;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Kualitas 0.82 untuk menghasilkan gambar tajam < 100kb
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          currentPhotoBase64 = compressedDataUrl;
+          preview.src = compressedDataUrl;
+          preview.classList.remove('hidden');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Submit Formulir Anggota
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById('submitBtn');
+      const originalBtnContent = submitBtn.innerHTML;
+
+      // Validasi Pasfoto
+      if (!currentPhotoBase64) {
+        showToast("Mohon pilih dan unggah Pasfoto PGRI terlebih dahulu!", "error");
+        return;
+      }
+
+      // Kumpulkan data isian
+      const formData = {
+        timestamp: new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" }),
+        namaLengkap: document.getElementById('namaLengkap').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        noKTA: document.getElementById('noKTA').value.trim(),
+        statusAnggota: document.getElementById('statusAnggota').value,
+        asalGugus: document.getElementById('asalGugus').value,
+        asalSekolah: document.getElementById('asalSekolah').value.trim(),
+        pasfoto: currentPhotoBase64
+      };
+
+      // Efek loading tombol
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i><span>Menyimpan ke Spreadsheet & Database...</span>`;
+
+      try {
+        // 1. Simpan langsung ke State Lokal & Tampilkan ke Database Anggota (Real-time di antarmuka)
+        membersList.unshift(formData);
+        saveMembersToLocal();
+        renderMembersGrid(membersList);
+
+        // 2. Kirim otomatis ke Google Apps Script Spreadsheet Anda
+        let syncSuccess = false;
+        try {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors', // Penting untuk WebApp Google Script
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+          syncSuccess = true;
+        } catch (netErr) {
+          console.warn("Gagal terhubung ke Script URL:", netErr);
+        }
+
+        // Reset Formulir
+        document.getElementById('memberForm').reset();
+        document.getElementById('imagePreview').src = "https://placehold.co/120x160/e2e8f0/64748b?text=Pasfoto+3x4";
+        document.getElementById('fileInfo').innerHTML = `<i class="fa-solid fa-circle-info text-blue-500 mr-1.5"></i> Disarankan memakai seragam batik Kusuma Bangsa PGRI.`;
+        currentPhotoBase64 = "";
+
+        // Notifikasi Sukses
+        if (syncSuccess) {
+          showToast(`Berhasil! Data ${formData.namaLengkap} telah terkirim langsung ke Spreadsheet PGRI & Database!`, "success");
+        } else {
+          showToast(`Data berhasil ditambahkan ke Database Anggota!`, "success");
+        }
+
+        // Alihkan otomatis ke menu Database Anggota untuk melihat hasilnya
+        setTimeout(() => {
+          switchTab('feed');
+        }, 800);
+
+      } catch (err) {
+        showToast("Terjadi kesalahan saat memproses data: " + err.message, "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnContent;
+      }
+    }
+
+    // Render Grid Kartu Anggota (Facebook Profile Cards)
+    function renderMembersGrid(data) {
+      const container = document.getElementById('membersContainer');
+      const emptyState = document.getElementById('emptyState');
+      const totalBadge = document.getElementById('totalBadge');
+
+      totalBadge.textContent = data.length;
+
+      if (!data || data.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      container.innerHTML = data.map((item, index) => {
+        // Tag Badge Color berdasarkan status
+        let badgeColor = "bg-blue-100 text-blue-800 border-blue-200";
+        if (item.statusAnggota.includes("PNS")) badgeColor = "bg-emerald-100 text-emerald-800 border-emerald-200";
+        else if (item.statusAnggota.includes("PPPK")) badgeColor = "bg-indigo-100 text-indigo-800 border-indigo-200";
+        else if (item.statusAnggota.includes("Honorer")) badgeColor = "bg-amber-100 text-amber-800 border-amber-200";
+        else if (item.statusAnggota.includes("Yayasan")) badgeColor = "bg-purple-100 text-purple-800 border-purple-200";
+
+        const fotoUrl = item.pasfoto || "https://placehold.co/120x160/e2e8f0/64748b?text=Pasfoto";
+
+        return `
+          <div class="bg-white rounded-2xl border border-gray-200 fb-shadow overflow-hidden hover:border-fb-blue transition duration-200 flex flex-col justify-between">
+            <!-- Header Kartu Profil -->
+            <div class="p-4 sm:p-5">
+              <div class="flex items-start space-x-3.5">
+                <!-- Pasfoto Profil -->
+                <div class="w-16 h-20 bg-gray-100 rounded-xl overflow-hidden border border-gray-200 shadow-sm flex-shrink-0 cursor-pointer" onclick="viewKTA(${index})">
+                  <img src="${fotoUrl}" alt="${escapeHTML(item.namaLengkap)}" class="w-full h-full object-cover hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/120x160/e2e8f0/64748b?text=Foto'">
+                </div>
+
+                <!-- Info Utama -->
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${badgeColor}">
+                      ${escapeHTML(item.statusAnggota)}
+                    </span>
+                    <span class="text-[10px] text-gray-400 font-mono">
+                      <i class="fa-solid fa-clock text-[9px] mr-0.5"></i> ${escapeHTML(item.timestamp.split(',')[0])}
+                    </span>
+                  </div>
+
+                  <h3 class="font-bold text-gray-900 text-sm sm:text-base leading-snug mt-1.5 truncate" title="${escapeHTML(item.namaLengkap)}">
+                    ${escapeHTML(item.namaLengkap)}
+                  </h3>
+
+                  <div class="mt-1 flex items-center text-xs text-fb-blue font-semibold font-mono">
+                    <i class="fa-solid fa-id-badge text-gray-400 mr-1.5"></i>
+                    <span>KTA: ${escapeHTML(item.noKTA)}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- List Detail Info (Sekolah & Gugus) -->
+              <div class="mt-4 pt-3 border-t border-gray-100 space-y-1.5 text-xs text-gray-600">
+                <div class="flex items-center text-gray-700">
+                  <i class="fa-solid fa-school text-gray-400 w-4 text-center mr-2"></i>
+                  <span class="truncate font-medium">${escapeHTML(item.asalSekolah)}</span>
+                </div>
+                <div class="flex items-center text-gray-600">
+                  <i class="fa-solid fa-map-pin text-red-500 w-4 text-center mr-2"></i>
+                  <span class="truncate">${escapeHTML(item.asalGugus)}</span>
+                </div>
+                <div class="flex items-center text-gray-500 text-[11px]">
+                  <i class="fa-solid fa-envelope text-gray-400 w-4 text-center mr-2"></i>
+                  <span class="truncate">${escapeHTML(item.email)}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Action Card (Like Facebook Post Actions) -->
+            <div class="bg-gray-50 px-4 py-2.5 border-t border-gray-100 flex items-center justify-between">
+              <button onclick="viewKTA(${index})" class="text-xs font-semibold text-fb-blue hover:text-fb-hover flex items-center">
+                <i class="fa-solid fa-address-card mr-1.5"></i> Lihat KTA Digital
+              </button>
+              <a href="mailto:${escapeHTML(item.email)}" class="text-xs text-gray-500 hover:text-gray-800 flex items-center" title="Kirim Pesan Email">
+                <i class="fa-solid fa-paper-plane mr-1"></i> Kontak
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Filter & Search Real-time
+    function applyFilters() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+      const gugus = document.getElementById('filterGugus').value;
+      const status = document.getElementById('filterStatus').value;
+
+      const filtered = membersList.filter(item => {
+        const matchKeyword = 
+          (item.namaLengkap && item.namaLengkap.toLowerCase().includes(keyword)) ||
+          (item.noKTA && item.noKTA.toLowerCase().includes(keyword)) ||
+          (item.asalSekolah && item.asalSekolah.toLowerCase().includes(keyword)) ||
+          (item.email && item.email.toLowerCase().includes(keyword));
+
+        const matchGugus = (gugus === "ALL") ? true : (item.asalGugus && item.asalGugus.includes(gugus));
+        const matchStatus = (status === "ALL") ? true : (item.statusAnggota && item.statusAnggota.includes(status));
+
+        return matchKeyword && matchGugus && matchStatus;
+      });
+
+      renderMembersGrid(filtered);
+    }
+
+    // Modal KTA Preview
+    function viewKTA(index) {
+      const item = membersList[index];
+      if (!item) return;
+
+      document.getElementById('modalNama').textContent = item.namaLengkap;
+      document.getElementById('modalKTA').textContent = item.noKTA;
+      document.getElementById('modalSekolah').textContent = `${item.statusAnggota} - ${item.asalSekolah}`;
+      document.getElementById('modalGugus').textContent = item.asalGugus;
+      document.getElementById('modalTimestamp').textContent = "Terdaftar: " + (item.timestamp || "Katapang");
+      document.getElementById('modalFoto').src = item.pasfoto || "https://placehold.co/120x160/e2e8f0/64748b?text=Pasfoto";
+
+      document.getElementById('ktaModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('ktaModal').classList.add('hidden');
+    }
+
+    // Refresh Data & Sync dari Apps Script
+    async function refreshDatabase(showNotification = true) {
+      const refreshBtn = document.getElementById('refreshDataBtn');
+      if (refreshBtn) {
+        refreshBtn.innerHTML = `<i class="fa-solid fa-rotate fa-spin text-sm text-fb-blue"></i>`;
+      }
+
+      if (GOOGLE_SCRIPT_URL) {
+        try {
+          const res = await fetch(GOOGLE_SCRIPT_URL);
+          const json = await res.json();
+          if (json && json.result === 'success' && Array.isArray(json.data) && json.data.length > 0) {
+            membersList = json.data;
+            saveMembersToLocal();
+            renderMembersGrid(membersList);
+            if (showNotification) showToast("Database disinkronkan dengan Google Spreadsheet!", "success");
+            if (refreshBtn) refreshBtn.innerHTML = `<i class="fa-solid fa-rotate text-sm"></i>`;
+            return;
+          }
+        } catch (e) {
+          console.warn("Gagal fetching live data dari webapp:", e);
+        }
+      }
+
+      // Fallback reload cache lokal
+      loadSavedData();
+      renderMembersGrid(membersList);
+      if (showNotification) showToast("Tampilan database telah disegarkan.", "info");
+      if (refreshBtn) refreshBtn.innerHTML = `<i class="fa-solid fa-rotate text-sm"></i>`;
+    }
+
+    // Ekspor Data ke CSV
+    function exportToCSV() {
+      if (membersList.length === 0) {
+        showToast("Tidak ada data untuk diunduh!", "error");
+        return;
+      }
+
+      let csv = "Timestamp,Nama Lengkap,Email,Nomor KTA,Status,Asal Sekolah,Gugus\n";
+      membersList.forEach(m => {
+        csv += `"${m.timestamp}","${m.namaLengkap}","${m.email}","'${m.noKTA}","${m.statusAnggota}","${m.asalSekolah}","${m.asalGugus}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `Database_Anggota_PGRI_Katapang_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("File CSV berhasil diunduh!", "success");
+    }
+
+    // Toast Alert Notification
+    function showToast(message, type = "info") {
+      const toast = document.getElementById('toast');
+      let bgColor = "bg-gray-900 text-white";
+      let icon = "fa-circle-info";
+
+      if (type === "success") {
+        bgColor = "bg-emerald-600 text-white";
+        icon = "fa-circle-check";
+      } else if (type === "error") {
+        bgColor = "bg-red-600 text-white";
+        icon = "fa-circle-exclamation";
+      }
+
+      toast.className = `fixed top-20 right-4 z-50 transform transition-all duration-300 max-w-sm p-4 rounded-xl shadow-2xl flex items-center space-x-3 text-xs sm:text-sm font-semibold ${bgColor}`;
+      toast.innerHTML = `<i class="fa-solid ${icon} text-lg"></i> <span>${escapeHTML(message)}</span>`;
+      
+      // Animate In
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateY(0)';
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-20px)';
+      }, 4000);
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+  </script>
+</body>
+</html>
