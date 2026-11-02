@@ -133,6 +133,14 @@
         <i class="fa-solid fa-plus mr-1"></i> Daftar
       </button>
 
+      <!-- Tombol Admin / Sesi Admin -->
+      <div id="adminActionContainer">
+        <button id="adminLoginBtn" onclick="openAdminLoginModal()" class="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-xs flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-lock text-xs"></i>
+          <span class="hidden sm:inline">Login Admin</span>
+        </button>
+      </div>
+
       <button id="refreshDataBtn" onclick="refreshDatabase()" title="Segarkan Data" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 transition">
         <i class="fa-solid fa-rotate text-sm"></i>
       </button>
@@ -148,6 +156,10 @@
     <button onclick="switchTab('form')" id="mob-nav-form" class="flex flex-col items-center text-gray-500">
       <i class="fa-solid fa-user-plus text-lg"></i>
       <span class="text-[11px] font-medium mt-0.5">Formulir</span>
+    </button>
+    <button onclick="handleMobileAdminClick()" id="mob-nav-admin" class="flex flex-col items-center text-gray-500">
+      <i class="fa-solid fa-chart-pie text-lg"></i>
+      <span class="text-[11px] font-medium mt-0.5">Admin</span>
     </button>
   </div>
 
@@ -339,6 +351,72 @@
     <!-- ================= TAB 2: DATABASE ANGGOTA (FACEBOOK PROFILES & FEED) ================= -->
     <section id="tab-feed" class="space-y-4">
 
+      <!-- Panel Khusus Admin (Statistik & Grafik Analitik) -->
+      <div id="adminAnalyticsSection" class="hidden bg-white rounded-2xl p-4 sm:p-6 border border-amber-200 fb-shadow bg-gradient-to-br from-amber-50/40 via-white to-blue-50/30">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-gray-100 gap-3">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+              <i class="fa-solid fa-chart-column text-lg"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="font-bold text-gray-900 text-base">Dashboard & Analitik Admin PGRI</h3>
+                <span class="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-amber-300">ADMIN MODE AKTIF</span>
+              </div>
+              <p class="text-xs text-gray-500">Rekapitulasi anggota, visualisasi per gugus & sekolah, serta kontrol manajemen data</p>
+            </div>
+          </div>
+          <button onclick="logoutAdmin()" class="self-start sm:self-auto px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl transition flex items-center gap-1.5">
+            <i class="fa-solid fa-right-from-bracket"></i> Keluar Admin
+          </button>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 my-4">
+          <div class="bg-white p-3.5 rounded-xl border border-gray-200 fb-shadow">
+            <span class="text-[11px] text-gray-500 font-medium">Total Anggota</span>
+            <p id="statTotalAnggota" class="text-xl font-black text-fb-blue mt-0.5">0</p>
+          </div>
+          <div class="bg-white p-3.5 rounded-xl border border-gray-200 fb-shadow">
+            <span class="text-[11px] text-gray-500 font-medium">Asal Sekolah</span>
+            <p id="statTotalSekolah" class="text-xl font-black text-emerald-600 mt-0.5">0</p>
+          </div>
+          <div class="bg-white p-3.5 rounded-xl border border-gray-200 fb-shadow">
+            <span class="text-[11px] text-gray-500 font-medium">Gugus Terdata</span>
+            <p id="statTotalGugus" class="text-xl font-black text-indigo-600 mt-0.5">0</p>
+          </div>
+          <div class="bg-white p-3.5 rounded-xl border border-gray-200 fb-shadow">
+            <span class="text-[11px] text-gray-500 font-medium">Status Guru PNS/PPPK</span>
+            <p id="statTotalAparatur" class="text-xl font-black text-amber-600 mt-0.5">0</p>
+          </div>
+        </div>
+
+        <!-- Dua Kolom Grafik: Per Gugus & Per Sekolah -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-2">
+          <!-- Grafik Gugus -->
+          <div class="bg-white p-4 rounded-xl border border-gray-200">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700 flex items-center justify-between mb-3">
+              <span><i class="fa-solid fa-network-wired text-indigo-500 mr-1.5"></i> Distribusi per Gugus</span>
+              <span class="text-[11px] text-gray-400 font-normal">Kec. Katapang</span>
+            </h4>
+            <div id="chartGugusContainer" class="space-y-2.5">
+              <!-- Diisi otomatis via JS -->
+            </div>
+          </div>
+
+          <!-- Grafik Sekolah -->
+          <div class="bg-white p-4 rounded-xl border border-gray-200">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700 flex items-center justify-between mb-3">
+              <span><i class="fa-solid fa-school text-emerald-500 mr-1.5"></i> Distribusi per Sekolah (Top Unit Kerja)</span>
+              <span class="text-[11px] text-gray-400 font-normal">Kec. Katapang</span>
+            </h4>
+            <div id="chartSekolahContainer" class="space-y-2.5 max-h-60 overflow-y-auto pr-1">
+              <!-- Diisi otomatis via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Header & Kontrol Filter / Pencarian -->
       <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-200 fb-shadow">
         <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
@@ -358,13 +436,18 @@
           <!-- Controls: Search & Filters -->
           <div class="flex flex-wrap sm:flex-nowrap items-center gap-2.5">
             <!-- Search Bar -->
-            <div class="relative w-full sm:w-64">
+            <div class="relative w-full sm:w-56">
               <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                 <i class="fa-solid fa-magnifying-glass text-xs"></i>
               </span>
               <input type="text" id="searchInput" oninput="applyFilters()" placeholder="Cari Nama, KTA, Sekolah..."
                      class="w-full pl-9 pr-3 py-2 bg-gray-100 hover:bg-gray-200/70 focus:bg-white border border-transparent focus:border-fb-blue rounded-full text-xs outline-none transition">
             </div>
+
+            <!-- Filter Sekolah (Dinamis) -->
+            <select id="filterSekolah" onchange="applyFilters()" class="w-full sm:w-auto max-w-[170px] px-3 py-2 bg-gray-100 hover:bg-gray-200/70 text-gray-700 rounded-full text-xs border border-transparent focus:border-fb-blue outline-none cursor-pointer truncate">
+              <option value="ALL">Semua Sekolah</option>
+            </select>
 
             <!-- Filter Gugus -->
             <select id="filterGugus" onchange="applyFilters()" class="w-full sm:w-auto px-3 py-2 bg-gray-100 hover:bg-gray-200/70 text-gray-700 rounded-full text-xs border border-transparent focus:border-fb-blue outline-none cursor-pointer">
@@ -417,6 +500,68 @@
     </section>
 
   </main>
+
+  <!-- ================= MODAL LOGIN ADMIN ================= -->
+  <div id="adminLoginModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full overflow-hidden fb-shadow">
+      <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+        <h3 class="font-bold text-sm text-gray-800 flex items-center">
+          <i class="fa-solid fa-shield-halved text-fb-blue mr-2 text-base"></i> Autentikasi Admin PGRI
+        </h3>
+        <button onclick="closeAdminLoginModal()" class="w-7 h-7 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleAdminLogin(event)" class="p-5 space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Username Admin</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-user text-xs"></i></span>
+            <input type="text" id="adminUsername" required placeholder="admin" autocomplete="username"
+                   class="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-fb-blue outline-none transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Password</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-key text-xs"></i></span>
+            <input type="password" id="adminPassword" required placeholder="••••••••" autocomplete="current-password"
+                   class="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-fb-blue outline-none transition">
+          </div>
+        </div>
+
+        <p class="text-[11px] text-gray-500">Khusus pengurus cabang PGRI Katapang untuk melihat statistik & mengoreksi kesalahan data.</p>
+
+        <div class="pt-2">
+          <button type="submit" class="w-full bg-fb-blue hover:bg-fb-hover text-white py-2.5 rounded-xl font-bold text-xs shadow transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk Sebagai Admin
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL KONFIRMASI HAPUS ================= -->
+  <div id="deleteConfirmModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-5 fb-shadow text-center">
+      <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3 text-xl">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 class="font-bold text-base text-gray-900">Hapus Data Anggota Ini?</h3>
+      <p id="deleteConfirmText" class="text-xs text-gray-500 mt-1 mb-5">Tindakan ini akan menghapus data anggota yang salah input.</p>
+
+      <div class="flex gap-2">
+        <button onclick="closeDeleteModal()" class="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-xl transition">
+          Batal
+        </button>
+        <button id="confirmDeleteBtn" onclick="confirmDeleteMember()" class="flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-xl transition flex items-center justify-center gap-1">
+          <i class="fa-solid fa-trash-can"></i> Ya, Hapus
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ================= MODAL DETAIL / KTA DIGITAL PREVIEW ================= -->
   <div id="ktaModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
@@ -513,9 +658,12 @@
     const SPREADSHEET_ID = '1dVIc9F1Foj4LVEwKaJqIDk6JFcHCwA6l2g6nSRoLfCY';
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwpVM6hSqkv4_t6MWllXfEqKR0UR3_0ohbzhgdpihnJjxsx109RessquHY6RfUfAtUx/exec';
     const STORAGE_KEY_MEMBERS = 'pgri_katapang_members_data';
+    const STORAGE_KEY_ADMIN = 'pgri_katapang_admin_auth';
 
     let membersList = [];
     let currentPhotoBase64 = "";
+    let isAdminLoggedIn = false;
+    let memberToDeleteIndex = null;
 
     // Data Awal Mock Contoh untuk Representasi Wilayah Katapang
     const initialSampleData = [
@@ -553,8 +701,11 @@
 
     // Inisialisasi Aplikasi Saat Memuat Halaman
     window.onload = function() {
+      checkAdminSession();
       loadSavedData();
+      populateSekolahFilter();
       renderMembersGrid(membersList);
+      updateAdminAnalytics();
       refreshDatabase(false); // Coba sinkronisasi langsung dari Google Apps Script secara otomatis
       switchTab('feed'); // Buka tab Database Anggota secara default
     };
@@ -579,6 +730,220 @@
         localStorage.setItem(STORAGE_KEY_MEMBERS, JSON.stringify(membersList));
       } catch (e) {
         console.warn("Storage quota / limitation", e);
+      }
+    }
+
+    // ================= SISTEM AUTH ADMIN =================
+    function checkAdminSession() {
+      isAdminLoggedIn = localStorage.getItem(STORAGE_KEY_ADMIN) === 'true';
+      updateAdminUI();
+    }
+
+    function updateAdminUI() {
+      const adminContainer = document.getElementById('adminActionContainer');
+      const adminSection = document.getElementById('adminAnalyticsSection');
+      const mobAdminNav = document.getElementById('mob-nav-admin');
+
+      if (isAdminLoggedIn) {
+        if (adminContainer) {
+          adminContainer.innerHTML = `
+            <div class="flex items-center gap-1.5 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-xl">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="text-xs font-bold text-amber-800">Admin</span>
+              <button onclick="logoutAdmin()" title="Logout Admin" class="ml-1 text-gray-400 hover:text-red-600 transition">
+                <i class="fa-solid fa-right-from-bracket text-xs"></i>
+              </button>
+            </div>
+          `;
+        }
+        if (adminSection) adminSection.classList.remove('hidden');
+        if (mobAdminNav) {
+          mobAdminNav.classList.remove('text-gray-500');
+          mobAdminNav.classList.add('text-amber-600', 'font-bold');
+        }
+      } else {
+        if (adminContainer) {
+          adminContainer.innerHTML = `
+            <button id="adminLoginBtn" onclick="openAdminLoginModal()" class="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-xs flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-lock text-xs"></i>
+              <span class="hidden sm:inline">Login Admin</span>
+            </button>
+          `;
+        }
+        if (adminSection) adminSection.classList.add('hidden');
+        if (mobAdminNav) {
+          mobAdminNav.classList.remove('text-amber-600', 'font-bold');
+          mobAdminNav.classList.add('text-gray-500');
+        }
+      }
+    }
+
+    function openAdminLoginModal() {
+      document.getElementById('adminUsername').value = '';
+      document.getElementById('adminPassword').value = '';
+      document.getElementById('adminLoginModal').classList.remove('hidden');
+    }
+
+    function closeAdminLoginModal() {
+      document.getElementById('adminLoginModal').classList.add('hidden');
+    }
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('adminUsername').value.trim();
+      const pass = document.getElementById('adminPassword').value.trim();
+
+      if (user === 'admin' && pass === 'admin') {
+        isAdminLoggedIn = true;
+        localStorage.setItem(STORAGE_KEY_ADMIN, 'true');
+        closeAdminLoginModal();
+        updateAdminUI();
+        updateAdminAnalytics();
+        renderMembersGrid(membersList);
+        showToast("Login Admin Berhasil! Mode administrasi & grafik aktif.", "success");
+      } else {
+        showToast("Username atau Password Admin salah! (Gunakan admin/admin)", "error");
+      }
+    }
+
+    function logoutAdmin() {
+      isAdminLoggedIn = false;
+      localStorage.removeItem(STORAGE_KEY_ADMIN);
+      updateAdminUI();
+      renderMembersGrid(membersList);
+      showToast("Anda telah keluar dari sesi Admin.", "info");
+    }
+
+    function handleMobileAdminClick() {
+      if (isAdminLoggedIn) {
+        switchTab('feed');
+        const analyticsEl = document.getElementById('adminAnalyticsSection');
+        if (analyticsEl) analyticsEl.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        openAdminLoginModal();
+      }
+    }
+
+    // ================= FITUR HAPUS DATA ANGGOTA (ADMIN) =================
+    function promptDeleteMember(index) {
+      if (!isAdminLoggedIn) {
+        showToast("Hanya admin yang memiliki izin menghapus data!", "error");
+        return;
+      }
+      memberToDeleteIndex = index;
+      const target = membersList[index];
+      if (target) {
+        document.getElementById('deleteConfirmText').textContent = `Hapus data "${target.namaLengkap}" (${target.asalSekolah})? Tindakan ini tidak dapat dibatalkan.`;
+      }
+      document.getElementById('deleteConfirmModal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+      memberToDeleteIndex = null;
+      document.getElementById('deleteConfirmModal').classList.add('hidden');
+    }
+
+    function confirmDeleteMember() {
+      if (memberToDeleteIndex !== null && membersList[memberToDeleteIndex]) {
+        const removed = membersList.splice(memberToDeleteIndex, 1)[0];
+        saveMembersToLocal();
+        populateSekolahFilter();
+        applyFilters();
+        updateAdminAnalytics();
+        closeDeleteModal();
+        showToast(`Data anggota "${removed.namaLengkap}" berhasil dihapus.`, "success");
+      }
+    }
+
+    // ================= ANALITIK & GRAFIK ADMIN =================
+    function updateAdminAnalytics() {
+      if (!isAdminLoggedIn) return;
+
+      const total = membersList.length;
+      document.getElementById('statTotalAnggota').textContent = total;
+
+      // Hitung per Gugus
+      const gugusCount = {};
+      const sekolahCount = {};
+      let aparaturCount = 0;
+
+      membersList.forEach(m => {
+        // Gugus
+        const g = m.asalGugus || 'Lainnya';
+        gugusCount[g] = (gugusCount[g] || 0) + 1;
+
+        // Sekolah
+        const s = (m.asalSekolah || 'Tidak Terdata').trim();
+        sekolahCount[s] = (sekolahCount[s] || 0) + 1;
+
+        // Aparatur (PNS / PPPK)
+        if (m.statusAnggota && (m.statusAnggota.includes('PNS') || m.statusAnggota.includes('PPPK'))) {
+          aparaturCount++;
+        }
+      });
+
+      document.getElementById('statTotalGugus').textContent = Object.keys(gugusCount).length;
+      document.getElementById('statTotalSekolah').textContent = Object.keys(sekolahCount).length;
+      document.getElementById('statTotalAparatur').textContent = aparaturCount;
+
+      // Render Grafik Gugus (Bar visual)
+      const gugusContainer = document.getElementById('chartGugusContainer');
+      const sortedGugus = Object.entries(gugusCount).sort((a, b) => b[1] - a[1]);
+      if (sortedGugus.length === 0) {
+        gugusContainer.innerHTML = `<p class="text-xs text-gray-400 py-3 text-center">Belum ada data gugus</p>`;
+      } else {
+        gugusContainer.innerHTML = sortedGugus.map(([name, count]) => {
+          const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+          return `
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-medium text-gray-700 truncate">${escapeHTML(name)}</span>
+                <span class="font-bold text-gray-900 font-mono">${count} orang (${pct}%)</span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                <div class="bg-indigo-600 h-2 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Render Grafik Sekolah (Top Sekolah)
+      const sekolahContainer = document.getElementById('chartSekolahContainer');
+      const sortedSekolah = Object.entries(sekolahCount).sort((a, b) => b[1] - a[1]);
+      if (sortedSekolah.length === 0) {
+        sekolahContainer.innerHTML = `<p class="text-xs text-gray-400 py-3 text-center">Belum ada data sekolah</p>`;
+      } else {
+        sekolahContainer.innerHTML = sortedSekolah.map(([name, count]) => {
+          const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+          return `
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-medium text-gray-700 truncate" title="${escapeHTML(name)}">${escapeHTML(name)}</span>
+                <span class="font-bold text-emerald-700 font-mono flex-shrink-0 ml-2">${count} guru</span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                <div class="bg-emerald-500 h-2 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // Dropdown Sekolah Otomatis berdasarkan data anggota
+    function populateSekolahFilter() {
+      const select = document.getElementById('filterSekolah');
+      if (!select) return;
+
+      const currentVal = select.value;
+      const schools = [...new Set(membersList.map(m => m.asalSekolah ? m.asalSekolah.trim() : '').filter(Boolean))].sort();
+
+      select.innerHTML = `<option value="ALL">Semua Sekolah</option>` +
+        schools.map(s => `<option value="${escapeHTML(s)}">${escapeHTML(s)}</option>`).join('');
+
+      if (schools.includes(currentVal)) {
+        select.value = currentVal;
       }
     }
 
@@ -706,7 +1071,9 @@
         // 1. Simpan langsung ke State Lokal & Tampilkan ke Database Anggota (Real-time di antarmuka)
         membersList.unshift(formData);
         saveMembersToLocal();
+        populateSekolahFilter();
         renderMembersGrid(membersList);
+        updateAdminAnalytics();
 
         // 2. Kirim otomatis ke Google Apps Script Spreadsheet Anda
         let syncSuccess = false;
@@ -765,7 +1132,10 @@
       }
 
       emptyState.classList.add('hidden');
-      container.innerHTML = data.map((item, index) => {
+      container.innerHTML = data.map((item) => {
+        // Cari index asli pada membersList
+        const realIndex = membersList.indexOf(item);
+
         // Tag Badge Color berdasarkan status
         let badgeColor = "bg-blue-100 text-blue-800 border-blue-200";
         if (item.statusAnggota.includes("PNS")) badgeColor = "bg-emerald-100 text-emerald-800 border-emerald-200";
@@ -775,13 +1145,20 @@
 
         const fotoUrl = item.pasfoto || "https://placehold.co/120x160/e2e8f0/64748b?text=Pasfoto";
 
+        // Tombol Hapus khusus Admin
+        const deleteButtonAdmin = isAdminLoggedIn ? `
+          <button onclick="promptDeleteMember(${realIndex})" class="text-xs font-semibold text-red-600 hover:text-red-800 flex items-center transition bg-red-50 hover:bg-red-100 px-2 py-1 rounded-lg" title="Hapus Data (Koreksi Salah Input)">
+            <i class="fa-solid fa-trash-can mr-1"></i> Hapus
+          </button>
+        ` : '';
+
         return `
           <div class="bg-white rounded-2xl border border-gray-200 fb-shadow overflow-hidden hover:border-fb-blue transition duration-200 flex flex-col justify-between">
             <!-- Header Kartu Profil -->
             <div class="p-4 sm:p-5">
               <div class="flex items-start space-x-3.5">
                 <!-- Pasfoto Profil -->
-                <div class="w-16 h-20 bg-gray-100 rounded-xl overflow-hidden border border-gray-200 shadow-sm flex-shrink-0 cursor-pointer" onclick="viewKTA(${index})">
+                <div class="w-16 h-20 bg-gray-100 rounded-xl overflow-hidden border border-gray-200 shadow-sm flex-shrink-0 cursor-pointer" onclick="viewKTA(${realIndex})">
                   <img src="${fotoUrl}" alt="${escapeHTML(item.namaLengkap)}" class="w-full h-full object-cover hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/120x160/e2e8f0/64748b?text=Foto'">
                 </div>
 
@@ -826,21 +1203,25 @@
 
             <!-- Footer Action Card (Like Facebook Post Actions) -->
             <div class="bg-gray-50 px-4 py-2.5 border-t border-gray-100 flex items-center justify-between">
-              <button onclick="viewKTA(${index})" class="text-xs font-semibold text-fb-blue hover:text-fb-hover flex items-center">
-                <i class="fa-solid fa-address-card mr-1.5"></i> Lihat KTA Digital
+              <button onclick="viewKTA(${realIndex})" class="text-xs font-semibold text-fb-blue hover:text-fb-hover flex items-center">
+                <i class="fa-solid fa-address-card mr-1.5"></i> KTA Digital
               </button>
-              <a href="mailto:${escapeHTML(item.email)}" class="text-xs text-gray-500 hover:text-gray-800 flex items-center" title="Kirim Pesan Email">
-                <i class="fa-solid fa-paper-plane mr-1"></i> Kontak
-              </a>
+              <div class="flex items-center gap-2">
+                ${deleteButtonAdmin}
+                <a href="mailto:${escapeHTML(item.email)}" class="text-xs text-gray-500 hover:text-gray-800 flex items-center" title="Kirim Pesan Email">
+                  <i class="fa-solid fa-paper-plane mr-1"></i> Kontak
+                </a>
+              </div>
             </div>
           </div>
         `;
       }).join('');
     }
 
-    // Filter & Search Real-time
+    // Filter & Search Real-time (Kata Kunci + Sekolah + Gugus + Status)
     function applyFilters() {
       const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+      const sekolah = document.getElementById('filterSekolah') ? document.getElementById('filterSekolah').value : "ALL";
       const gugus = document.getElementById('filterGugus').value;
       const status = document.getElementById('filterStatus').value;
 
@@ -851,10 +1232,11 @@
           (item.asalSekolah && item.asalSekolah.toLowerCase().includes(keyword)) ||
           (item.email && item.email.toLowerCase().includes(keyword));
 
+        const matchSekolah = (sekolah === "ALL") ? true : (item.asalSekolah && item.asalSekolah.trim() === sekolah);
         const matchGugus = (gugus === "ALL") ? true : (item.asalGugus && item.asalGugus.includes(gugus));
         const matchStatus = (status === "ALL") ? true : (item.statusAnggota && item.statusAnggota.includes(status));
 
-        return matchKeyword && matchGugus && matchStatus;
+        return matchKeyword && matchSekolah && matchGugus && matchStatus;
       });
 
       renderMembersGrid(filtered);
@@ -893,7 +1275,9 @@
           if (json && json.result === 'success' && Array.isArray(json.data) && json.data.length > 0) {
             membersList = json.data;
             saveMembersToLocal();
-            renderMembersGrid(membersList);
+            populateSekolahFilter();
+            applyFilters();
+            updateAdminAnalytics();
             if (showNotification) showToast("Database disinkronkan dengan Google Spreadsheet!", "success");
             if (refreshBtn) refreshBtn.innerHTML = `<i class="fa-solid fa-rotate text-sm"></i>`;
             return;
@@ -905,7 +1289,9 @@
 
       // Fallback reload cache lokal
       loadSavedData();
-      renderMembersGrid(membersList);
+      populateSekolahFilter();
+      applyFilters();
+      updateAdminAnalytics();
       if (showNotification) showToast("Tampilan database telah disegarkan.", "info");
       if (refreshBtn) refreshBtn.innerHTML = `<i class="fa-solid fa-rotate text-sm"></i>`;
     }
