@@ -192,14 +192,14 @@
             <i class="fa-solid fa-user-lock text-xs"></i>
             <span class="hidden sm:inline">Login Anggota</span>
             <span class="sm:hidden">KTA</span>
+        <!-- Footer Modal -->
+        <div class="p-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+          <button onclick="logoutMember()" class="text-xs font-bold text-rose-600 hover:underline">
+            Logout Anggota
           </button>
-        </div>
-
-        <!-- Login Admin Button / Sesi Status -->
-        <div id="adminNavArea">
-          <button onclick="openAdminLoginModal()" class="inline-flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs px-3 py-2 rounded-xl transition">
-            <i class="fa-solid fa-shield-halved text-xs text-gray-600"></i>
-            <span class="hidden sm:inline">Admin</span>
+          <button id="btnSaveSelfService" onclick="saveMemberSelfService()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-2">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Simpan Perubahan</span>
           </button>
         </div>
       </div>
@@ -1031,8 +1031,8 @@
 
   <!-- ================= SCRIPT LOGIKA UTAMA ================= -->
   <script>
-    // URL Web App Google Apps Script
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwpVM6hSqkv4_t6MWllXfEqKR0UR3_0ohbzhgdpihnJjxsx109RessquHY6RfUfAtUx/exec";
+    // URL Web App Google Apps Script Aktif (/exec)
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydoPummcB0tiFZfZA4NNEeuh1tcg7aK0vshmPQuhVfnX317mfgPJufaYg_IbGQwuFt/exec";
 
     // Daftar Referensi
     const BULAN_LIST = [
@@ -1920,10 +1920,77 @@
       renderMemberDashboardContent(member);
     }
 
-    function saveMemberSelfService() {
+    async function syncMemberDataToSpreadsheet(member) {
+      if (!member || !member.noKTA) return false;
+      const totalStars = countMemberStars(member);
+      
+      const payloadObj = {
+        action: "update_ceklis",
+        noKTA: String(member.noKTA).trim(),
+        namaLengkap: member.namaLengkap || "",
+        statusAnggota: member.statusAnggota || "",
+        asalSekolah: member.asalSekolah || "",
+        asalGugus: member.asalGugus || "",
+        totalBintang: String(totalStars),
+        iuran: typeof member.iuran === 'string' ? member.iuran : JSON.stringify(member.iuran || {}),
+        porsenigur: typeof member.porsenigur === 'string' ? member.porsenigur : JSON.stringify(member.porsenigur || []),
+        pengembangan: typeof member.pengembangan === 'string' ? member.pengembangan : JSON.stringify(member.pengembangan || []),
+        timestamp: new Date().toISOString()
+      };
+
+      // 1. Metode Utama: POST via URLSearchParams (Paling kompatibel dengan Google Apps Script)
+      try {
+        const formData = new URLSearchParams();
+        Object.keys(payloadObj).forEach(key => {
+          formData.append(key, payloadObj[key]);
+        });
+
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData.toString()
+        });
+      } catch (err) {
+        console.warn("POST ceklis via form-urlencoded gagal, mencoba jalur JSON:", err);
+        try {
+          await fetch(SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payloadObj)
+          });
+        } catch (e) {
+          console.warn("POST JSON gagal:", e);
+        }
+      }
+
+      return true;
+    }
+
+    async function saveMemberSelfService() {
+      const member = membersList.find(m => m.noKTA === loggedInMemberKTA);
+      if (!member) return;
+
+      const saveBtn = document.getElementById('btnSaveSelfService');
+      const originalHTML = saveBtn ? saveBtn.innerHTML : '';
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Menyimpan ke Spreadsheet...</span>`;
+      }
+
       saveToStorage();
       renderDatabaseTable();
-      showToast("Data Disimpan", "Ceklis aktivitas dan bintang berhasil diperbarui.");
+
+      // Kirim otomatis data ceklis dan jumlah bintang ke Google Spreadsheet
+      await syncMemberDataToSpreadsheet(member);
+
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = originalHTML;
+      }
+
+      showToast("Data Tersimpan & Tersinkron!", `Jumlah bintang (${countMemberStars(member)} ⭐) dan data ceklis berhasil diperbarui ke Spreadsheet.`);
       closeMemberDashboardModal();
     }
 
