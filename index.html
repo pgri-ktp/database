@@ -192,14 +192,14 @@
             <i class="fa-solid fa-user-lock text-xs"></i>
             <span class="hidden sm:inline">Login Anggota</span>
             <span class="sm:hidden">KTA</span>
-        <!-- Footer Modal -->
-        <div class="p-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-          <button onclick="logoutMember()" class="text-xs font-bold text-rose-600 hover:underline">
-            Logout Anggota
           </button>
-          <button id="btnSaveSelfService" onclick="saveMemberSelfService()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-2">
-            <i class="fa-solid fa-floppy-disk"></i>
-            <span>Simpan Perubahan</span>
+        </div>
+
+        <!-- Admin Access Button -->
+        <div id="adminNavArea">
+          <button onclick="openAdminLoginModal()" class="inline-flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs px-3 py-2 rounded-xl transition">
+            <i class="fa-solid fa-shield-halved text-xs text-gray-600"></i>
+            <span class="hidden sm:inline">Admin</span>
           </button>
         </div>
       </div>
@@ -907,15 +907,8 @@
           
           <!-- Header KTA dengan Logo PGRI Resmi -->
           <div class="bg-gradient-to-r from-red-700 via-rose-700 to-red-800 p-3 text-white flex items-center gap-2.5">
-            <div class="w-10 h-10 bg-white rounded-full p-0.5 flex-shrink-0 shadow-sm">
-              <svg viewBox="0 0 200 200" class="w-full h-full">
-                <circle cx="100" cy="100" r="96" fill="#DA251D"/>
-                <circle cx="100" cy="100" r="88" fill="none" stroke="#FFFFFF" stroke-width="4"/>
-                <circle cx="100" cy="100" r="66" fill="#00873D"/>
-                <path d="M 94 85 L 106 85 L 104 148 L 96 148 Z" fill="#FDB813"/>
-                <path d="M 86 66 L 114 66 L 108 85 L 92 85 Z" fill="#FDB813"/>
-                <path d="M 100 24 C 95 34 85 45 88 56 C 89 60 92 64 96 66 C 94 58 97 50 100 46 C 103 50 106 58 104 66 C 108 64 111 60 112 56 C 115 45 105 34 100 24 Z" fill="#DA251D"/>
-              </svg>
+            <div class="w-11 h-11 bg-white rounded-full p-0.5 flex-shrink-0 shadow-md flex items-center justify-center">
+              <img src="https://images.seeklogo.com/logo-png/25/1/pgri-logo-png_seeklogo-257554.png" alt="Logo PGRI" class="w-full h-full object-contain rounded-full" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/9/90/Logo_PGRI.png';">
             </div>
             <div class="leading-none text-left">
               <h5 class="text-[12px] font-black tracking-wider uppercase text-yellow-300">KARTU TANDA ANGGOTA</h5>
@@ -1795,10 +1788,15 @@
       if (loggedInMemberKTA) {
         const member = membersList.find(m => m.noKTA === loggedInMemberKTA);
         area.innerHTML = `
-          <button onclick="openMemberDashboardModal()" class="inline-flex items-center gap-1.5 bg-blue-50 text-fb-blue border border-blue-200 px-3 py-1.5 rounded-xl text-xs font-bold">
-            <i class="fa-solid fa-circle-user text-sm"></i>
-            <span class="max-w-[100px] truncate">${escapeHTML(member?.namaLengkap || 'Anggota')}</span>
-          </button>
+          <div class="flex items-center gap-1.5 bg-blue-50 text-fb-blue border border-blue-200 px-2.5 py-1.5 rounded-xl text-xs font-bold">
+            <button onclick="openMemberDashboardModal()" class="flex items-center gap-1.5 hover:text-blue-800 transition max-w-[130px] truncate" title="Buka Dashboard Mandiri">
+              <i class="fa-solid fa-circle-user text-sm"></i>
+              <span class="truncate">${escapeHTML(member?.namaLengkap || 'Anggota')}</span>
+            </button>
+            <button onclick="logoutMember()" class="ml-1 text-gray-400 hover:text-rose-600 transition" title="Logout Anggota">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+          </div>
         `;
       } else {
         area.innerHTML = `
