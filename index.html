@@ -1032,7 +1032,7 @@
   <!-- ================= SCRIPT LOGIKA UTAMA ================= -->
   <script>
     // URL Web App Google Apps Script Aktif (/exec)
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydoPummcB0tiFZfZA4NNEeuh1tcg7aK0vshmPQuhVfnX317mfgPJufaYg_IbGQwuFt/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqK2p4oJwe2BtTiVoZL6BVnOwQVueoo4CZ-bdsESMxIJS8InesCP5Y3r5mn7Hwl1ls/exec";
 
     // Daftar Referensi
     const BULAN_LIST = [
@@ -1485,19 +1485,43 @@
 
       if (!file) return;
 
-      if (file.size > 500 * 1024) {
-        showToast("Ukuran File Terlalu Besar", "Ukuran foto maksimal 500 KB.", true);
+      if (file.size > 2 * 1024 * 1024) {
+        showToast("Ukuran File Terlalu Besar", "Ukuran foto asli maksimal 2 MB sebelum dikompresi.", true);
         input.value = "";
         preview.src = "https://placehold.co/120x160/e2e8f0/64748b?text=Pasfoto+PGRI";
         currentBase64Photo = "";
         return;
       }
 
+      // Kompresi Otomatis Menggunakan HTML5 Canvas (300x400 px, Kualitas 0.75)
+      // Menghasilkan ukuran ~15 - 25 KB sehingga muat 100% utuh di Google Spreadsheet
       const reader = new FileReader();
       reader.onload = function(e) {
-        currentBase64Photo = e.target.result;
-        preview.src = currentBase64Photo;
-        infoText.innerHTML = `<span class="text-emerald-600 font-bold"><i class="fa-solid fa-check"></i> Foto siap diunggah (${Math.round(file.size / 1024)} KB)</span>`;
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          // Ukuran rasio pasfoto standar 3:4
+          canvas.width = 300;
+          canvas.height = 400;
+
+          // Menjaga rasio dan crop center
+          const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
+          const x = (canvas.width / 2) - (img.width / 2) * scale;
+          const y = (canvas.height / 2) - (img.height / 2) * scale;
+
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+
+          // Hasilkan data JPEG terkompresi optimal
+          currentBase64Photo = canvas.toDataURL('image/jpeg', 0.75);
+          preview.src = currentBase64Photo;
+          const estSizeKB = Math.round(currentBase64Photo.length * 0.75 / 1024);
+          infoText.innerHTML = `<span class="text-emerald-600 font-bold"><i class="fa-solid fa-circle-check"></i> Pasfoto siap & teroptimasi (${estSizeKB} KB)</span>`;
+        };
+        img.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
@@ -2040,6 +2064,15 @@
 
       function processIncomingData(rawData) {
         if (!Array.isArray(rawData)) return false;
+        
+        // Peta foto lokal yang sudah ada untuk proteksi fallback jika foto di spreadsheet kosong
+        const existingPhotosMap = {};
+        membersList.forEach(m => {
+          if (m.noKTA && m.pasfoto && m.pasfoto.length > 50) {
+            existingPhotosMap[m.noKTA] = m.pasfoto;
+          }
+        });
+
         membersList = rawData.map(item => {
           let iuranParsed = {};
           let porsenigurParsed = [];
@@ -2060,8 +2093,15 @@
             else if (Array.isArray(item.pengembangan)) pengembanganParsed = item.pengembangan;
           } catch(e) { pengembanganParsed = []; }
 
+          // Pastikan pasfoto tidak hilang: gunakan dari sheet, jika kosong/rusak gunakan foto lokal
+          let validFoto = item.pasfoto || "";
+          if ((!validFoto || validFoto.length < 50) && existingPhotosMap[item.noKTA]) {
+            validFoto = existingPhotosMap[item.noKTA];
+          }
+
           return {
             ...item,
+            pasfoto: validFoto,
             iuran: iuranParsed,
             porsenigur: porsenigurParsed,
             pengembangan: pengembanganParsed
