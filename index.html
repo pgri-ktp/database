@@ -71,6 +71,20 @@
       background: #a0a2a5;
     }
 
+    /* Running Text Marquee Animation */
+    @keyframes marqueeScroll {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .animate-marquee {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marqueeScroll 32s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
     /* Print Rules for KTA Digital */
     @media print {
       body * {
@@ -95,6 +109,38 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col text-gray-900 antialiased selection:bg-blue-100 selection:text-fb-blue">
+
+  <!-- ================= TOP RUNNING TEXT & DAILY MOTIVATIONAL QUOTE ================= -->
+  <div class="bg-gradient-to-r from-red-700 via-rose-800 to-red-900 text-white border-b border-red-950/40 text-xs shadow-inner overflow-hidden select-none">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-3 py-1.5 gap-1.5 md:gap-4">
+      
+      <!-- Running Ticker Selamat Datang -->
+      <div class="flex items-center gap-2 w-full md:w-3/5 overflow-hidden">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-yellow-400 text-red-950 text-[10px] font-black uppercase tracking-wider shadow-xs flex-shrink-0">
+          <i class="fa-solid fa-bullhorn text-[9px] animate-bounce"></i> Info PGRI
+        </span>
+        <div class="overflow-hidden relative w-full h-5 flex items-center">
+          <div class="animate-marquee font-bold tracking-wide text-[11px] sm:text-xs text-yellow-100 hover:text-white cursor-pointer transition">
+            <span class="inline-block mr-12">
+              <i class="fa-solid fa-star text-yellow-300 text-[10px] mr-1"></i>
+              Selamat Datang Di Web Sistem Informasi Database Anggota Terpadu PGRI Cabang Katapang.
+            </span>
+            <span class="inline-block mr-12 text-white">
+              <i class="fa-solid fa-award text-yellow-300 text-[10px] mr-1"></i>
+              Bersatu, Berdedikasi, Mengabdi Demi Kemajuan Pendidikan Bangsa!
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote Harian Penyemangat Guru -->
+      <div class="hidden md:flex items-center gap-2 flex-shrink-0 text-[11px] text-red-100 bg-black/25 px-3 py-0.5 rounded-full border border-white/10 max-w-sm lg:max-w-md truncate">
+        <i class="fa-solid fa-quote-left text-yellow-300 text-[10px] flex-shrink-0"></i>
+        <span id="dailyQuoteText" class="italic truncate font-medium">"Guru adalah lentera peradaban yang tak pernah padam menyinari masa depan."</span>
+      </div>
+
+    </div>
+  </div>
 
   <!-- ================= TOP NAVIGATION BAR (FACEBOOK STYLE) ================= -->
   <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-fb">
@@ -2231,6 +2277,22 @@
 
     // Inisialisasi awal saat halaman selesai dimuat
     window.addEventListener('DOMContentLoaded', () => {
+      // Rotasi Quote Harian Penyemangat
+      const teacherQuotes = [
+        "Guru adalah lentera peradaban yang tak pernah padam menyinari masa depan.",
+        "Ing ngarsa sung tulada, ing madya mangun karsa, tut wuri handayani. — Ki Hadjar Dewantara",
+        "Pendidikan adalah senjata paling ampuh untuk mengubah dunia. — Nelson Mandela",
+        "Setiap guru adalah pahlawan pembentuk karakter generasi emas bangsa.",
+        "Mengajar adalah panggilan nurani menyentuh jiwa dan menginspirasi impian.",
+        "Guru yang hebat tidak hanya mengajar, tetapi menginspirasi dan menghidupkan rasa ingin tahu.",
+        "Solidaritas PGRI: Hidup Guru! Hidup PGRI! Solidaritas Yes!"
+      ];
+      const quoteEl = document.getElementById('dailyQuoteText');
+      if (quoteEl) {
+        const dayIndex = new Date().getDay() % teacherQuotes.length;
+        quoteEl.textContent = `"${teacherQuotes[dayIndex]}"`;
+      }
+
       loadFromStorage();
       populateSchoolFilter();
       renderDatabaseTable();
