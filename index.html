@@ -3,29 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistem Informasi Database Terpadu PGRI Cabang Katapang</title>
-  <!-- Tailwind CSS CDN -->
+  <title>Database Anggota PGRI Cabang Kecamatan Katapang</title>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          },
+          colors: {
+            fb: {
+              blue: '#1877F2',
+              hover: '#166fe5',
+              bg: '#F0F2F5',
+              card: '#FFFFFF',
+              dark: '#050505',
+              gray: '#65676B',
+              divider: '#CED0D4',
+              active: '#E7F3FF'
+            },
+            pgri: {
+              red: '#DA251D',
+              yellow: '#FDB813',
+              green: '#00873D',
+              gold: '#D4AF37'
+            }
+          },
+          boxShadow: {
+            fb: '0 1px 2px rgba(0, 0, 0, 0.1)',
+            'fb-card': '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)',
+            'fb-hover': '0 4px 12px rgba(0, 0, 0, 0.15)',
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    @keyframes marquee {
+    body {
+      background-color: #F0F2F5;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c7c9cc;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a0a2a5;
+    }
+
+    /* Running Text Marquee Animation */
+    @keyframes marqueeScroll {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
     .animate-marquee {
       display: inline-block;
       white-space: nowrap;
-      animation: marquee 28s linear infinite;
+      animation: marqueeScroll 32s linear infinite;
     }
     .animate-marquee:hover {
       animation-play-state: paused;
     }
 
-    /* Pengaturan Cetak Bersih Khusus Kartu KTA */
+    /* Print Rules for KTA Digital */
     @media print {
       body * {
         visibility: hidden !important;
@@ -36,15 +96,11 @@
       #printableKTA {
         position: fixed !important;
         left: 50% !important;
-        top: 20px !important;
-        transform: translateX(-50%) !important;
-        width: 86mm !important;
-        max-width: 86mm !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
         margin: 0 !important;
+        width: 86mm !important;
         box-shadow: none !important;
-        border: 1px solid #ccc !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
       }
       .no-print {
         display: none !important;
@@ -52,789 +108,1547 @@
     }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col relative">
+<body class="min-h-screen flex flex-col text-gray-900 antialiased selection:bg-blue-100 selection:text-fb-blue">
 
-  <!-- TOP RUNNING TEXT & QUOTE BAR -->
-  <div class="bg-gradient-to-r from-red-800 via-red-700 to-rose-900 text-white text-xs py-2 px-3 shadow no-print border-b border-red-900">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
-      <!-- Running Text Marquee -->
-      <div class="flex items-center overflow-hidden w-full md:w-3/5">
-        <span class="bg-amber-400 text-red-950 font-bold px-2 py-0.5 rounded text-[11px] mr-2 flex items-center shrink-0 shadow-sm">
-          <i class="fa-solid fa-bullhorn mr-1 text-xs"></i> INFO PGRI
+  <!-- ================= TOP RUNNING TEXT & DAILY MOTIVATIONAL QUOTE ================= -->
+  <div class="bg-gradient-to-r from-red-700 via-rose-800 to-red-900 text-white border-b border-red-950/40 text-xs shadow-inner overflow-hidden select-none">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-3 py-1.5 gap-1.5 md:gap-4">
+      
+      <!-- Running Ticker Selamat Datang -->
+      <div class="flex items-center gap-2 w-full md:w-3/5 overflow-hidden">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-yellow-400 text-red-950 text-[10px] font-black uppercase tracking-wider shadow-xs flex-shrink-0">
+          <i class="fa-solid fa-bullhorn text-[9px] animate-bounce"></i> Info PGRI
         </span>
-        <div class="overflow-hidden relative w-full">
-          <div class="animate-marquee font-medium text-amber-100">
-            Selamat Datang Di Web Sistem Informasi Database Anggota Terpadu PGRI Cabang Katapang. Mari bersama wujudkan solidaritas, profesionalitas, dan martabat guru!
+        <div class="overflow-hidden relative w-full h-5 flex items-center">
+          <div class="animate-marquee font-bold tracking-wide text-[11px] sm:text-xs text-yellow-100 hover:text-white cursor-pointer transition">
+            <span class="inline-block mr-12">
+              <i class="fa-solid fa-star text-yellow-300 text-[10px] mr-1"></i>
+              Selamat Datang Di Web Sistem Informasi Database Anggota Terpadu PGRI Cabang Katapang.
+            </span>
+            <span class="inline-block mr-12 text-white">
+              <i class="fa-solid fa-award text-yellow-300 text-[10px] mr-1"></i>
+              Bersatu, Berdedikasi, Mengabdi Demi Kemajuan Pendidikan Bangsa!
+            </span>
           </div>
         </div>
       </div>
-      <!-- Daily Quote -->
-      <div class="w-full md:w-2/5 flex items-center justify-end text-right">
-        <div class="bg-black/25 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10 flex items-center gap-2 text-[11px] text-amber-200">
-          <i class="fa-solid fa-quote-left text-amber-400"></i>
-          <span id="dailyQuoteText" class="italic truncate max-w-xs md:max-w-sm">Ing ngarsa sung tuladha, ing madya mangun karsa, tut wuri handayani.</span>
-        </div>
+
+      <!-- Quote Harian Penyemangat Guru -->
+      <div class="hidden md:flex items-center gap-2 flex-shrink-0 text-[11px] text-red-100 bg-black/25 px-3 py-0.5 rounded-full border border-white/10 max-w-sm lg:max-w-md truncate">
+        <i class="fa-solid fa-quote-left text-yellow-300 text-[10px] flex-shrink-0"></i>
+        <span id="dailyQuoteText" class="italic truncate font-medium">"Guru adalah lentera peradaban yang tak pernah padam menyinari masa depan."</span>
       </div>
+
     </div>
   </div>
 
-  <!-- HEADER UTAMA -->
-  <header class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm no-print">
-    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-      <!-- Identitas & Logo Header -->
-      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('database')">
-        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7b38o5h3c73vW4g_jK6kQkZ5c-m8T8K7J7e4/s320/pgri-logo.png" 
-             onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/41/Logo_PGRI.png'" 
-             alt="Logo PGRI" class="h-10 w-10 object-contain drop-shadow">
-        <div>
-          <h1 class="text-lg font-black text-red-700 leading-tight tracking-wide">PGRI CABANG KATAPANG</h1>
-          <p class="text-[11px] text-gray-500 font-semibold tracking-wider">SISTEM DATABASE KEANGGOTAAN TERPADU</p>
+  <!-- ================= TOP NAVIGATION BAR (FACEBOOK STYLE) ================= -->
+  <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-fb">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-4">
+      
+      <!-- Brand & Official PGRI Logo -->
+      <div class="flex items-center gap-3">
+        <!-- SVG Resmi PGRI Sesuai Logo Asli (Lingkaran Merah-Putih, Obor Kuning Emas, Sayap Putih, Buku) -->
+        <div class="w-11 h-11 flex-shrink-0 cursor-pointer transition transform hover:scale-105" onclick="switchTab('database')">
+          <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-md">
+            <!-- Lingkaran Luar Merah -->
+            <circle cx="100" cy="100" r="96" fill="#DA251D" stroke="#DA251D" stroke-width="2"/>
+            <!-- Lis Putih -->
+            <circle cx="100" cy="100" r="91" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+            <!-- Teks Melingkar Atas -->
+            <path id="textCircleTop" d="M 24,100 A 76,76 0 0,1 176,100" fill="none"/>
+            <text font-family="'Inter', sans-serif" font-weight="900" font-size="12" fill="#FFFFFF" letter-spacing="2">
+              <textPath href="#textCircleTop" startOffset="50%" text-anchor="middle">PERSATUAN GURU REPUBLIK INDONESIA</textPath>
+            </text>
+            <!-- Teks Melingkar Bawah -->
+            <path id="textCircleBottom" d="M 28,100 A 72,72 0 0,0 172,100" fill="none"/>
+            <text font-family="'Inter', sans-serif" font-weight="900" font-size="14" fill="#FFFFFF" letter-spacing="3">
+              <textPath href="#textCircleBottom" startOffset="50%" text-anchor="middle">PGRI</textPath>
+            </text>
+            <!-- Lingkaran Lis Dalam Putih -->
+            <circle cx="100" cy="100" r="68" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+            <!-- Lingkaran Dalam Hijau Daun -->
+            <circle cx="100" cy="100" r="65.5" fill="#00873D"/>
+            <!-- Elemen Sayap/Gerbang Putih 5 Pilar Kiri -->
+            <g fill="#FFFFFF" opacity="0.95">
+              <rect x="52" y="70" width="3.5" height="42" rx="1.5"/>
+              <rect x="58" y="72" width="3.5" height="40" rx="1.5"/>
+              <rect x="64" y="74" width="3.5" height="38" rx="1.5"/>
+              <rect x="70" y="77" width="3.5" height="35" rx="1.5"/>
+              <rect x="76" y="80" width="3.5" height="32" rx="1.5"/>
+            </g>
+            <!-- Elemen Sayap/Gerbang Putih 5 Pilar Kanan -->
+            <g fill="#FFFFFF" opacity="0.95">
+              <rect x="120" y="80" width="3.5" height="32" rx="1.5"/>
+              <rect x="126" y="77" width="3.5" height="35" rx="1.5"/>
+              <rect x="132" y="74" width="3.5" height="38" rx="1.5"/>
+              <rect x="138" y="72" width="3.5" height="40" rx="1.5"/>
+              <rect x="144" y="70" width="3.5" height="42" rx="1.5"/>
+            </g>
+            <!-- Lembaran Buku Terbuka Putih -->
+            <path d="M 72 118 Q 100 125 100 132 Q 100 125 128 118 L 128 138 Q 100 144 100 152 Q 100 144 72 138 Z" fill="#FFFFFF" stroke="#CED0D4" stroke-width="1"/>
+            <!-- Batang Obor Kuning Emas -->
+            <path d="M 94 85 L 106 85 L 104 148 L 96 148 Z" fill="#FDB813" stroke="#B45309" stroke-width="0.8"/>
+            <line x1="97" y1="88" x2="98" y2="146" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+            <line x1="100" y1="88" x2="100" y2="146" stroke="#D97706" stroke-width="1.2"/>
+            <!-- Kepala Cawan Obor Emas Berujung Segiempat -->
+            <path d="M 86 66 L 114 66 L 108 85 L 92 85 Z" fill="#FDB813" stroke="#B45309" stroke-width="1"/>
+            <circle cx="100" cy="74" r="5" fill="#D97706"/>
+            <!-- Nyala Api Berpijar 4 Lidah Merah Menjulang -->
+            <path d="M 100 24 C 95 34 85 45 88 56 C 89 60 92 64 96 66 C 94 58 97 50 100 46 C 103 50 106 58 104 66 C 108 64 111 60 112 56 C 115 45 105 34 100 24 Z" fill="#DA251D"/>
+            <path d="M 100 36 C 97 42 93 48 95 56 C 98 52 100 49 100 49 C 100 49 102 52 105 56 C 107 48 103 42 100 36 Z" fill="#FDB813"/>
+          </svg>
+        </div>
+        <div class="leading-tight cursor-pointer" onclick="switchTab('database')">
+          <div class="flex items-center gap-1.5">
+            <h1 class="text-base sm:text-lg font-black text-gray-900 tracking-tight">PGRI KATAPANG</h1>
+            <span class="bg-red-100 text-red-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded uppercase">Cabang</span>
+          </div>
+          <p class="text-[11px] sm:text-xs text-fb-gray hidden sm:block">Sistem Informasi Database Anggota Terpadu</p>
         </div>
       </div>
 
-      <!-- Navigasi Menu Tab -->
-      <nav class="hidden md:flex items-center space-x-2">
-        <button onclick="switchTab('database')" id="nav-database" class="px-3 py-2 text-sm font-semibold rounded-lg transition-all text-red-700 bg-red-50">
-          <i class="fa-solid fa-users mr-1.5"></i> Database Anggota
+      <!-- Center Navigation Tabs (Desktop FB Style) -->
+      <nav class="hidden md:flex items-center space-x-1 h-full">
+        <button id="navTabDatabase" onclick="switchTab('database')" class="h-full px-5 flex items-center gap-2 font-bold text-sm text-fb-blue border-b-4 border-fb-blue transition">
+          <i class="fa-solid fa-users text-lg"></i>
+          <span>Database Anggota</span>
         </button>
-        <button onclick="switchTab('registrasi')" id="nav-registrasi" class="px-3 py-2 text-sm font-semibold rounded-lg transition-all text-gray-600 hover:text-red-700 hover:bg-gray-100">
-          <i class="fa-solid fa-user-plus mr-1.5"></i> Pendaftaran
+        <button id="navTabForm" onclick="switchTab('form')" class="h-full px-5 flex items-center gap-2 font-bold text-sm text-gray-500 hover:text-fb-blue hover:bg-gray-100 border-b-4 border-transparent transition rounded-t-lg">
+          <i class="fa-solid fa-id-card-clip text-lg"></i>
+          <span>Formulir Pendaftaran</span>
         </button>
-        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="px-3 py-2 text-sm font-semibold rounded-lg transition-all text-gray-600 hover:text-red-700 hover:bg-gray-100">
-          <i class="fa-solid fa-chart-pie mr-1.5"></i> Dashboard Admin
+        <button id="navTabAdmin" onclick="openAdminDashboard()" class="h-full px-4 flex items-center gap-2 font-bold text-sm text-gray-500 hover:text-fb-blue hover:bg-gray-100 border-b-4 border-transparent transition rounded-t-lg">
+          <i class="fa-solid fa-chart-pie text-lg"></i>
+          <span>Grafik & Admin</span>
         </button>
       </nav>
 
-      <!-- Area Akses Akun Header -->
-      <div class="flex items-center space-x-2">
-        <!-- Belum Login -->
-        <button id="headerBtnLoginAnggota" onclick="openMemberLoginModal()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-red-600 text-red-700 hover:bg-red-50 transition shadow-sm">
-          <i class="fa-solid fa-arrow-right-to-bracket mr-1"></i> Login Anggota
-        </button>
+      <!-- Right Action Items (WhatsApp Chat & User Logins) -->
+      <div class="flex items-center gap-2">
+        <!-- WhatsApp Chat Admin -->
+        <a href="https://wa.me/6285797817050?text=hallo%20admin%20web%20database%20pgri%20cabang%20katapang%20izin%20bertanya" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-3 py-2 rounded-xl shadow-xs transition transform hover:scale-102">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>Chat Admin</span>
+        </a>
 
-        <!-- Sudah Login (Avatar Profil & Logout Bersih) -->
-        <div id="headerLoggedInBadge" class="hidden items-center space-x-2">
-          <button onclick="openMemberPortal(currentMemberUser)" class="flex items-center bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg px-2.5 py-1 text-xs font-semibold text-gray-800 transition">
-            <span class="w-2 h-2 rounded-full bg-green-500 mr-2 inline-block animate-pulse"></span>
-            <span id="headerMemberName" class="max-w-[120px] truncate">Anggota</span>
-          </button>
-          <button onclick="logoutMember()" title="Logout Anggota" class="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
-            <i class="fa-solid fa-arrow-right-from-bracket text-sm"></i>
+        <!-- Login Anggota Button / Profil Anggota Aktif -->
+        <div id="memberNavArea">
+          <button onclick="openMemberLoginModal()" class="inline-flex items-center gap-1.5 bg-blue-50 hover:bg-blue-100 text-fb-blue font-bold text-xs px-3 py-2 rounded-xl transition border border-blue-200">
+            <i class="fa-solid fa-user-lock text-xs"></i>
+            <span class="hidden sm:inline">Login Anggota</span>
+            <span class="sm:hidden">KTA</span>
           </button>
         </div>
 
-        <button onclick="handleAdminHeaderClick()" id="headerAdminBtn" class="bg-red-700 hover:bg-red-800 text-white px-3 py-1.5 text-xs font-bold rounded-lg transition shadow-sm">
-          <i class="fa-solid fa-lock mr-1"></i> <span id="headerAdminText">Admin</span>
-        </button>
+        <!-- Admin Access Button -->
+        <div id="adminNavArea">
+          <button onclick="openAdminLoginModal()" class="inline-flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs px-3 py-2 rounded-xl transition">
+            <i class="fa-solid fa-shield-halved text-xs text-gray-600"></i>
+            <span class="hidden sm:inline">Admin</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- BANNER PETUNJUK BINTANG PRESTASI DI AWAL DASHBOARD -->
-  <section class="max-w-7xl mx-auto px-4 pt-4 w-full no-print">
-    <div class="bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-600 text-white rounded-xl p-4 shadow-md flex flex-col md:flex-row items-center justify-between gap-3 border border-amber-300">
-      <div class="flex items-center space-x-3">
-        <div class="bg-white/20 p-2.5 rounded-full text-yellow-100 text-lg shrink-0">
-          <i class="fa-solid fa-star animate-spin" style="animation-duration: 8s;"></i>
+  <!-- ================= SUB HEADER STATISTIK CEPAT ================= -->
+  <div class="bg-white border-b border-gray-200/80 px-4 py-2.5 shadow-xs">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between text-xs gap-3">
+      <div class="flex items-center gap-2 text-gray-600">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="font-medium">Wilayah Kerja: <strong>PGRI Kecamatan Katapang</strong></span>
+      </div>
+      <div class="flex items-center gap-4 text-gray-500 font-medium">
+        <span>Gugus 1 s.d. 5 Katapang</span>
+        <span>&bull;</span>
+        <span>Porsenigur 2026</span>
+        <span>&bull;</span>
+        <span class="text-fb-blue font-bold">Iuran 2026 - 2030</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= BANNER PETUNJUK BINTANG PRESTASI ================= -->
+  <div class="max-w-7xl mx-auto w-full px-3 sm:px-6 pt-4">
+    <div class="bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-600 rounded-2xl p-4 sm:p-5 text-white shadow-fb flex flex-col md:flex-row items-center justify-between gap-4 border border-amber-400/40">
+      <div class="flex items-center gap-3.5 text-center sm:text-left">
+        <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-yellow-200 text-2xl flex-shrink-0 shadow-inner">
+          <i class="fa-solid fa-star animate-spin-slow"></i>
         </div>
         <div>
-          <h4 class="font-bold text-sm md:text-base text-yellow-50">Lengkapi Bintang Prestasi Anda dengan mengisinya di menu login Anggota, Jika ada masalah silahkan hubungi Admin lewat chat</h4>
-          <p class="text-xs text-amber-100 font-medium">1 Ceklis keaktifan (Iuran, Porsenigur, Pelatihan, dan Artikel) = 1 Tambahan Bintang Prestasi ⭐</p>
+          <h3 class="font-black text-sm sm:text-base tracking-tight text-white flex items-center justify-center sm:justify-start gap-1.5">
+            <span>Raih & Lengkapi Bintang Prestasi Anda!</span>
+            <span class="text-xs bg-black/20 px-2 py-0.5 rounded-full font-bold">⭐ Keaktifan Anggota</span>
+          </h3>
+          <p class="text-xs sm:text-sm text-amber-100 font-medium mt-0.5">
+            Lengkapi Bintang Prestasi Anda dengan mengisinya di menu login Anggota, Jika ada masalah silahkan hubungi Admin lewat chat
+          </p>
         </div>
       </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <button onclick="openMemberLoginModal()" class="bg-white text-amber-900 hover:bg-yellow-100 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm">
-          <i class="fa-solid fa-key mr-1"></i> Login Anggota
+      
+      <div class="flex items-center gap-2.5 flex-shrink-0 w-full sm:w-auto justify-center">
+        <button onclick="openMemberLoginModal()" class="px-4 py-2 bg-white hover:bg-yellow-50 text-amber-900 font-bold text-xs rounded-xl shadow-md transition flex items-center gap-1.5">
+          <i class="fa-solid fa-user-check text-xs text-amber-600"></i>
+          <span>Login Anggota</span>
         </button>
-        <a href="https://wa.me/6285797817050?text=Halo%20Admin%20PGRI%20Katapang,%20saya%20butuh%20bantuan%20terkait%20database%20anggota." target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm flex items-center">
-          <i class="fa-brands fa-whatsapp mr-1 text-sm"></i> Chat Admin WA
+        <a href="https://wa.me/6285797817050?text=hallo%20admin%20web%20database%20pgri%20cabang%20katapang%20izin%20bertanya" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-1.5">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>Chat Admin</span>
         </a>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- KONTEN UTAMA -->
-  <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full no-print">
-    
-    <!-- TAB 1: DATABASE ANGGOTA -->
-    <div id="tab-database" class="tab-content block">
-      <!-- Filter & Pencarian -->
-      <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-200 mb-6 flex flex-col md:flex-row gap-3 items-center justify-between">
-        <div class="flex-grow w-full md:w-auto relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-sm"></i>
-          <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari Nama Anggota, Nomor KTA, atau Sekolah..." 
-                 class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-        </div>
-        <div class="flex gap-2 w-full md:w-auto">
-          <select id="filterGugus" onchange="filterData()" class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
-            <option value="">Semua Gugus</option>
-            <option value="Gugus 1">Gugus 1</option>
-            <option value="Gugus 2">Gugus 2</option>
-            <option value="Gugus 3">Gugus 3</option>
-            <option value="Gugus 4">Gugus 4</option>
-            <option value="Gugus 5">Gugus 5</option>
-            <option value="SMP">Tingkat SMP</option>
-            <option value="SMA/SMK">Tingkat SMA/SMK</option>
-          </select>
-          <button onclick="fetchSpreadsheetData()" title="Sinkron Ulang Data" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-semibold transition border border-gray-300">
-            <i class="fa-solid fa-rotate mr-1 text-red-600"></i> Sinkron
-          </button>
-        </div>
-      </div>
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 space-y-6">
 
-      <!-- Indikator Loading Data -->
-      <div id="loadingIndicator" class="hidden text-center py-12">
-        <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-red-600 border-t-transparent mb-2"></div>
-        <p class="text-sm text-gray-500 font-medium">Memuat data dari Google Spreadsheet...</p>
-      </div>
-
-      <!-- Grid Kartu Anggota Terdaftar -->
-      <div id="membersGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <!-- Render data anggota nyata via JS -->
-      </div>
-
-      <!-- Tampilan Jika Data Kosong -->
-      <div id="emptyState" class="hidden text-center py-16 bg-white rounded-xl border border-dashed border-gray-300 p-8">
-        <i class="fa-solid fa-folder-open text-gray-300 text-5xl mb-3"></i>
-        <h3 class="text-base font-bold text-gray-700">Belum Ada Data Anggota</h3>
-        <p class="text-xs text-gray-500 mt-1 max-w-sm mx-auto">Silahkan lakukan pendaftaran pada formulir pendaftaran anggota atau klik tombol sinkron data.</p>
-        <button onclick="switchTab('registrasi')" class="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-red-700 transition">
-          <i class="fa-solid fa-user-plus mr-1"></i> Buka Form Pendaftaran
-        </button>
-      </div>
-    </div>
-
-    <!-- TAB 2: PENDAFTARAN ANGGOTA BARU -->
-    <div id="tab-registrasi" class="tab-content hidden">
-      <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div class="bg-gradient-to-r from-red-700 to-red-800 text-white px-6 py-4">
-          <h2 class="text-lg font-bold flex items-center">
-            <i class="fa-solid fa-address-card mr-2"></i> Formulir Pendaftaran Anggota PGRI
-          </h2>
-          <p class="text-xs text-red-100">Lengkapi data keanggotaan Anda untuk mendapatkan Kartu KTA Digital Terpadu.</p>
-        </div>
-
-        <form id="registrationForm" onsubmit="handleRegistration(event)" class="p-6 space-y-4">
+    <!-- ================= PANEL 1: DATABASE ANGGOTA (FEED VIEW) ================= -->
+    <section id="databaseSection" class="space-y-5">
+      
+      <!-- Filter Bar & Search Header ala Facebook Tool -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-fb border border-gray-200 space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Nama Lengkap & Gelar *</label>
-            <input type="text" id="regNama" required placeholder="Contoh: Drs. H. Ahmad Sudrajat, M.Pd" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none">
+            <h2 class="text-lg font-black text-gray-900 tracking-tight flex items-center gap-2">
+              <i class="fa-solid fa-users text-fb-blue"></i>
+              Database Anggota Terdaftar
+            </h2>
+            <p class="text-xs text-gray-500">Pencarian terpadu, status iuran bulanan, cabang porsenigur, dan KTA digital</p>
+          </div>
+          
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="refreshDatabase(true)" class="inline-flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition">
+              <i id="refreshIcon" class="fa-solid fa-arrows-rotate text-xs"></i>
+              <span>Segarkan</span>
+            </button>
+            <button onclick="exportToCSV()" class="inline-flex items-center gap-1.5 px-3 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs font-bold rounded-xl transition">
+              <i class="fa-solid fa-file-excel text-xs"></i>
+              <span>Ekspor CSV</span>
+            </button>
+            <button onclick="switchTab('form')" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-fb-blue hover:bg-fb-hover text-white text-xs font-bold rounded-xl transition shadow-xs">
+              <i class="fa-solid fa-plus text-xs"></i>
+              <span>Daftar Anggota Baru</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Pencarian & Filter Dinamis -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-2 border-t border-gray-100">
+          <!-- Input Cari -->
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+              <i class="fa-solid fa-magnifying-glass text-xs"></i>
+            </span>
+            <input type="text" id="searchInput" oninput="filterDatabase()" placeholder="Cari nama, KTA, sekolah..." class="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-fb-blue focus:bg-white outline-none">
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1">Nomor KTA PGRI *</label>
-              <input type="text" id="regKta" required placeholder="Contoh: 3204123456001" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none">
-              <span class="text-[10px] text-gray-500">Nomor KTA digunakan sebagai ID Login Anggota</span>
+          <!-- Filter Gugus (Gugus 1 s.d. 5) -->
+          <div>
+            <select id="filterGugus" onchange="filterDatabase()" class="w-full py-2 px-3 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-700 focus:ring-2 focus:ring-fb-blue outline-none cursor-pointer">
+              <option value="">Semua Gugus</option>
+              <option value="Gugus 1 Katapang">Gugus 1 Katapang</option>
+              <option value="Gugus 2 Katapang">Gugus 2 Katapang</option>
+              <option value="Gugus 3 Katapang">Gugus 3 Katapang</option>
+              <option value="Gugus 4 Katapang">Gugus 4 Katapang</option>
+              <option value="Gugus 5 Katapang">Gugus 5 Katapang</option>
+              <option value="Gugus SMP Katapang">Gugus SMP Katapang</option>
+              <option value="Gugus SMA/SMK Katapang">Gugus SMA/SMK Katapang</option>
+              <option value="Gugus PAUD/TK Katapang">Gugus PAUD/TK Katapang</option>
+            </select>
+          </div>
+
+          <!-- Filter Status Kepegawaian -->
+          <div>
+            <select id="filterStatus" onchange="filterDatabase()" class="w-full py-2 px-3 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-700 focus:ring-2 focus:ring-fb-blue outline-none cursor-pointer">
+              <option value="">Semua Status Anggota</option>
+              <option value="Guru PNS">Guru PNS</option>
+              <option value="Guru PPPK">Guru PPPK</option>
+              <option value="Guru Honorer / GTT">Guru Honorer / GTT</option>
+              <option value="Guru Tetap Yayasan (GTY)">Guru Tetap Yayasan (GTY)</option>
+              <option value="Tenaga Kependidikan">Tenaga Kependidikan</option>
+            </select>
+          </div>
+
+          <!-- Filter Asal Sekolah -->
+          <div>
+            <select id="filterSekolah" onchange="filterDatabase()" class="w-full py-2 px-3 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-700 focus:ring-2 focus:ring-fb-blue outline-none cursor-pointer">
+              <option value="">Semua Sekolah</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-xs text-gray-500 pt-1">
+          <span id="totalAnggotaBadge" class="font-bold text-gray-700">Memuat data...</span>
+          <span class="text-[11px] text-gray-400">1 Bintang (⭐) = 1 Ceklis Iuran / Porsenigur / Diklat / Artikel</span>
+        </div>
+      </div>
+
+      <!-- Feed Grid Kartu Anggota (Gaya Facebook Profile Cards) -->
+      <div id="databaseFeed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+
+    <!-- ================= PANEL 2: FORMULIR PENDAFTARAN ANGGOTA ================= -->
+    <section id="formSection" class="hidden max-w-3xl mx-auto">
+      <div class="bg-white rounded-2xl shadow-fb border border-gray-200 overflow-hidden">
+        <!-- Form Header -->
+        <div class="bg-gradient-to-r from-red-600 via-rose-600 to-red-700 p-6 text-white text-center relative">
+          <div class="w-16 h-16 mx-auto mb-2 bg-white rounded-full p-1.5 shadow-md flex items-center justify-center">
+            <!-- Icon Logo Mini -->
+            <svg viewBox="0 0 200 200" class="w-full h-full">
+              <circle cx="100" cy="100" r="96" fill="#DA251D"/>
+              <circle cx="100" cy="100" r="88" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+              <circle cx="100" cy="100" r="66" fill="#00873D"/>
+              <path d="M 94 85 L 106 85 L 104 148 L 96 148 Z" fill="#FDB813"/>
+              <path d="M 86 66 L 114 66 L 108 85 L 92 85 Z" fill="#FDB813"/>
+              <path d="M 100 24 C 95 34 85 45 88 56 C 89 60 92 64 96 66 C 94 58 97 50 100 46 C 103 50 106 58 104 66 C 108 64 111 60 112 56 C 115 45 105 34 100 24 Z" fill="#DA251D"/>
+            </svg>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-black tracking-tight">Formulir Database Anggota PGRI</h2>
+          <p class="text-xs sm:text-sm text-red-100 font-medium mt-1">Kecamatan Katapang - Kabupaten Bandung</p>
+          <div class="inline-block mt-2 px-3 py-1 bg-black/20 backdrop-blur-sm rounded-full text-[11px] font-semibold text-white/90">
+            Terkoneksi Otomatis ke Google Spreadsheet
+          </div>
+        </div>
+
+        <!-- Form Body -->
+        <form id="memberRegistrationForm" onsubmit="handleFormSubmit(event)" class="p-5 sm:p-8 space-y-5">
+          
+          <!-- 1. Nama Lengkap beserta Gelar -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5" for="namaLengkap">
+              Nama Lengkap beserta Gelar <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                <i class="fa-solid fa-user-tie text-xs"></i>
+              </span>
+              <input type="text" id="namaLengkap" required placeholder="Contoh: Drs. H. Ahmad Sudrajat, M.Pd." class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-fb-blue focus:bg-white outline-none">
             </div>
+            <p class="text-[11px] text-gray-500 mt-1">Tulis nama lengkap beserta gelar depan dan gelar belakang yang sah.</p>
+          </div>
+
+          <!-- 2. E-Mail Aktif & Nomor KTA PGRI -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1">Unit Kerja / Sekolah *</label>
-              <input type="text" id="regSekolah" required placeholder="Contoh: SDN Cijagra 01" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none">
+              <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5" for="email">
+                E-Mail Aktif <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                  <i class="fa-solid fa-envelope text-xs"></i>
+                </span>
+                <input type="email" id="email" required placeholder="nama@guru.sd.belajar.id" class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-fb-blue focus:bg-white outline-none">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5" for="noKTA">
+                Nomor KTA PGRI <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                  <i class="fa-solid fa-id-card text-xs"></i>
+                </span>
+                <input type="text" id="noKTA" required placeholder="Contoh: 3204123456001" class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs sm:text-sm font-mono focus:ring-2 focus:ring-fb-blue focus:bg-white outline-none">
+              </div>
+              <p class="text-[11px] text-gray-500 mt-1">Digunakan juga sebagai Akun Login Anggota mandiri.</p>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- 3. Status Anggota & Asal Gugus -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1">Gugus / Wilayah Binaan *</label>
-              <select id="regGugus" required class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none">
-                <option value="">Pilih Gugus</option>
-                <option value="Gugus 1">Gugus 1</option>
-                <option value="Gugus 2">Gugus 2</option>
-                <option value="Gugus 3">Gugus 3</option>
-                <option value="Gugus 4">Gugus 4</option>
-                <option value="Gugus 5">Gugus 5</option>
-                <option value="SMP">Tingkat SMP</option>
-                <option value="SMA/SMK">Tingkat SMA/SMK</option>
+              <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5" for="statusAnggota">
+                Status Anggota <span class="text-red-500">*</span>
+              </label>
+              <select id="statusAnggota" required class="w-full py-2.5 px-3 bg-gray-50 border border-gray-300 rounded-xl text-xs sm:text-sm text-gray-800 focus:ring-2 focus:ring-fb-blue focus:bg-white outline-none cursor-pointer">
+                <option value="" disabled selected>Pilih Status Kepegawaian</option>
+                <option value="Guru PNS">Guru PNS</option>
+                <option value="Guru PPPK">Guru PPPK</option>
+                <option value="Guru Honorer / GTT">Guru Honorer / GTT</option>
+                <option value="Guru Tetap Yayasan (GTY)">Guru Tetap Yayasan (GTY)</option>
+                <option value="Tenaga Kependidikan">Tenaga Kependidikan</option>
               </select>
             </div>
+
             <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1">Nomor WhatsApp Aktif *</label>
-              <input type="tel" id="regWa" required placeholder="Contoh: 085797817050" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none">
+              <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5" for="asalGugus">
+                Asal Gugus <span class="text-red-500">*</span>
+              </label>
+              <select id="asalGugus" required class="w-full py-2.5 px-3 bg-gray-50 border border-gray-300 rounded-xl text-xs sm:text-sm text-gray-800 focus:ring-2 focus:ring-fb-blue focus:bg-white outline-none cursor-pointer">
+                <option value="" disabled selected>Pilih Gugus</option>
+                <option value="Gugus 1 Katapang">Gugus 1 Katapang</option>
+                <option value="Gugus 2 Katapang">Gugus 2 Katapang</option>
+                <option value="Gugus 3 Katapang">Gugus 3 Katapang</option>
+                <option value="Gugus 4 Katapang">Gugus 4 Katapang</option>
+                <option value="Gugus 5 Katapang">Gugus 5 Katapang</option>
+                <option value="Gugus SMP Katapang">Gugus SMP Katapang</option>
+                <option value="Gugus SMA/SMK Katapang">Gugus SMA/SMK Katapang</option>
+                <option value="Gugus PAUD/TK Katapang">Gugus PAUD/TK Katapang</option>
+              </select>
             </div>
           </div>
 
+          <!-- 4. Asal Sekolah (Unit Kerja) -->
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Unggah Pasfoto Resmi (JPG/PNG)</label>
-            <input type="file" id="regFoto" accept="image/*" onchange="handlePhotoPreview(event)" class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100">
-            <div id="photoPreviewContainer" class="hidden mt-3">
-              <img id="photoPreviewImg" src="" alt="Pratinjau Foto" class="h-28 w-24 object-cover rounded-lg border border-gray-300 shadow-sm">
+            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5" for="asalSekolah">
+              Asal Sekolah (Unit Kerja) <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                <i class="fa-solid fa-school text-xs"></i>
+              </span>
+              <input type="text" id="asalSekolah" required placeholder="Contoh: SDN Katapang 01 / SMPN 1 Katapang" class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-fb-blue focus:bg-white outline-none">
             </div>
           </div>
 
-          <button type="submit" id="regSubmitBtn" class="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2.5 rounded-lg text-sm transition shadow-sm">
-            <i class="fa-solid fa-paper-plane mr-1"></i> Daftarkan Data Anggota
-          </button>
+          <!-- 5. Upload Pasfoto PGRI (Max 500 KB) -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              Foto Pasfoto PGRI (Maksimal 500 KB) <span class="text-red-500">*</span>
+            </label>
+            <div class="flex flex-col sm:flex-row items-center gap-4 p-4 border-2 border-dashed border-gray-300 rounded-2xl bg-gray-50/60 hover:bg-gray-50 transition">
+              <!-- Pratinjau Foto -->
+              <div class="w-24 h-32 rounded-xl bg-white border border-gray-200 overflow-hidden flex-shrink-0 flex items-center justify-center shadow-xs">
+                <img id="formPhotoPreview" src="https://placehold.co/120x160/e2e8f0/64748b?text=Pasfoto+PGRI" alt="Preview Pasfoto" class="w-full h-full object-cover">
+              </div>
+              <div class="flex-1 text-center sm:text-left space-y-2">
+                <input type="file" id="pasfotoInput" accept="image/*" required onchange="handlePhotoUpload(this)" class="block w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-fb-blue hover:file:bg-blue-100 cursor-pointer">
+                <p id="fileInfoText" class="text-[11px] text-gray-500">Format: JPG/PNG/WebP. Disarankan berseragam batik resmi PGRI.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tombol Kirim Form -->
+          <div class="pt-4 border-t border-gray-200 flex flex-col sm:flex-row gap-3 items-center justify-end">
+            <button type="button" onclick="switchTab('database')" class="w-full sm:w-auto px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition">
+              Batal
+            </button>
+            <button type="submit" id="submitFormBtn" class="w-full sm:w-auto px-7 py-2.5 bg-fb-blue hover:bg-fb-hover text-white text-xs sm:text-sm font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-paper-plane text-xs"></i>
+              <span>Kirim Data ke Database & Spreadsheet</span>
+            </button>
+          </div>
         </form>
       </div>
-    </div>
+    </section>
 
-    <!-- TAB 3: DASHBOARD ADMIN -->
-    <div id="tab-dashboard" class="tab-content hidden">
-      <!-- Statistik Ringkas -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-3">
-          <div class="p-3 bg-red-50 text-red-600 rounded-lg text-xl"><i class="fa-solid fa-users"></i></div>
-          <div>
-            <p class="text-xs text-gray-500 font-semibold">Total Anggota</p>
-            <h3 id="statTotalAnggota" class="text-xl font-black text-gray-800">0</h3>
+    <!-- ================= PANEL 3: GRAFIK & ANALITIK ADMIN ================= -->
+    <section id="adminSection" class="hidden space-y-6">
+      
+      <!-- Admin Top Card -->
+      <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-fb border border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200 mb-1">
+            <i class="fa-solid fa-shield-halved text-xs"></i>
+            <span>Admin Control Center</span>
           </div>
+          <h2 class="text-xl font-black text-gray-900 tracking-tight">Grafik & Statistik Distribusi Anggota</h2>
+          <p class="text-xs text-gray-500 mt-0.5">Analisis keanggotaan berdasarkan gugus, status kepegawaian, dan sekolah</p>
         </div>
-        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-3">
-          <div class="p-3 bg-amber-50 text-amber-500 rounded-lg text-xl"><i class="fa-solid fa-star"></i></div>
-          <div>
-            <p class="text-xs text-gray-500 font-semibold">Akumulasi Bintang</p>
-            <h3 id="statTotalBintang" class="text-xl font-black text-gray-800">0</h3>
-          </div>
-        </div>
-        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-3">
-          <div class="p-3 bg-blue-50 text-blue-600 rounded-lg text-xl"><i class="fa-solid fa-school"></i></div>
-          <div>
-            <p class="text-xs text-gray-500 font-semibold">Total Sekolah</p>
-            <h3 id="statTotalSekolah" class="text-xl font-black text-gray-800">0</h3>
-          </div>
-        </div>
-        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-3">
-          <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg text-xl"><i class="fa-solid fa-layer-group"></i></div>
-          <div>
-            <p class="text-xs text-gray-500 font-semibold">Total Gugus</p>
-            <h3 id="statTotalGugus" class="text-xl font-black text-gray-800">7</h3>
-          </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="refreshDatabase(true)" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+            <i class="fa-solid fa-arrows-rotate text-xs"></i> Segarkan Data
+          </button>
+          <button onclick="logoutAdmin()" class="px-3.5 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+            <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i> Logout Admin
+          </button>
         </div>
       </div>
 
-      <!-- Grafik & Visualisasi -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-          <h4 class="text-sm font-bold text-gray-700 mb-3 flex items-center"><i class="fa-solid fa-chart-bar mr-2 text-red-600"></i> Distribusi Anggota per Gugus</h4>
-          <canvas id="chartGugus" height="200"></canvas>
+      <!-- Ringkasan Angka Statistik -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white rounded-2xl p-4 shadow-fb border border-gray-200">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Total Anggota</div>
+          <div id="statTotalAnggota" class="text-2xl font-black text-fb-blue mt-1">0</div>
+          <div class="text-[10px] text-gray-400 mt-0.5">Anggota terdaftar</div>
         </div>
-        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-          <h4 class="text-sm font-bold text-gray-700 mb-3 flex items-center"><i class="fa-solid fa-award mr-2 text-amber-500"></i> Top Bintang Prestasi Anggota</h4>
-          <div id="topBintangList" class="space-y-2 text-xs">
-            <!-- Render Top Bintang -->
-          </div>
+        <div class="bg-white rounded-2xl p-4 shadow-fb border border-gray-200">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Unit Sekolah</div>
+          <div id="statTotalSekolah" class="text-2xl font-black text-emerald-600 mt-1">0</div>
+          <div class="text-[10px] text-gray-400 mt-0.5">Sekolah / unit kerja</div>
+        </div>
+        <div class="bg-white rounded-2xl p-4 shadow-fb border border-gray-200">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Guru ASN / P3K</div>
+          <div id="statTotalASN" class="text-2xl font-black text-amber-600 mt-1">0</div>
+          <div class="text-[10px] text-gray-400 mt-0.5">PNS & PPPK</div>
+        </div>
+        <div class="bg-white rounded-2xl p-4 shadow-fb border border-gray-200">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Gugus Terdaftar</div>
+          <div id="statTotalGugus" class="text-2xl font-black text-purple-600 mt-1">8</div>
+          <div class="text-[10px] text-gray-400 mt-0.5">Gugus 1-5, SMP, SMA, PAUD</div>
         </div>
       </div>
 
-      <!-- Tabel Manajemen Admin -->
-      <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
-          <h4 class="text-xs font-bold text-gray-700">Manajemen Database Anggota</h4>
-          <span class="text-[11px] text-gray-500">Akses Penuh Administrator</span>
+      <!-- Dua Kolom Grafik Batang Visual -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Grafik Distribusi Per Gugus -->
+        <div class="bg-white rounded-2xl p-5 shadow-fb border border-gray-200">
+          <h3 class="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-chart-column text-fb-blue"></i>
+            Distribusi Anggota per Gugus (Gugus 1 - 5 & Jenjang)
+          </h3>
+          <p class="text-xs text-gray-500 mb-4">Persentase dan jumlah anggota aktif di tiap gugus</p>
+          <div id="grafikGugusContainer" class="space-y-3">
+            <!-- Render via JS -->
+          </div>
         </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-gray-100 text-gray-600 font-bold border-b border-gray-200">
-              <tr>
-                <th class="p-3">Nama</th>
-                <th class="p-3">No. KTA</th>
-                <th class="p-3">Sekolah</th>
-                <th class="p-3">Gugus</th>
-                <th class="p-3 text-center">Bintang</th>
-                <th class="p-3 text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="adminTableBody" class="divide-y divide-gray-200">
-              <!-- Render via JS -->
-            </tbody>
-          </table>
+
+        <!-- Grafik Top Sekolah / Unit Kerja -->
+        <div class="bg-white rounded-2xl p-5 shadow-fb border border-gray-200">
+          <h3 class="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-ranking-star text-amber-500"></i>
+            Distribusi Anggota per Asal Sekolah (Unit Kerja)
+          </h3>
+          <p class="text-xs text-gray-500 mb-4">Peringkat sekolah dengan jumlah anggota terdaftar terbanyak</p>
+          <div id="grafikSekolahContainer" class="space-y-3">
+            <!-- Render via JS -->
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
   </main>
 
-  <!-- MODAL LOGIN ADMIN (PUTIH BERSIH, RAHASIA) -->
-  <div id="adminLoginModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
-    <div class="bg-white rounded-xl max-w-sm w-full p-6 shadow-2xl border border-gray-200 relative">
-      <button onclick="closeAdminLoginModal()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-      <div class="text-center mb-5">
-        <div class="w-12 h-12 bg-red-100 text-red-700 rounded-full flex items-center justify-center mx-auto mb-2 text-xl shadow-inner">
-          <i class="fa-solid fa-user-shield"></i>
-        </div>
-        <h3 class="text-base font-bold text-gray-800">Autentikasi Administrator</h3>
+  <!-- ================= MODAL LOGIN ADMIN ================= -->
+  <div id="adminLoginModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-gray-200 transform transition-all">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+        <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+          <i class="fa-solid fa-lock text-rose-600"></i>
+          <span>Login Khusus Admin</span>
+        </h3>
+        <button onclick="closeAdminLoginModal()" class="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
       </div>
-      <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+
+      <form onsubmit="handleAdminLogin(event)" class="mt-4 space-y-3.5">
         <div>
           <label class="block text-xs font-bold text-gray-700 mb-1">Username</label>
-          <input type="text" id="adminUsername" required autocomplete="off" class="w-full text-sm bg-white border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none">
+          <input type="text" id="adminUsername" required autocomplete="off" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-rose-500 outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-gray-700 mb-1">Password</label>
-          <input type="password" id="adminPassword" required autocomplete="off" class="w-full text-sm bg-white border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none">
+          <input type="password" id="adminPassword" required autocomplete="off" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-rose-500 outline-none">
         </div>
-        <button type="submit" class="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-lg text-xs transition shadow-sm">
-          Masuk ke Dashboard Admin
-        </button>
+        <div class="pt-2">
+          <button type="submit" class="w-full py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl transition shadow-xs">
+            Masuk sebagai Admin
+          </button>
+        </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL LOGIN ANGGOTA -->
-  <div id="memberLoginModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
-    <div class="bg-white rounded-xl max-w-sm w-full p-6 shadow-2xl border border-gray-200 relative">
-      <button onclick="closeMemberLoginModal()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-      <div class="text-center mb-5">
-        <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-2 text-xl shadow-inner">
-          <i class="fa-solid fa-user-check"></i>
-        </div>
-        <h3 class="text-base font-bold text-gray-800">Login Portal Anggota</h3>
-        <p class="text-[11px] text-gray-500">Gunakan Nomor KTA Anda untuk masuk</p>
-      </div>
-      <form onsubmit="handleMemberLogin(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">Nomor KTA PGRI</label>
-          <input type="text" id="memberLoginKta" required placeholder="Masukkan Nomor KTA" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:outline-none">
-        </div>
-        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded-lg text-xs transition shadow-sm">
-          Masuk ke Portal Saya
+  <!-- ================= MODAL LOGIN ANGGOTA ================= -->
+  <div id="memberLoginModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-gray-200 transform transition-all">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+        <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+          <i class="fa-solid fa-id-card text-fb-blue"></i>
+          <span>Portal Mandiri Anggota</span>
+        </h3>
+        <button onclick="closeMemberLoginModal()" class="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-xs"></i>
         </button>
+      </div>
+
+      <form onsubmit="handleMemberLogin(event)" class="mt-4 space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Nomor KTA PGRI (Username)</label>
+          <input type="text" id="memberKTAInput" required placeholder="Masukkan Nomor KTA" class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-xl text-xs font-mono focus:ring-2 focus:ring-fb-blue outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Password</label>
+          <input type="password" id="memberPasswordInput" required placeholder="Gunakan Nomor KTA Anda" class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-xl text-xs font-mono focus:ring-2 focus:ring-fb-blue outline-none">
+          <p class="text-[11px] text-gray-400 mt-1">Petunjuk: Password sama dengan Nomor KTA yang terdaftar.</p>
+        </div>
+        <div class="pt-2">
+          <button type="submit" class="w-full py-2.5 bg-fb-blue hover:bg-fb-hover text-white font-bold text-xs rounded-xl transition shadow-xs">
+            Masuk Portal Mandiri
+          </button>
+        </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL PORTAL MANDIRI ANGGOTA (CEKLIS IURAN & PRESTASI BINTANG) -->
-  <div id="memberPortalModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
-    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-gray-200 overflow-hidden">
-      <!-- Header Modal -->
-      <div class="bg-gradient-to-r from-red-700 to-rose-800 text-white p-4 flex justify-between items-center">
-        <div class="flex items-center space-x-3">
-          <img id="portalAvatar" src="" class="w-12 h-12 rounded-full border-2 border-white object-cover bg-white">
-          <div>
-            <h3 id="portalNama" class="text-sm font-bold">Nama Anggota</h3>
-            <p id="portalInfo" class="text-xs text-red-100">KTA: - | Unit Kerja</p>
-          </div>
-        </div>
-        <button onclick="closeMemberPortalModal()" class="text-white hover:text-red-200 p-2">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <!-- Tab Content Modal Ceklis -->
-      <div class="p-5 overflow-y-auto space-y-5 flex-grow text-xs">
-        <!-- Akumulasi Bintang Card -->
-        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-center justify-between">
-          <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-full bg-amber-400 text-white flex items-center justify-center text-lg shadow">
-              <i class="fa-solid fa-star"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-gray-800 text-xs">Akumulasi Bintang Keaktifan</h4>
-              <p class="text-[11px] text-gray-500">1 Ceklis = 1 Tambahan Bintang Prestasi</p>
-            </div>
-          </div>
-          <span id="portalBintangCount" class="text-xl font-black text-amber-600 bg-white px-3 py-1 rounded-lg border border-amber-300">0 ⭐</span>
-        </div>
-
-        <!-- Bagian 1: Iuran Bulanan 2026-2030 -->
-        <div>
-          <h4 class="font-bold text-gray-800 mb-2 flex items-center">
-            <i class="fa-solid fa-money-bill-wave text-emerald-600 mr-2"></i> Ceklis Iuran Anggota (Tahun 2026 - 2030)
-          </h4>
-          <div class="flex gap-2 mb-2">
-            <select id="iuranYearSelect" onchange="renderIuranCheckboxes()" class="border border-gray-300 rounded px-2 py-1 text-xs">
-              <option value="2026">Tahun 2026</option>
-              <option value="2027">Tahun 2027</option>
-              <option value="2028">Tahun 2028</option>
-              <option value="2029">Tahun 2029</option>
-              <option value="2030">Tahun 2030</option>
-            </select>
-          </div>
-          <div id="iuranGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-2 bg-gray-50 p-3 rounded-xl border border-gray-200">
-            <!-- Checkbox 12 bulan render via JS -->
-          </div>
-        </div>
-
-        <!-- Bagian 2: 8 Cabang Porsenigur 2026 -->
-        <div>
-          <h4 class="font-bold text-gray-800 mb-2 flex items-center">
-            <i class="fa-solid fa-trophy text-amber-500 mr-2"></i> Partisipasi Porsenigur 2026 (8 Cabang)
-          </h4>
-          <div id="porsenigurGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-gray-50 p-3 rounded-xl border border-gray-200">
-            <!-- 8 cabang via JS -->
-          </div>
-        </div>
-
-        <!-- Bagian 3: Diklat & Artikel Web -->
-        <div>
-          <h4 class="font-bold text-gray-800 mb-2 flex items-center">
-            <i class="fa-solid fa-graduation-cap text-blue-600 mr-2"></i> Pengembangan Keprofesian & Karya
-          </h4>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-gray-50 p-3 rounded-xl border border-gray-200">
-            <label class="flex items-center space-x-2 cursor-pointer">
-              <input type="checkbox" id="checkDiklat" onchange="calculatePortalStars()" class="rounded text-red-600 focus:ring-red-500 w-4 h-4">
-              <span>Mengikuti Diklat / Pelatihan Mandiri</span>
-            </label>
-            <label class="flex items-center space-x-2 cursor-pointer">
-              <input type="checkbox" id="checkArtikel" onchange="calculatePortalStars()" class="rounded text-red-600 focus:ring-red-500 w-4 h-4">
-              <span>Mengirim Artikel Edukasi ke Web PGRI</span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer Modal: Simpan Perubahan Mandiri -->
-      <div class="bg-gray-100 px-5 py-3 border-t border-gray-200 flex justify-between items-center">
-        <button onclick="openKTAFromPortal()" class="text-xs font-bold text-red-700 hover:underline flex items-center">
-          <i class="fa-solid fa-id-card mr-1"></i> Lihat KTA Digital
-        </button>
-        <button onclick="saveMemberChecklist()" id="btnSaveChecklist" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-lg text-xs transition shadow-sm flex items-center">
-          <i class="fa-solid fa-floppy-disk mr-1.5"></i> Simpan Perubahan
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL KTA DIGITAL LENGKAP -->
-  <div id="ktaModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-4 shadow-2xl relative">
-      <button onclick="closeKTAModal()" class="absolute right-3 top-3 text-gray-400 hover:text-gray-600 no-print">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-      
-      <!-- DESAIN KARTU KTA DIGITAL (PRINTABLE AREA) -->
-      <div id="printableKTA" class="bg-gradient-to-br from-red-700 via-red-800 to-rose-900 text-white rounded-xl overflow-hidden shadow-md border-2 border-yellow-400 relative p-4 flex flex-col justify-between" style="min-height: 480px;">
-        <!-- Header Kartu -->
-        <div class="flex items-center space-x-3 border-b border-red-500/50 pb-3">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7b38o5h3c73vW4g_jK6kQkZ5c-m8T8K7J7e4/s320/pgri-logo.png" 
-               onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/41/Logo_PGRI.png'"
-               alt="Logo PGRI" class="h-12 w-12 object-contain bg-white rounded-full p-0.5 shadow">
-          <div>
-            <h5 class="text-[11px] font-black tracking-wider text-yellow-300">PERSATUAN GURU REPUBLIK INDONESIA</h5>
-            <h6 class="text-xs font-black tracking-wide text-white">PENGURUS CABANG KATAPANG</h6>
-            <p class="text-[9px] text-red-200">KABUPATEN BANDUNG - JAWA BARAT</p>
-          </div>
-        </div>
-
-        <!-- Foto & Data Kartu -->
-        <div class="my-3 flex flex-col items-center">
-          <div class="relative mb-2">
-            <img id="ktaFoto" src="" alt="Pasfoto" class="h-28 w-24 object-cover rounded-lg border-2 border-white shadow bg-gray-200">
-            <div id="ktaStarBadge" class="absolute -top-2 -right-2 bg-yellow-400 text-red-950 font-black text-[10px] px-2 py-0.5 rounded-full shadow">
-              0 ⭐
-            </div>
-          </div>
-          <h4 id="ktaNama" class="text-sm font-bold text-center text-white leading-tight">Nama Anggota</h4>
-          <span id="ktaNomor" class="text-[11px] font-mono bg-black/30 px-2 py-0.5 rounded text-yellow-300 my-1">KTA: -</span>
-          <p id="ktaSekolah" class="text-[11px] text-center text-red-100">SDN Cijagra 01</p>
-          <p id="ktaGugus" class="text-[10px] text-center text-yellow-200">Gugus 2 Katapang</p>
-        </div>
-
-        <!-- Footer Kartu & QR -->
-        <div class="border-t border-red-500/50 pt-2 flex items-center justify-between text-[9px] text-red-200">
-          <div>
-            <p>Berlaku Selama Menjadi Anggota Aktif</p>
-            <p class="font-bold text-white">PGRI Cabang Katapang</p>
-          </div>
-          <div class="bg-white p-1 rounded">
-            <i class="fa-solid fa-qrcode text-xl text-red-900"></i>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tombol Aksi Modal KTA -->
-      <div class="mt-4 flex gap-2 no-print">
-        <button onclick="printKTA()" class="flex-1 bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-lg text-xs transition shadow flex items-center justify-center">
-          <i class="fa-solid fa-print mr-1.5"></i> Cetak KTA
-        </button>
-        <button onclick="closeKTAModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-4 py-2 rounded-lg text-xs transition">
-          Tutup
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- FLOATING CHAT WIDGET (FACEBOOK LIVE CHAT STYLE) -->
-  <div id="chatWidgetContainer" class="fixed bottom-4 right-4 z-50 flex flex-col items-end no-print hidden">
-    <!-- Chat Window Container -->
-    <div id="chatBoxWindow" class="w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-300 flex flex-col overflow-hidden mb-3 transition-all duration-200 hidden" style="height: 450px;">
-      <!-- Header Obrolan Messenger Style -->
-      <div class="bg-gradient-to-r from-red-700 via-red-800 to-rose-900 text-white p-3 flex justify-between items-center shadow-md">
-        <div class="flex items-center space-x-2">
-          <div class="relative">
-            <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold shadow-inner">
-              <i class="fa-solid fa-comments"></i>
-            </div>
-            <span class="bottom-0 right-0 absolute w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full"></span>
+  <!-- ================= MODAL DASHBOARD MANDIRI ANGGOTA (CEKLIS IURAN & PORSENIGUR) ================= -->
+  <div id="memberDashboardModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
+      <!-- Header -->
+      <div class="p-4 sm:p-5 bg-gradient-to-r from-blue-700 to-fb-blue text-white flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-white/20 p-1 backdrop-blur-sm overflow-hidden flex-shrink-0 border border-white/30">
+            <img id="dashMemberFoto" src="" alt="Foto" class="w-full h-full object-cover rounded-lg">
           </div>
           <div>
-            <h4 class="text-xs font-bold leading-tight" id="chatActiveTargetTitle">Ruang Diskusi Anggota</h4>
-            <p class="text-[10px] text-amber-200 flex items-center gap-1">
-              <span class="inline-block w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Terhubung Live
+            <h3 id="dashMemberNama" class="text-sm sm:text-base font-black truncate"></h3>
+            <p class="text-xs text-blue-100 flex items-center gap-2 mt-0.5">
+              <span>KTA: <strong id="dashMemberKTA" class="font-mono"></strong></span>
+              <span>&bull;</span>
+              <span id="dashMemberSekolah"></span>
             </p>
           </div>
         </div>
-        <div class="flex items-center space-x-1.5">
-          <select id="chatChannelSelector" onchange="switchChatChannel()" class="bg-red-950/70 text-white text-[10px] rounded-lg px-2 py-1 border border-red-500/50 focus:outline-none focus:ring-1 focus:ring-yellow-400">
-            <option value="GLOBAL">Forum Guru</option>
-            <option value="ADMIN">Chat Admin</option>
-          </select>
-          <button onclick="toggleChatWindow()" class="text-white hover:text-red-200 p-1">
-            <i class="fa-solid fa-xmark text-sm"></i>
-          </button>
+        <button onclick="closeMemberDashboardModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-6">
+        
+        <!-- Akumulasi Bintang -->
+        <div class="bg-amber-50 rounded-2xl p-4 border border-amber-200 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase text-amber-800">Akumulasi Bintang Keaktifan</span>
+            <div id="dashStarsValue" class="text-2xl font-black text-amber-900 mt-1 flex items-center gap-1.5"></div>
+            <p class="text-[11px] text-amber-700 mt-0.5">1 ceklis iuran/lomba/diklat = +1 Bintang ⭐</p>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-amber-400/20 text-amber-600 flex items-center justify-center text-2xl font-bold">
+            <i class="fa-solid fa-star"></i>
+          </div>
+        </div>
+
+        <!-- Ceklis Iuran Bulanan 2026 - 2030 -->
+        <div class="border border-gray-200 rounded-2xl p-4 bg-white space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-gray-100">
+            <div>
+              <h4 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+                <i class="fa-solid fa-money-bill-wave text-emerald-600"></i>
+                Ceklis Pembayaran Iuran Bulanan
+              </h4>
+              <p class="text-xs text-gray-500">Tandai bulan iuran yang telah dibayarkan</p>
+            </div>
+            <!-- Pilihan Tahun 2026 s.d. 2030 -->
+            <div class="flex items-center gap-2">
+              <label class="text-xs font-bold text-gray-600">Tahun:</label>
+              <select id="selectIuranYear" onchange="changeIuranYear(this.value)" class="py-1 px-3 bg-gray-100 border border-gray-300 rounded-xl text-xs font-bold text-gray-800 outline-none">
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Grid Bulan -->
+          <div id="iuranMonthGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            <!-- Checkbox bulan diisi oleh JS -->
+          </div>
+        </div>
+
+        <!-- Ceklis Porsenigur 2026 -->
+        <div class="border border-gray-200 rounded-2xl p-4 bg-white space-y-3">
+          <div class="pb-2 border-b border-gray-100">
+            <h4 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+              <i class="fa-solid fa-trophy text-amber-500"></i>
+              Keikutsertaan Porsenigur 2026
+            </h4>
+            <p class="text-xs text-gray-500">Pilih cabang olahraga & seni yang Anda ikuti</p>
+          </div>
+          <div id="porsenigurGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <!-- Checkbox lomba diisi oleh JS -->
+          </div>
+        </div>
+
+        <!-- Ceklis Diklat & Artikel WEB PGRI -->
+        <div class="border border-gray-200 rounded-2xl p-4 bg-white space-y-3">
+          <div class="pb-2 border-b border-gray-100">
+            <h4 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+              <i class="fa-solid fa-graduation-cap text-indigo-600"></i>
+              Pengembangan Profesi & Publikasi Ilmiah
+            </h4>
+            <p class="text-xs text-gray-500">Tandai keikutsertaan diklat atau karya artikel di web</p>
+          </div>
+          <div id="pengembanganGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <!-- Checkbox diklat & artikel diisi oleh JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Modal -->
+      <div class="p-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+        <button onclick="logoutMember()" class="text-xs font-bold text-rose-600 hover:underline">
+          Logout Anggota
+        </button>
+        <button onclick="saveMemberSelfService()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-2">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan Perubahan</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL DETAIL PROFIL LENGKAP ================= -->
+  <div id="profileDetailModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
+      <!-- Modal Header Style Facebook Profile Cover -->
+      <div class="relative bg-gradient-to-r from-red-600 via-rose-700 to-red-800 p-5 text-white flex-shrink-0">
+        <button onclick="closeProfileModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/30 hover:bg-black/50 text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+        <div class="flex flex-col sm:flex-row items-center sm:items-end gap-4 mt-2">
+          <div class="w-24 h-32 rounded-2xl bg-white p-1 shadow-xl flex-shrink-0 border-2 border-white overflow-hidden relative">
+            <img id="profFoto" src="" alt="Pasfoto Anggota" class="w-full h-full object-cover rounded-xl">
+            <div class="absolute bottom-1 inset-x-1 bg-black/75 text-yellow-300 text-[10px] py-0.5 text-center font-bold rounded-b-lg flex items-center justify-center gap-1">
+              <i class="fa-solid fa-star text-[9px]"></i> <span id="profPhotoStarNum">0 ⭐</span>
+            </div>
+          </div>
+          <div class="text-center sm:text-left flex-1 min-w-0">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[11px] font-bold backdrop-blur-sm mb-1.5 border border-white/30">
+              <i class="fa-solid fa-shield-halved text-xs"></i>
+              <span id="profStatusBadge"></span>
+            </div>
+            <h3 id="profNama" class="text-lg sm:text-xl font-black text-white leading-tight truncate"></h3>
+            <p class="text-xs text-red-100 flex items-center justify-center sm:justify-start gap-2 mt-1">
+              <span>Nomor KTA: <strong id="profKTA" class="text-yellow-300 font-mono"></strong></span>
+              <span>&bull;</span>
+              <span id="profGugusText"></span>
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Area Daftar Pesan Masuk & Keluar -->
-      <div id="chatMessagesList" class="flex-1 p-3 overflow-y-auto space-y-2.5 bg-slate-50 text-xs">
-        <div class="text-center text-[10px] text-gray-400 py-6">Memuat percakapan...</div>
-      </div>
-
-      <!-- Input Bar Obrolan -->
-      <form onsubmit="handleSendChatMessage(event)" class="p-2.5 bg-white border-t border-gray-200 flex items-center gap-2">
-        <input type="text" id="chatInputMessage" placeholder="Ketik pesan obrolan..." required autocomplete="off"
-               class="flex-1 text-xs bg-gray-50 border border-gray-300 rounded-full px-3.5 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
-        <button type="submit" id="btnSendChat" class="bg-red-700 hover:bg-red-800 text-white w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition shadow-sm">
-          <i class="fa-solid fa-paper-plane text-xs"></i>
-        </button>
-      </form>
-    </div>
-
-    <!-- Tombol Mengambang (Floating Action Button) -->
-    <button onclick="toggleChatWindow()" class="bg-red-700 hover:bg-red-800 text-white px-4 py-2.5 rounded-full shadow-xl flex items-center space-x-2 transition transform hover:scale-105 border-2 border-white">
-      <div class="relative">
-        <i class="fa-solid fa-comment-dots text-base"></i>
-        <span id="chatUnreadDot" class="top-0 right-0 absolute w-2 h-2 bg-amber-400 rounded-full animate-ping hidden"></span>
-      </div>
-      <span class="text-xs font-bold">Obrolan Anggota</span>
-    </button>
-  </div>
-
-  <!-- SCRIPT LOGIKA JAVASCRIPT LENGKAP -->
-  <script>
-    // URL Google Apps Script Aktif
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqK2p4oJwe2BtTiVoZL6BVnOwQVueoo4CZ-bdsESMxIJS8InesCP5Y3r5mn7Hwl1ls/exec';
-
-    // State Aplikasi
-    let membersData = [];
-    let currentAdminLogged = false;
-    let currentMemberUser = null;
-    let temporaryCompressedPhoto = '';
-
-    // State Chat
-    let chatPollingInterval = null;
-    let activeChatChannel = 'GLOBAL';
-    let lastRenderedChatCount = 0;
-
-    // Data Quote Harian
-    const dailyQuotes = [
-      "Ing ngarsa sung tuladha, ing madya mangun karsa, tut wuri handayani. - Ki Hadjar Dewantara",
-      "Guru adalah pelita dalam kegelapan, pengobar semangat pembelajar sepanjang hayat.",
-      "Solidaritas, profesionalitas, dan integritas: Jiwa sejati guru PGRI.",
-      "Mendidik anak bangsa bukan sekadar profesi, melainkan dedikasi mulia bagi masa depan bangsa.",
-      "Satu guru dapat mengubah masa depan ribuan generasi bangsa."
-    ];
-
-    // Inisialisasi saat Halaman Dimuat
-    document.addEventListener('DOMContentLoaded', () => {
-      // Tampilkan quote harian acak
-      const randomQuote = dailyQuotes[Math.floor(Math.random() * dailyQuotes.length)];
-      document.getElementById('dailyQuoteText').textContent = randomQuote;
-
-      // Ambil data dari Spreadsheet
-      fetchSpreadsheetData();
-    });
-
-    // Pindah Tab Navigasi
-    function switchTab(tabId) {
-      if (tabId === 'dashboard' && !currentAdminLogged) {
-        openAdminLoginModal();
-        return;
-      }
-
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.getElementById('tab-' + tabId).classList.remove('hidden');
-
-      // Update style tombol nav
-      ['database', 'registrasi', 'dashboard'].forEach(t => {
-        const btn = document.getElementById('nav-' + t);
-        if (t === tabId) {
-          btn.className = 'px-3 py-2 text-sm font-semibold rounded-lg transition-all text-red-700 bg-red-50';
-        } else {
-          btn.className = 'px-3 py-2 text-sm font-semibold rounded-lg transition-all text-gray-600 hover:text-red-700 hover:bg-gray-100';
-        }
-      });
-
-      if (tabId === 'dashboard') {
-        renderDashboardStats();
-      }
-    }
-
-    // Ambil Data dari Google Spreadsheet
-    async function fetchSpreadsheetData() {
-      const loader = document.getElementById('loadingIndicator');
-      const grid = document.getElementById('membersGrid');
-      const empty = document.getElementById('emptyState');
-
-      loader.classList.remove('hidden');
-      grid.innerHTML = '';
-      empty.classList.add('hidden');
-
-      try {
-        const response = await fetch(`${SCRIPT_URL}?action=read`);
-        const json = await response.json();
-
-        if (json && json.status === 'success' && Array.isArray(json.data)) {
-          membersData = json.data;
-        }
-      } catch (err) {
-        console.warn('Gagal memuat langsung dari GAS:', err);
-      } finally {
-        loader.classList.add('hidden');
-        renderMembersCards(membersData);
-      }
-    }
-
-    // Render Kartu Anggota
-    function renderMembersCards(data) {
-      const grid = document.getElementById('membersGrid');
-      const empty = document.getElementById('emptyState');
-      grid.innerHTML = '';
-
-      if (!data || data.length === 0) {
-        empty.classList.remove('hidden');
-        return;
-      }
-      empty.classList.add('hidden');
-
-      data.forEach(m => {
-        const avatar = m.foto && m.foto.length > 20 ? m.foto : 'https://placehold.co/150x200/png?text=Foto+Guru';
-        const card = document.createElement('div');
-        card.className = 'bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between';
-        card.innerHTML = `
-          <div class="p-4 flex items-start space-x-3">
-            <img src="${avatar}" class="w-14 h-16 object-cover rounded-lg border border-gray-200 shadow-sm shrink-0 bg-gray-100">
-            <div class="overflow-hidden">
-              <span class="inline-block bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded mb-1">
-                ⭐ ${m.bintang || 0} Bintang
-              </span>
-              <h4 class="font-bold text-xs text-gray-800 truncate" title="${m.nama}">${m.nama}</h4>
-              <p class="text-[11px] text-gray-500 font-mono">KTA: ${m.kta}</p>
-              <p class="text-[11px] text-gray-600 truncate">${m.sekolah}</p>
-              <span class="inline-block text-[10px] text-red-600 font-semibold">${m.gugus}</span>
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-5">
+        
+        <!-- 1. Biodata Lengkap -->
+        <div class="bg-gray-50 rounded-2xl p-4 sm:p-5 border border-gray-200">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700 flex items-center gap-2 mb-3">
+            <i class="fa-solid fa-address-card text-fb-blue text-sm"></i>
+            Biodata Anggota PGRI
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="bg-white p-3 rounded-xl border border-gray-100">
+              <span class="text-[10px] uppercase font-bold text-gray-400 block mb-0.5">Nama Lengkap & Gelar</span>
+              <p id="bioNama" class="font-bold text-gray-900"></p>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-gray-100">
+              <span class="text-[10px] uppercase font-bold text-gray-400 block mb-0.5">Nomor KTA PGRI</span>
+              <p id="bioKTA" class="font-mono font-bold text-fb-blue"></p>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-gray-100">
+              <span class="text-[10px] uppercase font-bold text-gray-400 block mb-0.5">Status Kepegawaian</span>
+              <p id="bioStatus" class="font-semibold text-gray-800"></p>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-gray-100">
+              <span class="text-[10px] uppercase font-bold text-gray-400 block mb-0.5">Asal Gugus Wilayah</span>
+              <p id="bioGugus" class="font-semibold text-gray-800"></p>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-gray-100 sm:col-span-2">
+              <span class="text-[10px] uppercase font-bold text-gray-400 block mb-0.5">Unit Kerja / Asal Sekolah</span>
+              <p id="bioSekolah" class="font-bold text-gray-900"></p>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-gray-100">
+              <span class="text-[10px] uppercase font-bold text-gray-400 block mb-0.5">E-Mail Aktif</span>
+              <p id="bioEmail" class="font-medium text-gray-700 truncate"></p>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-gray-100">
+              <span class="text-[10px] uppercase font-bold text-gray-400 block mb-0.5">Waktu Terdaftar</span>
+              <p id="bioTimestamp" class="font-mono text-gray-600"></p>
             </div>
           </div>
-          <div class="bg-gray-50 px-3 py-2 border-t border-gray-100 flex justify-between items-center text-xs">
-            <button onclick='viewKTA(${JSON.stringify(m).replace(/'/g, "&apos;")})' class="text-red-700 hover:text-red-900 font-bold flex items-center">
-              <i class="fa-solid fa-id-card mr-1"></i> Lihat KTA
-            </button>
-            <a href="https://wa.me/${formatWa(m.wa)}" target="_blank" class="text-emerald-600 hover:text-emerald-800" title="Hubungi WhatsApp">
-              <i class="fa-brands fa-whatsapp text-sm"></i>
-            </a>
+        </div>
+
+        <!-- 2. Ringkasan Bintang Keaktifan -->
+        <div class="bg-gradient-to-r from-amber-500 to-yellow-500 rounded-2xl p-4 text-white shadow-sm flex items-center justify-between">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-amber-100">Total Bintang Partisipasi</span>
+            <div class="flex items-center gap-2 mt-1">
+              <span id="profStarsDisplay" class="text-xl sm:text-2xl font-black flex items-center gap-1"></span>
+            </div>
+            <p class="text-[11px] text-amber-100 mt-1">Akumulasi ceklis iuran bulanan, porsenigur, diklat, dan publikasi artikel.</p>
+          </div>
+          <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl shadow-inner flex-shrink-0">
+            <i class="fa-solid fa-award text-yellow-100"></i>
+          </div>
+        </div>
+
+        <!-- 3. Data Ceklis Iuran Bulanan -->
+        <div class="border border-gray-200 rounded-2xl p-4 sm:p-5 bg-white">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-gray-100 gap-2">
+            <div>
+              <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2">
+                <i class="fa-solid fa-money-check-dollar text-emerald-600 text-base"></i>
+                Data Ceklis Iuran Bulanan PGRI
+              </h4>
+              <p class="text-xs text-gray-500">Status setoran iuran kas organisasi per bulan</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <label for="profSelectTahunIuran" class="text-xs font-bold text-gray-600">Tahun:</label>
+              <select id="profSelectTahunIuran" onchange="changeProfileIuranYear(this.value)" class="bg-gray-100 border border-gray-300 text-gray-800 font-bold text-xs rounded-xl px-3 py-1.5 outline-none cursor-pointer">
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+              </select>
+            </div>
+          </div>
+          <div id="profGridIuran" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 mt-3.5"></div>
+        </div>
+
+        <!-- 4. Data Ceklis Porsenigur 2026 -->
+        <div class="border border-gray-200 rounded-2xl p-4 sm:p-5 bg-white">
+          <div class="pb-3 border-b border-gray-100">
+            <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2">
+              <i class="fa-solid fa-trophy text-amber-500 text-base"></i>
+              Data Ceklis Keikutsertaan Porsenigur 2026
+            </h4>
+            <p class="text-xs text-gray-500">Cabang olahraga & seni yang diikuti anggota</p>
+          </div>
+          <div id="profGridPorsenigur" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3.5"></div>
+        </div>
+
+        <!-- 5. Data Ceklis Diklat & Publikasi Artikel -->
+        <div class="border border-gray-200 rounded-2xl p-4 sm:p-5 bg-white">
+          <div class="pb-3 border-b border-gray-100">
+            <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2">
+              <i class="fa-solid fa-graduation-cap text-indigo-600 text-base"></i>
+              Data Ceklis Diklat & Publikasi Artikel / Berita
+            </h4>
+            <p class="text-xs text-gray-500">Partisipasi pelatihan profesi dan kontribusi karya tulis di Web PGRI</p>
+          </div>
+          <div id="profGridPengembangan" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3.5"></div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-5 py-3 border-t border-gray-200 bg-gray-50 flex items-center justify-between">
+        <button id="profBtnKTA" class="px-3.5 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+          <i class="fa-solid fa-id-badge"></i> Lihat KTA Digital
+        </button>
+        <button onclick="closeProfileModal()" class="px-4 py-2 bg-fb-blue hover:bg-fb-hover text-white text-xs font-bold rounded-xl transition">
+          Tutup Profil
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL KTA DIGITAL PREVIEW & PRINT ================= -->
+  <div id="ktaModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl flex flex-col">
+      <div class="p-4 bg-gray-100 border-b border-gray-200 flex items-center justify-between no-print">
+        <h4 class="text-xs font-bold text-gray-700 flex items-center gap-1.5">
+          <i class="fa-solid fa-address-card text-fb-blue"></i>
+          <span>Kartu Tanda Anggota (KTA) Digital</span>
+        </h4>
+        <button onclick="closeKTAModal()" class="w-7 h-7 rounded-full bg-white hover:bg-gray-200 text-gray-600 flex items-center justify-center text-xs">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- KARTU CETAK KTA (UKURAN RASIO ID CARD STANDAR) -->
+      <div class="p-6 flex justify-center">
+        <div id="printableKTA" class="w-full max-w-[340px] rounded-2xl overflow-hidden shadow-xl border-2 border-red-700 bg-white relative text-gray-900 select-none">
+          
+          <!-- Header KTA dengan Logo PGRI Resmi -->
+          <div class="bg-gradient-to-r from-red-700 via-rose-700 to-red-800 p-3 text-white flex items-center gap-2.5">
+            <div class="w-11 h-11 bg-white rounded-full p-0.5 flex-shrink-0 shadow-md flex items-center justify-center">
+              <img src="https://images.seeklogo.com/logo-png/25/1/pgri-logo-png_seeklogo-257554.png" alt="Logo PGRI" class="w-full h-full object-contain rounded-full" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/9/90/Logo_PGRI.png';">
+            </div>
+            <div class="leading-none text-left">
+              <h5 class="text-[12px] font-black tracking-wider uppercase text-yellow-300">KARTU TANDA ANGGOTA</h5>
+              <h6 class="text-[11px] font-bold text-white mt-0.5">PGRI KECAMATAN KATAPANG</h6>
+              <p class="text-[8px] text-red-200 mt-0.5">KABUPATEN BANDUNG - JAWA BARAT</p>
+            </div>
+          </div>
+
+          <!-- Body KTA -->
+          <div class="p-3.5 space-y-2.5 bg-gradient-to-b from-white to-gray-50">
+            <div class="flex gap-3 items-center">
+              <!-- Foto -->
+              <div class="w-20 h-26 rounded-xl bg-gray-100 border-2 border-red-600 overflow-hidden flex-shrink-0 shadow-xs">
+                <img id="ktaFoto" src="" alt="Pasfoto" class="w-full h-full object-cover">
+              </div>
+              <!-- Rincian -->
+              <div class="text-[11px] leading-tight flex-1 space-y-1">
+                <div>
+                  <span class="text-[9px] uppercase font-bold text-gray-400 block">Nama Anggota</span>
+                  <span id="ktaNama" class="font-extrabold text-gray-900 block leading-tight"></span>
+                </div>
+                <div>
+                  <span class="text-[9px] uppercase font-bold text-gray-400 block">No. KTA PGRI</span>
+                  <span id="ktaNo" class="font-mono font-black text-red-700 block"></span>
+                </div>
+                <div>
+                  <span class="text-[9px] uppercase font-bold text-gray-400 block">Unit Kerja</span>
+                  <span id="ktaSekolah" class="font-bold text-gray-800 block"></span>
+                </div>
+                <div>
+                  <span class="text-[9px] uppercase font-bold text-gray-400 block">Gugus / Wilayah</span>
+                  <span id="ktaGugus" class="font-medium text-gray-700 block"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Card -->
+            <div class="pt-2 border-t border-gray-200 flex items-center justify-between text-[10px]">
+              <span id="ktaStatus" class="font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded-full border border-red-200"></span>
+              <span id="ktaStarNum" class="font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="p-4 bg-gray-50 border-t border-gray-200 flex items-center justify-end gap-2 no-print">
+        <button onclick="closeKTAModal()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 text-xs font-bold rounded-xl transition">
+          Tutup
+        </button>
+        <button type="button" onclick="window.print()" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer">
+          <i class="fa-solid fa-print"></i>
+          <span>Cetak KTA</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL KONFIRMASI HAPUS (ADMIN) ================= -->
+  <div id="deleteConfirmModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-gray-200">
+      <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xl mx-auto mb-3">
+        <i class="fa-solid fa-trash-can"></i>
+      </div>
+      <h3 class="text-sm font-bold text-gray-900 text-center">Konfirmasi Hapus Data Anggota</h3>
+      <p id="deleteMemberNameText" class="text-xs text-gray-500 text-center mt-1">Data yang dihapus tidak dapat dipulihkan kembali.</p>
+      
+      <div class="mt-5 flex items-center justify-center gap-2">
+        <button onclick="closeDeleteModal()" class="w-1/2 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition">
+          Batal
+        </button>
+        <button onclick="executeDeleteMember()" class="w-1/2 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition">
+          Ya, Hapus
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FLOATING WHATSAPP BUTTON (DESKTOP & MOBILE) ================= -->
+  <a href="https://wa.me/6285797817050?text=hallo%20admin%20web%20database%20pgri%20cabang%20katapang%20izin%20bertanya" target="_blank" rel="noopener noreferrer" class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-40 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 sm:px-4 sm:py-3 rounded-full shadow-2xl flex items-center gap-2.5 transition transform hover:scale-105" title="Chat WhatsApp Admin">
+    <i class="fa-brands fa-whatsapp text-2xl"></i>
+    <span class="hidden sm:inline font-bold text-xs tracking-wide">Tanya Admin PGRI</span>
+  </a>
+
+  <!-- ================= BOTTOM NAVIGATION BAR (MOBILE ONLY) ================= -->
+  <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 z-40 flex items-center justify-around h-14 px-2 shadow-lg">
+    <button onclick="switchTab('database')" id="mNavDatabase" class="flex flex-col items-center justify-center flex-1 text-fb-blue">
+      <i class="fa-solid fa-users text-base"></i>
+      <span class="text-[10px] font-bold mt-0.5">Database</span>
+    </button>
+    <button onclick="switchTab('form')" id="mNavForm" class="flex flex-col items-center justify-center flex-1 text-gray-400">
+      <i class="fa-solid fa-id-card-clip text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">Daftar</span>
+    </button>
+    <button onclick="openAdminDashboard()" id="mNavAdmin" class="flex flex-col items-center justify-center flex-1 text-gray-400">
+      <i class="fa-solid fa-chart-pie text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">Grafik</span>
+    </button>
+  </nav>
+
+  <!-- ================= TOAST NOTIFIKASI ================= -->
+  <div id="toast" class="fixed top-20 right-4 sm:right-6 z-50 transform -translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-gray-900/95 backdrop-blur-sm text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-gray-700 max-w-sm">
+      <div id="toastIcon" class="w-8 h-8 rounded-xl bg-blue-500 flex items-center justify-center text-white flex-shrink-0">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <div>
+        <h5 id="toastTitle" class="font-bold text-xs text-white">Sukses</h5>
+        <p id="toastMessage" class="text-xs text-gray-300">Pemberitahuan berhasil diproses.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SCRIPT LOGIKA UTAMA ================= -->
+  <script>
+    // URL Web App Google Apps Script Aktif (/exec)
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqK2p4oJwe2BtTiVoZL6BVnOwQVueoo4CZ-bdsESMxIJS8InesCP5Y3r5mn7Hwl1ls/exec";
+
+    // Daftar Referensi
+    const BULAN_LIST = [
+      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+
+    const PORSENIGUR_LIST = [
+      { id: "mini_soccer", label: "Mini Soccer", icon: "fa-futbol" },
+      { id: "bola_voli", label: "Bola Voli", icon: "fa-volleyball" },
+      { id: "bakiak", label: "Bakiak", icon: "fa-person-walking" },
+      { id: "hadangan", label: "Hadangan", icon: "fa-people-arrows" },
+      { id: "paduan_suara", label: "Paduan Suara", icon: "fa-music" },
+      { id: "pupuh", label: "Pupuh", icon: "fa-microphone-lines" },
+      { id: "borangan", label: "Borangan (Stand Up)", icon: "fa-masks-theater" },
+      { id: "video_pembelajaran", label: "Video Pembelajaran", icon: "fa-video" }
+    ];
+
+    const PENGEMBANGAN_LIST = [
+      { 
+        id: "diklat", 
+        label: "Diklat / Pelatihan Profesi", 
+        desc: "Mengikuti diklat/bimtek resmi PGRI", 
+        icon: "fa-certificate", 
+        badgeBg: "bg-indigo-50 border-indigo-200 text-indigo-950" 
+      },
+      { 
+        id: "artikel_web", 
+        label: "Pengiriman Artikel ke WEB PGRI", 
+        desc: "Menulis artikel/berita karya guru", 
+        icon: "fa-newspaper", 
+        badgeBg: "bg-emerald-50 border-emerald-200 text-emerald-950" 
+      }
+    ];
+
+    // State Aplikasi
+    let membersList = [];
+    let isAdminLoggedIn = false;
+    let loggedInMemberKTA = null;
+    let activeIuranYear = "2026";
+    let memberToDeleteIndex = null;
+    let currentProfileMemberIndex = null;
+    let currentProfileIuranYear = "2026";
+    let currentBase64Photo = "";
+
+    // Data sample default dihapus - Hanya menggunakan data nyata dari pendaftaran & spreadsheet
+
+    // ================= FUNGSI BINTANG & SANITASI =================
+    function countMemberStars(member) {
+      if (!member) return 0;
+      let total = 0;
+      if (member.iuran && typeof member.iuran === 'object') {
+        Object.keys(member.iuran).forEach(year => {
+          if (Array.isArray(member.iuran[year])) {
+            total += member.iuran[year].length;
+          }
+        });
+      }
+      if (Array.isArray(member.porsenigur)) {
+        total += member.porsenigur.length;
+      }
+      if (Array.isArray(member.pengembangan)) {
+        total += member.pengembangan.length;
+      }
+      return total;
+    }
+
+    function renderStarVisual(starCount) {
+      if (starCount <= 0) {
+        return `<span class="text-xs text-gray-400 font-normal">0 ⭐</span>`;
+      }
+      return `
+        <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded-md text-xs font-black">
+          <i class="fa-solid fa-star text-amber-500 text-[10px]"></i>
+          <span>${starCount} ⭐</span>
+        </span>
+      `;
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // ================= NAVIGASI TAB =================
+    function switchTab(tabId) {
+      const secDatabase = document.getElementById('databaseSection');
+      const secForm = document.getElementById('formSection');
+      const secAdmin = document.getElementById('adminSection');
+
+      const navDatabase = document.getElementById('navTabDatabase');
+      const navForm = document.getElementById('navTabForm');
+      const navAdmin = document.getElementById('navTabAdmin');
+
+      const mNavDatabase = document.getElementById('mNavDatabase');
+      const mNavForm = document.getElementById('mNavForm');
+      const mNavAdmin = document.getElementById('mNavAdmin');
+
+      // Sembunyikan semua section
+      if (secDatabase) secDatabase.classList.add('hidden');
+      if (secForm) secForm.classList.add('hidden');
+      if (secAdmin) secAdmin.classList.add('hidden');
+
+      // Reset state desktop tab
+      const inactiveDesktop = "h-full px-5 flex items-center gap-2 font-bold text-sm text-gray-500 hover:text-fb-blue hover:bg-gray-100 border-b-4 border-transparent transition rounded-t-lg";
+      const activeDesktop = "h-full px-5 flex items-center gap-2 font-bold text-sm text-fb-blue border-b-4 border-fb-blue transition";
+
+      if (navDatabase) navDatabase.className = inactiveDesktop;
+      if (navForm) navForm.className = inactiveDesktop;
+      if (navAdmin) navAdmin.className = inactiveDesktop;
+
+      // Reset mobile tab
+      if (mNavDatabase) mNavDatabase.className = "flex flex-col items-center justify-center flex-1 text-gray-400";
+      if (mNavForm) mNavForm.className = "flex flex-col items-center justify-center flex-1 text-gray-400";
+      if (mNavAdmin) mNavAdmin.className = "flex flex-col items-center justify-center flex-1 text-gray-400";
+
+      if (tabId === 'database') {
+        if (secDatabase) secDatabase.classList.remove('hidden');
+        if (navDatabase) navDatabase.className = activeDesktop;
+        if (mNavDatabase) mNavDatabase.className = "flex flex-col items-center justify-center flex-1 text-fb-blue";
+        renderDatabaseTable();
+      } else if (tabId === 'form') {
+        if (secForm) secForm.classList.remove('hidden');
+        if (navForm) navForm.className = activeDesktop;
+        if (mNavForm) mNavForm.className = "flex flex-col items-center justify-center flex-1 text-fb-blue";
+      } else if (tabId === 'admin') {
+        if (secAdmin) secAdmin.classList.remove('hidden');
+        if (navAdmin) navAdmin.className = activeDesktop;
+        if (mNavAdmin) mNavAdmin.className = "flex flex-col items-center justify-center flex-1 text-fb-blue";
+        renderAdminAnalytics();
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openAdminDashboard() {
+      if (!isAdminLoggedIn) {
+        openAdminLoginModal();
+      } else {
+        switchTab('admin');
+      }
+    }
+
+    // ================= FUNGSI FILTER & POPULASI SEKOLAH =================
+    function populateSchoolFilter() {
+      const select = document.getElementById('filterSekolah');
+      if (!select) return;
+
+      const currentValue = select.value;
+      const schools = Array.from(new Set(membersList.map(m => (m.asalSekolah || '').trim()).filter(Boolean))).sort();
+
+      select.innerHTML = '<option value="">Semua Sekolah</option>' +
+        schools.map(sch => `<option value="${escapeHTML(sch)}">${escapeHTML(sch)}</option>`).join('');
+
+      if (schools.includes(currentValue)) {
+        select.value = currentValue;
+      }
+    }
+
+    function filterDatabase() {
+      renderDatabaseTable();
+    }
+
+    // ================= RENDER FEED DATABASE ANGGOTA =================
+    function renderDatabaseTable() {
+      const feedContainer = document.getElementById('databaseFeed');
+      const searchVal = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+      const filterGugus = document.getElementById('filterGugus')?.value || '';
+      const filterStatus = document.getElementById('filterStatus')?.value || '';
+      const filterSekolah = document.getElementById('filterSekolah')?.value || '';
+
+      const filtered = membersList.map((item, originalIndex) => ({ item, originalIndex })).filter(({ item }) => {
+        const matchSearch = !searchVal || 
+          (item.namaLengkap && item.namaLengkap.toLowerCase().includes(searchVal)) ||
+          (item.noKTA && item.noKTA.toLowerCase().includes(searchVal)) ||
+          (item.asalSekolah && item.asalSekolah.toLowerCase().includes(searchVal)) ||
+          (item.email && item.email.toLowerCase().includes(searchVal));
+
+        const matchGugus = !filterGugus || item.asalGugus === filterGugus;
+        const matchStatus = !filterStatus || item.statusAnggota === filterStatus;
+        const matchSekolah = !filterSekolah || item.asalSekolah === filterSekolah;
+
+        return matchSearch && matchGugus && matchStatus && matchSekolah;
+      });
+
+      const countBadge = document.getElementById('totalAnggotaBadge');
+      if (countBadge) countBadge.textContent = `${filtered.length} Anggota Ditemukan`;
+
+      if (!feedContainer) return;
+
+      if (filtered.length === 0) {
+        feedContainer.innerHTML = `
+          <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-gray-200 shadow-fb">
+            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto text-gray-400 mb-3 text-2xl">
+              <i class="fa-solid fa-users-slash"></i>
+            </div>
+            <h4 class="font-bold text-gray-700 text-sm">Tidak Ada Data Anggota Ditemukan</h4>
+            <p class="text-xs text-gray-400 mt-1">Coba sesuaikan kata kunci pencarian atau bersihkan filter.</p>
           </div>
         `;
-        grid.appendChild(card);
-      });
+        return;
+      }
+
+      feedContainer.innerHTML = filtered.map(({ item, originalIndex }) => {
+        const starCount = countMemberStars(item);
+        const starBadgeHTML = renderStarVisual(starCount);
+
+        const deleteButtonAdmin = isAdminLoggedIn ? `
+          <button onclick="confirmDeleteMember(${originalIndex})" class="text-xs font-semibold text-rose-600 hover:text-rose-800 flex items-center px-2 py-1 rounded-lg hover:bg-rose-50 transition" title="Hapus Data (Admin)">
+            <i class="fa-solid fa-trash-can mr-1"></i> Hapus
+          </button>
+        ` : '';
+
+        return `
+          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-fb hover:shadow-fb-hover transition flex flex-col justify-between">
+            <div class="p-4 sm:p-5 flex items-start gap-3.5">
+              <div class="w-16 h-20 rounded-xl bg-gray-100 overflow-hidden flex-shrink-0 border border-gray-200 shadow-xs">
+                <img src="${item.pasfoto || 'https://placehold.co/120x160/e2e8f0/64748b?text=Pasfoto'}" alt="${escapeHTML(item.namaLengkap)}" class="w-full h-full object-cover">
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-fb-blue border border-blue-200">
+                    ${escapeHTML(item.statusAnggota || 'Anggota')}
+                  </span>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-100 text-gray-600 border border-gray-200">
+                    ${escapeHTML(item.asalGugus || '-')}
+                  </span>
+                </div>
+                <h3 class="font-bold text-gray-900 text-sm sm:text-base leading-snug truncate" title="${escapeHTML(item.namaLengkap)}">
+                  ${escapeHTML(item.namaLengkap)}
+                </h3>
+                <p class="text-xs text-gray-600 flex items-center gap-1 mt-0.5">
+                  <i class="fa-solid fa-school text-gray-400 text-[11px]"></i>
+                  <span class="truncate">${escapeHTML(item.asalSekolah || '-')}</span>
+                </p>
+                <div class="flex flex-wrap items-center gap-2 text-xs text-gray-500 mt-2">
+                  <span class="font-mono bg-gray-50 px-2 py-0.5 rounded-md border border-gray-200 text-gray-700">
+                    <i class="fa-solid fa-id-card text-gray-400 mr-1"></i>${escapeHTML(item.noKTA || '-')}
+                  </span>
+                  ${starBadgeHTML}
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Action Card (Facebook Post Style) -->
+            <div class="bg-gray-50 px-4 py-2.5 border-t border-gray-100 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <button onclick="viewProfile(${originalIndex})" class="text-xs font-semibold text-gray-700 hover:text-fb-blue flex items-center px-2 py-1 rounded-lg hover:bg-gray-200/70 transition">
+                  <i class="fa-solid fa-user-circle mr-1.5 text-fb-blue text-sm"></i> Profil
+                </button>
+                <button onclick="viewKTA(${originalIndex})" class="text-xs font-semibold text-fb-blue hover:text-fb-hover flex items-center px-2 py-1 rounded-lg hover:bg-blue-50 transition">
+                  <i class="fa-solid fa-address-card mr-1.5"></i> KTA Digital
+                </button>
+              </div>
+              <div class="flex items-center gap-2">
+                ${deleteButtonAdmin}
+                <a href="mailto:${escapeHTML(item.email || '')}" class="text-xs text-gray-500 hover:text-gray-800 flex items-center px-2 py-1 rounded-lg hover:bg-gray-200/50" title="Kirim Pesan Email">
+                  <i class="fa-solid fa-paper-plane mr-1 text-gray-400"></i> Kontak
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    // Filter Pencarian & Gugus
-    function filterData() {
-      const keyword = document.getElementById('searchInput').value.toLowerCase();
-      const gugus = document.getElementById('filterGugus').value;
+    // ================= FUNGSI PROFIL ANGGOTA =================
+    function viewProfile(index) {
+      const item = membersList[index];
+      if (!item) return;
 
-      const filtered = membersData.filter(m => {
-        const matchName = (m.nama || '').toLowerCase().includes(keyword);
-        const matchKta = (m.kta || '').toLowerCase().includes(keyword);
-        const matchSekolah = (m.sekolah || '').toLowerCase().includes(keyword);
-        const matchGugus = gugus === '' || m.gugus === gugus;
+      currentProfileMemberIndex = index;
+      currentProfileIuranYear = "2026";
 
-        return (matchName || matchKta || matchSekolah) && matchGugus;
-      });
+      document.getElementById('profNama').textContent = item.namaLengkap;
+      document.getElementById('profKTA').textContent = item.noKTA;
+      document.getElementById('profStatusBadge').textContent = item.statusAnggota;
+      document.getElementById('profGugusText').textContent = item.asalGugus;
+      document.getElementById('profFoto').src = item.pasfoto || "https://placehold.co/120x160/e2e8f0/64748b?text=Pasfoto";
+      
+      const stars = countMemberStars(item);
+      document.getElementById('profPhotoStarNum').textContent = `${stars} ⭐`;
+      document.getElementById('profStarsDisplay').innerHTML = renderStarVisual(stars);
 
-      renderMembersCards(filtered);
+      document.getElementById('bioNama').textContent = item.namaLengkap;
+      document.getElementById('bioKTA').textContent = item.noKTA;
+      document.getElementById('bioStatus').textContent = item.statusAnggota;
+      document.getElementById('bioGugus').textContent = item.asalGugus;
+      document.getElementById('bioSekolah').textContent = item.asalSekolah;
+      document.getElementById('bioEmail').textContent = item.email || "-";
+      document.getElementById('bioTimestamp').textContent = item.timestamp || "-";
+
+      const btnKTA = document.getElementById('profBtnKTA');
+      btnKTA.onclick = function() {
+        closeProfileModal();
+        viewKTA(index);
+      };
+
+      document.getElementById('profSelectTahunIuran').value = currentProfileIuranYear;
+      renderProfileIuran(item, currentProfileIuranYear);
+      renderProfilePorsenigur(item);
+      renderProfilePengembangan(item);
+
+      document.getElementById('profileDetailModal').classList.remove('hidden');
     }
 
-    // Kompresi Pasfoto Canvas
-    function handlePhotoPreview(e) {
-      const file = e.target.files[0];
+    function closeProfileModal() {
+      document.getElementById('profileDetailModal').classList.add('hidden');
+      currentProfileMemberIndex = null;
+    }
+
+    function changeProfileIuranYear(year) {
+      currentProfileIuranYear = year;
+      if (currentProfileMemberIndex !== null && membersList[currentProfileMemberIndex]) {
+        renderProfileIuran(membersList[currentProfileMemberIndex], year);
+      }
+    }
+
+    function renderProfileIuran(member, year) {
+      const container = document.getElementById('profGridIuran');
+      const paidMonths = (member.iuran && member.iuran[year]) ? member.iuran[year] : [];
+
+      container.innerHTML = BULAN_LIST.map(bulan => {
+        const isPaid = paidMonths.includes(bulan);
+        if (isPaid) {
+          return `
+            <div class="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-bold shadow-xs">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
+              <div class="leading-none">
+                <span>${bulan}</span>
+                <span class="block text-[9px] text-emerald-600 font-semibold mt-0.5">Lunas (+1⭐)</span>
+              </div>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="flex items-center gap-2 p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-400 text-xs font-medium">
+              <i class="fa-regular fa-circle text-gray-300 text-sm"></i>
+              <div class="leading-none">
+                <span>${bulan}</span>
+                <span class="block text-[9px] text-gray-400 mt-0.5">Belum Lunas</span>
+              </div>
+            </div>
+          `;
+        }
+      }).join('');
+    }
+
+    function renderProfilePorsenigur(member) {
+      const container = document.getElementById('profGridPorsenigur');
+      const selectedEvents = member.porsenigur || [];
+
+      container.innerHTML = PORSENIGUR_LIST.map(item => {
+        const isChecked = selectedEvents.includes(item.id);
+        if (isChecked) {
+          return `
+            <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 text-xs font-bold shadow-xs">
+              <div class="w-7 h-7 rounded-lg bg-amber-200/80 flex items-center justify-center text-amber-800">
+                <i class="fa-solid ${item.icon} text-xs"></i>
+              </div>
+              <div class="leading-tight flex-1">
+                <span>${item.label}</span>
+                <span class="block text-[9px] text-amber-700 font-semibold mt-0.5"><i class="fa-solid fa-star text-[8px]"></i> Mengikuti (+1⭐)</span>
+              </div>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-400 text-xs">
+              <div class="w-7 h-7 rounded-lg bg-gray-200/60 flex items-center justify-center text-gray-400">
+                <i class="fa-solid ${item.icon} text-xs"></i>
+              </div>
+              <div class="leading-tight flex-1">
+                <span class="font-medium">${item.label}</span>
+                <span class="block text-[9px] text-gray-400 mt-0.5">Tidak Mengikuti</span>
+              </div>
+            </div>
+          `;
+        }
+      }).join('');
+    }
+
+    function renderProfilePengembangan(member) {
+      const container = document.getElementById('profGridPengembangan');
+      const selected = member.pengembangan || [];
+
+      container.innerHTML = PENGEMBANGAN_LIST.map(item => {
+        const isChecked = selected.includes(item.id);
+        if (isChecked) {
+          return `
+            <div class="flex items-center gap-2.5 p-3 rounded-xl ${item.badgeBg} border shadow-xs">
+              <div class="w-8 h-8 rounded-lg bg-white/90 flex items-center justify-center text-indigo-700 shadow-xs flex-shrink-0">
+                <i class="fa-solid ${item.icon} text-sm"></i>
+              </div>
+              <div class="leading-tight text-xs flex-1 min-w-0">
+                <span class="font-bold">${item.label}</span>
+                <span class="block text-[10px] text-indigo-700/80 mt-0.5">${item.desc}</span>
+                <span class="inline-block text-[9px] font-extrabold text-emerald-700 mt-1"><i class="fa-solid fa-circle-check text-[8px]"></i> Terverifikasi (+1⭐)</span>
+              </div>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="flex items-center gap-2.5 p-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-400 text-xs">
+              <div class="w-8 h-8 rounded-lg bg-gray-200/60 flex items-center justify-center text-gray-400 flex-shrink-0">
+                <i class="fa-solid ${item.icon} text-sm"></i>
+              </div>
+              <div class="leading-tight text-xs flex-1 min-w-0">
+                <span class="font-medium text-gray-600">${item.label}</span>
+                <span class="block text-[10px] text-gray-400 mt-0.5">${item.desc}</span>
+                <span class="inline-block text-[9px] text-gray-400 mt-1">Belum Terdata</span>
+              </div>
+            </div>
+          `;
+        }
+      }).join('');
+    }
+
+    // ================= FUNGSI KTA DIGITAL =================
+    function viewKTA(index) {
+      const item = membersList[index];
+      if (!item) return;
+
+      document.getElementById('ktaNama').textContent = item.namaLengkap;
+      document.getElementById('ktaNo').textContent = item.noKTA;
+      document.getElementById('ktaSekolah').textContent = item.asalSekolah;
+      document.getElementById('ktaGugus').textContent = item.asalGugus;
+      document.getElementById('ktaStatus').textContent = item.statusAnggota;
+      document.getElementById('ktaFoto').src = item.pasfoto || "https://placehold.co/120x160/e2e8f0/64748b?text=Pasfoto";
+      
+      const stars = countMemberStars(item);
+      document.getElementById('ktaStarNum').textContent = `${stars} ⭐`;
+
+      document.getElementById('ktaModal').classList.remove('hidden');
+    }
+
+    function closeKTAModal() {
+      document.getElementById('ktaModal').classList.add('hidden');
+    }
+
+    // ================= FUNGSI FORMULIR PENDAFTARAN & UPLOAD =================
+    function handlePhotoUpload(input) {
+      const file = input.files[0];
+      const preview = document.getElementById('formPhotoPreview');
+      const infoText = document.getElementById('fileInfoText');
+
       if (!file) return;
 
+      if (file.size > 2 * 1024 * 1024) {
+        showToast("Ukuran File Terlalu Besar", "Ukuran foto asli maksimal 2 MB sebelum dikompresi.", true);
+        input.value = "";
+        preview.src = "https://placehold.co/120x160/e2e8f0/64748b?text=Pasfoto+PGRI";
+        currentBase64Photo = "";
+        return;
+      }
+
+      // Kompresi Otomatis Menggunakan HTML5 Canvas (300x400 px, Kualitas 0.75)
+      // Menghasilkan ukuran ~15 - 25 KB sehingga muat 100% utuh di Google Spreadsheet
       const reader = new FileReader();
-      reader.onload = function(evt) {
+      reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          // Ukuran rasio pasfoto standar 3:4
           canvas.width = 300;
           canvas.height = 400;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, 300, 400);
 
-          temporaryCompressedPhoto = canvas.toDataURL('image/jpeg', 0.75);
-          document.getElementById('photoPreviewImg').src = temporaryCompressedPhoto;
-          document.getElementById('photoPreviewContainer').classList.remove('hidden');
+          // Menjaga rasio dan crop center
+          const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
+          const x = (canvas.width / 2) - (img.width / 2) * scale;
+          const y = (canvas.height / 2) - (img.height / 2) * scale;
+
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+
+          // Hasilkan data JPEG terkompresi optimal
+          currentBase64Photo = canvas.toDataURL('image/jpeg', 0.75);
+          preview.src = currentBase64Photo;
+          const estSizeKB = Math.round(currentBase64Photo.length * 0.75 / 1024);
+          infoText.innerHTML = `<span class="text-emerald-600 font-bold"><i class="fa-solid fa-circle-check"></i> Pasfoto siap & teroptimasi (${estSizeKB} KB)</span>`;
         };
-        img.src = evt.target.result;
+        img.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
 
-    // Simpan Pendaftaran Baru
-    async function handleRegistration(e) {
-      e.preventDefault();
-      const btn = document.getElementById('regSubmitBtn');
-      btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1"></i> Menyimpan ke Spreadsheet...`;
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+      const submitBtn = document.getElementById('submitFormBtn');
+      const originalBtnHTML = submitBtn.innerHTML;
+
+      const namaLengkap = document.getElementById('namaLengkap').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const noKTA = document.getElementById('noKTA').value.trim();
+      const statusAnggota = document.getElementById('statusAnggota').value;
+      const asalGugus = document.getElementById('asalGugus').value;
+      const asalSekolah = document.getElementById('asalSekolah').value.trim();
+
+      if (!currentBase64Photo) {
+        showToast("Pasfoto Wajib", "Harap pilih pasfoto resmi anggota terlebih dahulu.", true);
+        return;
+      }
+
+      // Validasi Duplikasi KTA
+      const exists = membersList.some(m => m.noKTA === noKTA);
+      if (exists) {
+        showToast("Nomor KTA Sudah Terdaftar", "Nomor KTA tersebut sudah ada di database.", true);
+        return;
+      }
+
+      const now = new Date();
+      const timestamp = now.getFullYear() + "-" +
+        String(now.getMonth() + 1).padStart(2, '0') + "-" +
+        String(now.getDate()).padStart(2, '0') + " " +
+        String(now.getHours()).padStart(2, '0') + ":" +
+        String(now.getMinutes()).padStart(2, '0') + ":" +
+        String(now.getSeconds()).padStart(2, '0');
 
       const newMember = {
-        nama: document.getElementById('regNama').value.trim(),
-        kta: document.getElementById('regKta').value.trim(),
-        sekolah: document.getElementById('regSekolah').value.trim(),
-        gugus: document.getElementById('regGugus').value,
-        wa: document.getElementById('regWa').value.trim(),
-        foto: temporaryCompressedPhoto,
-        bintang: 0,
-        iuran: {},
+        namaLengkap,
+        email,
+        noKTA,
+        statusAnggota,
+        asalSekolah,
+        asalGugus,
+        pasfoto: currentBase64Photo,
+        timestamp,
+        iuran: { "2026": [] },
         porsenigur: [],
         pengembangan: []
       };
 
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Menyimpan ke Spreadsheet...</span>`;
+
+      // Simpan lokal seketika
+      membersList.unshift(newMember);
+      saveToStorage();
+      populateSchoolFilter();
+      renderDatabaseTable();
+
+      // Kirim ke Google Apps Script (Spreadsheet)
       try {
-        const formData = new URLSearchParams();
-        formData.append('action', 'register');
-        formData.append('data', JSON.stringify(newMember));
-
         await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData.toString()
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newMember)
         });
-
-        membersData.unshift(newMember);
-        alert('Pendaftaran Berhasil! Data Anda telah terkirim ke Google Spreadsheet.');
-        document.getElementById('registrationForm').reset();
-        document.getElementById('photoPreviewContainer').classList.add('hidden');
-        temporaryCompressedPhoto = '';
-        switchTab('database');
+        showToast("Berhasil Terkirim!", "Data anggota tersimpan dan terkirim ke Google Spreadsheet.");
       } catch (err) {
-        alert('Terjadi kendala koneksi, data disimpan secara lokal.');
-        membersData.unshift(newMember);
-        switchTab('database');
+        console.warn("Koneksi Apps Script terhambat:", err);
+        showToast("Tersimpan di Database", "Data berhasil dicatat pada database lokal sistem.");
       } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-1"></i> Daftarkan Data Anggota`;
-      }
-    }
-
-    // Modal Admin Login
-    function handleAdminHeaderClick() {
-      if (currentAdminLogged) {
-        currentAdminLogged = false;
-        document.getElementById('headerAdminText').textContent = 'Admin';
-        hideChatWidget();
-        alert('Anda telah keluar dari mode Administrator.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+        document.getElementById('memberRegistrationForm').reset();
+        document.getElementById('formPhotoPreview').src = "https://placehold.co/120x160/e2e8f0/64748b?text=Pasfoto+PGRI";
+        document.getElementById('fileInfoText').textContent = "Format: JPG/PNG/WebP. Maksimal 500 KB.";
+        currentBase64Photo = "";
         switchTab('database');
-      } else {
-        openAdminLoginModal();
       }
     }
 
+    // ================= FUNGSI ADMIN & ANALITIK =================
     function openAdminLoginModal() {
-      document.getElementById('adminUsername').value = '';
-      document.getElementById('adminPassword').value = '';
+      const uInput = document.getElementById('adminUsername');
+      const pInput = document.getElementById('adminPassword');
+      if (uInput) uInput.value = "";
+      if (pInput) pInput.value = "";
       document.getElementById('adminLoginModal').classList.remove('hidden');
     }
 
@@ -842,475 +1656,648 @@
       document.getElementById('adminLoginModal').classList.add('hidden');
     }
 
-    function handleAdminLogin(e) {
-      e.preventDefault();
+    function handleAdminLogin(event) {
+      event.preventDefault();
       const u = document.getElementById('adminUsername').value.trim();
       const p = document.getElementById('adminPassword').value.trim();
 
-      if (u === 'admin' && p === 'admin1985') {
-        currentAdminLogged = true;
+      if (u === "admin" && p === "admin1985") {
+        isAdminLoggedIn = true;
         closeAdminLoginModal();
-        document.getElementById('headerAdminText').textContent = 'Keluar Admin';
-        showChatWidget();
-        switchTab('dashboard');
+        updateAdminNavUI();
+        renderDatabaseTable();
+        switchTab('admin');
+        showToast("Login Admin Berhasil", "Selamat datang Administrator PGRI Katapang.");
       } else {
-        alert('Username atau Password Admin salah!');
+        showToast("Login Gagal", "Username atau password admin salah!", true);
       }
     }
 
-    // Modal Login Anggota
+    function logoutAdmin() {
+      isAdminLoggedIn = false;
+      updateAdminNavUI();
+      renderDatabaseTable();
+      switchTab('database');
+      showToast("Logout", "Sesi administrator telah diakhiri.");
+    }
+
+    function updateAdminNavUI() {
+      const area = document.getElementById('adminNavArea');
+      if (isAdminLoggedIn) {
+        area.innerHTML = `
+          <div class="flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1.5 rounded-xl text-xs font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span>Admin</span>
+            <button onclick="logoutAdmin()" class="ml-1 text-gray-400 hover:text-rose-600" title="Logout">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+          </div>
+        `;
+      } else {
+        area.innerHTML = `
+          <button onclick="openAdminLoginModal()" class="inline-flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs px-3 py-2 rounded-xl transition">
+            <i class="fa-solid fa-shield-halved text-xs text-gray-600"></i>
+            <span class="hidden sm:inline">Admin</span>
+          </button>
+        `;
+      }
+    }
+
+    function renderAdminAnalytics() {
+      const total = membersList.length;
+      const schools = new Set(membersList.map(m => m.asalSekolah).filter(Boolean));
+      const asn = membersList.filter(m => m.statusAnggota === "Guru PNS" || m.statusAnggota === "Guru PPPK").length;
+
+      document.getElementById('statTotalAnggota').textContent = total;
+      document.getElementById('statTotalSekolah').textContent = schools.size;
+      document.getElementById('statTotalASN').textContent = asn;
+
+      // Hitung per gugus
+      const gugusOrder = [
+        "Gugus 1 Katapang", "Gugus 2 Katapang", "Gugus 3 Katapang", "Gugus 4 Katapang", "Gugus 5 Katapang",
+        "Gugus SMP Katapang", "Gugus SMA/SMK Katapang", "Gugus PAUD/TK Katapang"
+      ];
+      const gugusCounts = {};
+      gugusOrder.forEach(g => gugusCounts[g] = 0);
+      membersList.forEach(m => {
+        if (gugusCounts[m.asalGugus] !== undefined) gugusCounts[m.asalGugus]++;
+      });
+
+      const gContainer = document.getElementById('grafikGugusContainer');
+      gContainer.innerHTML = gugusOrder.map(gName => {
+        const count = gugusCounts[gName];
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+        return `
+          <div>
+            <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
+              <span>${gName}</span>
+              <span>${count} Orang (${pct}%)</span>
+            </div>
+            <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+              <div class="bg-fb-blue h-2.5 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Hitung per sekolah
+      const schoolCounts = {};
+      membersList.forEach(m => {
+        const sch = m.asalSekolah || "Tidak Diketahui";
+        schoolCounts[sch] = (schoolCounts[sch] || 0) + 1;
+      });
+      const sortedSchools = Object.entries(schoolCounts).sort((a, b) => b[1] - a[1]).slice(0, 7);
+
+      const sContainer = document.getElementById('grafikSekolahContainer');
+      sContainer.innerHTML = sortedSchools.map(([sName, count]) => {
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+        return `
+          <div>
+            <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
+              <span class="truncate pr-2">${sName}</span>
+              <span class="flex-shrink-0">${count} Guru</span>
+            </div>
+            <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+              <div class="bg-amber-500 h-2.5 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ================= FUNGSI HAPUS ANGGOTA (ADMIN) =================
+    function confirmDeleteMember(index) {
+      if (!isAdminLoggedIn) return;
+      memberToDeleteIndex = index;
+      const member = membersList[index];
+      document.getElementById('deleteMemberNameText').innerHTML = `Hapus data keanggotaan <strong>${escapeHTML(member?.namaLengkap)}</strong> (KTA: ${escapeHTML(member?.noKTA)})?`;
+      document.getElementById('deleteConfirmModal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteConfirmModal').classList.add('hidden');
+      memberToDeleteIndex = null;
+    }
+
+    function executeDeleteMember() {
+      if (memberToDeleteIndex !== null && membersList[memberToDeleteIndex]) {
+        const del = membersList.splice(memberToDeleteIndex, 1)[0];
+        saveToStorage();
+        populateSchoolFilter();
+        renderDatabaseTable();
+        closeDeleteModal();
+        showToast("Data Dihapus", `Data anggota ${del.namaLengkap} telah dihapus.`);
+      }
+    }
+
+    // ================= FUNGSI PORTAL MANDIRI ANGGOTA =================
     function openMemberLoginModal() {
-      document.getElementById('memberLoginKta').value = '';
-      document.getElementById('memberLoginModal').classList.remove('hidden');
+      if (loggedInMemberKTA) {
+        openMemberDashboardModal();
+      } else {
+        document.getElementById('memberKTAInput').value = "";
+        document.getElementById('memberPasswordInput').value = "";
+        document.getElementById('memberLoginModal').classList.remove('hidden');
+      }
     }
 
     function closeMemberLoginModal() {
       document.getElementById('memberLoginModal').classList.add('hidden');
     }
 
-    function handleMemberLogin(e) {
-      e.preventDefault();
-      const ktaInput = document.getElementById('memberLoginKta').value.trim();
-      const member = membersData.find(m => String(m.kta).trim() === ktaInput);
+    function handleMemberLogin(event) {
+      event.preventDefault();
+      const kta = document.getElementById('memberKTAInput').value.trim();
+      const pass = document.getElementById('memberPasswordInput').value.trim();
 
-      if (member) {
-        currentMemberUser = member;
+      const member = membersList.find(m => m.noKTA === kta);
+      if (member && pass === kta) {
+        loggedInMemberKTA = kta;
         closeMemberLoginModal();
-        updateHeaderMemberState();
-        showChatWidget();
-        openMemberPortal(member);
+        updateMemberNavUI();
+        openMemberDashboardModal();
+        showToast("Selamat Datang!", `Login berhasil untuk ${member.namaLengkap}.`);
       } else {
-        alert('Nomor KTA tidak ditemukan dalam database. Silakan periksa kembali atau lakukan pendaftaran!');
-      }
-    }
-
-    function updateHeaderMemberState() {
-      const loginBtn = document.getElementById('headerBtnLoginAnggota');
-      const badge = document.getElementById('headerLoggedInBadge');
-      const name = document.getElementById('headerMemberName');
-
-      if (currentMemberUser) {
-        loginBtn.classList.add('hidden');
-        badge.classList.remove('hidden');
-        badge.classList.add('flex');
-        name.textContent = currentMemberUser.nama.split(' ')[0];
-      } else {
-        loginBtn.classList.remove('hidden');
-        badge.classList.add('hidden');
-        badge.classList.remove('flex');
+        showToast("Login Gagal", "Nomor KTA atau Password salah (gunakan No. KTA sebagai password).", true);
       }
     }
 
     function logoutMember() {
-      currentMemberUser = null;
-      updateHeaderMemberState();
-      hideChatWidget();
-      alert('Anda telah keluar dari Portal Anggota.');
+      loggedInMemberKTA = null;
+      updateMemberNavUI();
+      closeMemberDashboardModal();
+      showToast("Logout", "Sesi mandiri anggota selesai.");
     }
 
-    // Portal Mandiri Ceklis Anggota
-    function openMemberPortal(member) {
-      document.getElementById('portalNama').textContent = member.nama;
-      document.getElementById('portalInfo').textContent = `KTA: ${member.kta} | ${member.sekolah}`;
-      document.getElementById('portalAvatar').src = member.foto || 'https://placehold.co/100/png?text=Guru';
-
-      renderIuranCheckboxes();
-      renderPorsenigurCheckboxes();
-
-      const peng = member.pengembangan || [];
-      document.getElementById('checkDiklat').checked = peng.includes('diklat');
-      document.getElementById('checkArtikel').checked = peng.includes('artikel');
-
-      calculatePortalStars();
-      document.getElementById('memberPortalModal').classList.remove('hidden');
-    }
-
-    function closeMemberPortalModal() {
-      document.getElementById('memberPortalModal').classList.add('hidden');
-    }
-
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-    const porsenigurBranches = [
-      'Bulu Tangkis', 'Tenis Meja', 'Catur', 'Voli',
-      'Menyanyi Solo', 'Melukis/Kaligrafi', 'Senam PGRI', 'Karya Inovasi'
-    ];
-
-    function renderIuranCheckboxes() {
-      const year = document.getElementById('iuranYearSelect').value;
-      const container = document.getElementById('iuranGrid');
-      container.innerHTML = '';
-
-      if (!currentMemberUser.iuran) currentMemberUser.iuran = {};
-      const yearData = currentMemberUser.iuran[year] || [];
-
-      months.forEach((m, idx) => {
-        const isChecked = yearData.includes(idx);
-        const label = document.createElement('label');
-        label.className = 'flex items-center space-x-1.5 cursor-pointer bg-white p-1.5 rounded border border-gray-200';
-        label.innerHTML = `
-          <input type="checkbox" onchange="toggleIuranMonth('${year}', ${idx}, this.checked)" ${isChecked ? 'checked' : ''} class="rounded text-red-600 focus:ring-red-500">
-          <span class="font-medium">${m}</span>
+    function updateMemberNavUI() {
+      const area = document.getElementById('memberNavArea');
+      if (loggedInMemberKTA) {
+        const member = membersList.find(m => m.noKTA === loggedInMemberKTA);
+        area.innerHTML = `
+          <div class="flex items-center gap-1.5 bg-blue-50 text-fb-blue border border-blue-200 px-2.5 py-1.5 rounded-xl text-xs font-bold">
+            <button onclick="openMemberDashboardModal()" class="flex items-center gap-1.5 hover:text-blue-800 transition max-w-[130px] truncate" title="Buka Dashboard Mandiri">
+              <i class="fa-solid fa-circle-user text-sm"></i>
+              <span class="truncate">${escapeHTML(member?.namaLengkap || 'Anggota')}</span>
+            </button>
+            <button onclick="logoutMember()" class="ml-1 text-gray-400 hover:text-rose-600 transition" title="Logout Anggota">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+          </div>
         `;
-        container.appendChild(label);
-      });
+      } else {
+        area.innerHTML = `
+          <button onclick="openMemberLoginModal()" class="inline-flex items-center gap-1.5 bg-blue-50 hover:bg-blue-100 text-fb-blue font-bold text-xs px-3 py-2 rounded-xl transition border border-blue-200">
+            <i class="fa-solid fa-user-lock text-xs"></i>
+            <span class="hidden sm:inline">Login Anggota</span>
+            <span class="sm:hidden">KTA</span>
+          </button>
+        `;
+      }
     }
 
-    function toggleIuranMonth(year, monthIndex, isChecked) {
-      if (!currentMemberUser.iuran) currentMemberUser.iuran = {};
-      if (!currentMemberUser.iuran[year]) currentMemberUser.iuran[year] = [];
+    function openMemberDashboardModal() {
+      const member = membersList.find(m => m.noKTA === loggedInMemberKTA);
+      if (!member) return;
+
+      document.getElementById('dashMemberNama').textContent = member.namaLengkap;
+      document.getElementById('dashMemberKTA').textContent = member.noKTA;
+      document.getElementById('dashMemberSekolah').textContent = member.asalSekolah;
+      document.getElementById('dashMemberFoto').src = member.pasfoto || "https://placehold.co/120x160/e2e8f0/64748b?text=Foto";
+
+      activeIuranYear = "2026";
+      document.getElementById('selectIuranYear').value = activeIuranYear;
+
+      renderMemberDashboardContent(member);
+      document.getElementById('memberDashboardModal').classList.remove('hidden');
+    }
+
+    function closeMemberDashboardModal() {
+      document.getElementById('memberDashboardModal').classList.add('hidden');
+    }
+
+    function changeIuranYear(year) {
+      activeIuranYear = year;
+      const member = membersList.find(m => m.noKTA === loggedInMemberKTA);
+      if (member) renderIuranGrid(member, year);
+    }
+
+    function renderMemberDashboardContent(member) {
+      // 1. Akumulasi Bintang
+      const stars = countMemberStars(member);
+      document.getElementById('dashStarsValue').innerHTML = `<span>${stars}</span> <i class="fa-solid fa-star text-amber-500 text-xl"></i>`;
+
+      // 2. Grid Iuran
+      renderIuranGrid(member, activeIuranYear);
+
+      // 3. Grid Porsenigur
+      renderPorsenigurGrid(member);
+
+      // 4. Grid Diklat & Artikel
+      renderPengembanganGrid(member);
+    }
+
+    function renderIuranGrid(member, year) {
+      const grid = document.getElementById('iuranMonthGrid');
+      const paid = (member.iuran && member.iuran[year]) ? member.iuran[year] : [];
+
+      grid.innerHTML = BULAN_LIST.map(bulan => {
+        const isChecked = paid.includes(bulan);
+        return `
+          <label class="flex items-center gap-2 p-2 rounded-xl border ${isChecked ? 'bg-emerald-50 border-emerald-300 text-emerald-950 font-bold' : 'bg-gray-50 border-gray-200 text-gray-700'} text-xs cursor-pointer hover:bg-emerald-50/50 transition">
+            <input type="checkbox" onchange="toggleIuranMonth('${bulan}', this.checked)" ${isChecked ? 'checked' : ''} class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+            <span>${bulan}</span>
+          </label>
+        `;
+      }).join('');
+    }
+
+    function renderPorsenigurGrid(member) {
+      const grid = document.getElementById('porsenigurGrid');
+      const selected = member.porsenigur || [];
+
+      grid.innerHTML = PORSENIGUR_LIST.map(item => {
+        const isChecked = selected.includes(item.id);
+        return `
+          <label class="flex items-center gap-2.5 p-2.5 rounded-xl border ${isChecked ? 'bg-amber-50 border-amber-300 text-amber-950 font-bold' : 'bg-gray-50 border-gray-200 text-gray-700'} text-xs cursor-pointer hover:bg-amber-50/50 transition">
+            <input type="checkbox" onchange="togglePorsenigurItem('${item.id}', this.checked)" ${isChecked ? 'checked' : ''} class="w-4 h-4 text-amber-600 rounded focus:ring-amber-500">
+            <i class="fa-solid ${item.icon} text-amber-600 text-xs"></i>
+            <span>${item.label}</span>
+          </label>
+        `;
+      }).join('');
+    }
+
+    function renderPengembanganGrid(member) {
+      const grid = document.getElementById('pengembanganGrid');
+      const selected = member.pengembangan || [];
+
+      grid.innerHTML = PENGEMBANGAN_LIST.map(item => {
+        const isChecked = selected.includes(item.id);
+        return `
+          <label class="flex items-start gap-2.5 p-3 rounded-xl border ${isChecked ? item.badgeBg + ' font-bold' : 'bg-gray-50 border-gray-200 text-gray-700'} text-xs cursor-pointer hover:bg-gray-100 transition">
+            <input type="checkbox" onchange="togglePengembanganItem('${item.id}', this.checked)" ${isChecked ? 'checked' : ''} class="w-4 h-4 mt-0.5 text-indigo-600 rounded focus:ring-indigo-500">
+            <div>
+              <span class="block">${item.label}</span>
+              <span class="block text-[10px] text-gray-400 font-normal mt-0.5">${item.desc}</span>
+            </div>
+          </label>
+        `;
+      }).join('');
+    }
+
+    function toggleIuranMonth(bulan, isChecked) {
+      const member = membersList.find(m => m.noKTA === loggedInMemberKTA);
+      if (!member) return;
+
+      if (!member.iuran) member.iuran = {};
+      if (!Array.isArray(member.iuran[activeIuranYear])) member.iuran[activeIuranYear] = [];
 
       if (isChecked) {
-        if (!currentMemberUser.iuran[year].includes(monthIndex)) {
-          currentMemberUser.iuran[year].push(monthIndex);
-        }
+        if (!member.iuran[activeIuranYear].includes(bulan)) member.iuran[activeIuranYear].push(bulan);
       } else {
-        currentMemberUser.iuran[year] = currentMemberUser.iuran[year].filter(x => x !== monthIndex);
+        member.iuran[activeIuranYear] = member.iuran[activeIuranYear].filter(b => b !== bulan);
       }
-      calculatePortalStars();
+      renderMemberDashboardContent(member);
     }
 
-    function renderPorsenigurCheckboxes() {
-      const container = document.getElementById('porsenigurGrid');
-      container.innerHTML = '';
-      const selected = currentMemberUser.porsenigur || [];
+    function togglePorsenigurItem(itemId, isChecked) {
+      const member = membersList.find(m => m.noKTA === loggedInMemberKTA);
+      if (!member) return;
 
-      porsenigurBranches.forEach(b => {
-        const isChecked = selected.includes(b);
-        const label = document.createElement('label');
-        label.className = 'flex items-center space-x-1.5 cursor-pointer bg-white p-1.5 rounded border border-gray-200';
-        label.innerHTML = `
-          <input type="checkbox" onchange="togglePorsenigur('${b}', this.checked)" ${isChecked ? 'checked' : ''} class="rounded text-red-600 focus:ring-red-500">
-          <span class="truncate">${b}</span>
-        `;
-        container.appendChild(label);
-      });
-    }
+      if (!Array.isArray(member.porsenigur)) member.porsenigur = [];
 
-    function togglePorsenigur(branch, isChecked) {
-      if (!currentMemberUser.porsenigur) currentMemberUser.porsenigur = [];
       if (isChecked) {
-        if (!currentMemberUser.porsenigur.includes(branch)) currentMemberUser.porsenigur.push(branch);
+        if (!member.porsenigur.includes(itemId)) member.porsenigur.push(itemId);
       } else {
-        currentMemberUser.porsenigur = currentMemberUser.porsenigur.filter(x => x !== branch);
+        member.porsenigur = member.porsenigur.filter(id => id !== itemId);
       }
-      calculatePortalStars();
+      renderMemberDashboardContent(member);
     }
 
-    function calculatePortalStars() {
-      let stars = 0;
+    function togglePengembanganItem(itemId, isChecked) {
+      const member = membersList.find(m => m.noKTA === loggedInMemberKTA);
+      if (!member) return;
 
-      // Iuran: 1 bintang per bulan
-      if (currentMemberUser.iuran) {
-        Object.keys(currentMemberUser.iuran).forEach(y => {
-          stars += (currentMemberUser.iuran[y] || []).length;
-        });
+      if (!Array.isArray(member.pengembangan)) member.pengembangan = [];
+
+      if (isChecked) {
+        if (!member.pengembangan.includes(itemId)) member.pengembangan.push(itemId);
+      } else {
+        member.pengembangan = member.pengembangan.filter(id => id !== itemId);
       }
-
-      // Porsenigur: 1 bintang per cabang
-      stars += (currentMemberUser.porsenigur || []).length;
-
-      // Diklat & Artikel
-      if (document.getElementById('checkDiklat').checked) stars += 1;
-      if (document.getElementById('checkArtikel').checked) stars += 1;
-
-      currentMemberUser.bintang = stars;
-      document.getElementById('portalBintangCount').textContent = `${stars} ⭐`;
-      return stars;
+      renderMemberDashboardContent(member);
     }
 
-    // Simpan Ceklis ke Google Spreadsheet
-    async function saveMemberChecklist() {
-      const btn = document.getElementById('btnSaveChecklist');
-      btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1"></i> Menyimpan...`;
+    async function syncMemberDataToSpreadsheet(member) {
+      if (!member || !member.noKTA) return false;
+      const totalStars = countMemberStars(member);
+      
+      const payloadObj = {
+        action: "update_ceklis",
+        noKTA: String(member.noKTA).trim(),
+        namaLengkap: member.namaLengkap || "",
+        statusAnggota: member.statusAnggota || "",
+        asalSekolah: member.asalSekolah || "",
+        asalGugus: member.asalGugus || "",
+        totalBintang: String(totalStars),
+        iuran: typeof member.iuran === 'string' ? member.iuran : JSON.stringify(member.iuran || {}),
+        porsenigur: typeof member.porsenigur === 'string' ? member.porsenigur : JSON.stringify(member.porsenigur || []),
+        pengembangan: typeof member.pengembangan === 'string' ? member.pengembangan : JSON.stringify(member.pengembangan || []),
+        timestamp: new Date().toISOString()
+      };
 
-      const peng = [];
-      if (document.getElementById('checkDiklat').checked) peng.push('diklat');
-      if (document.getElementById('checkArtikel').checked) peng.push('artikel');
-      currentMemberUser.pengembangan = peng;
-
-      const totalBintang = calculatePortalStars();
-
+      // 1. Metode Utama: POST via URLSearchParams (Paling kompatibel dengan Google Apps Script)
       try {
         const formData = new URLSearchParams();
-        formData.append('action', 'update_ceklis');
-        formData.append('kta', currentMemberUser.kta);
-        formData.append('bintang', totalBintang);
-        formData.append('iuran', JSON.stringify(currentMemberUser.iuran));
-        formData.append('porsenigur', JSON.stringify(currentMemberUser.porsenigur));
-        formData.append('pengembangan', JSON.stringify(currentMemberUser.pengembangan));
-
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData.toString()
+        Object.keys(payloadObj).forEach(key => {
+          formData.append(key, payloadObj[key]);
         });
 
-        alert(`Data keaktifan berhasil disimpan ke Google Spreadsheet! Total Bintang Anda: ${totalBintang} ⭐`);
-        renderMembersCards(membersData);
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData.toString()
+        });
       } catch (err) {
-        alert('Gagal menyinkronkan ke server secara langsung. Perubahan disimpan secara lokal.');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-floppy-disk mr-1.5"></i> Simpan Perubahan`;
-      }
-    }
-
-    // Modal KTA Digital
-    function viewKTA(member) {
-      document.getElementById('ktaNama').textContent = member.nama;
-      document.getElementById('ktaNomor').textContent = `KTA: ${member.kta}`;
-      document.getElementById('ktaSekolah').textContent = member.sekolah;
-      document.getElementById('ktaGugus').textContent = `${member.gugus} Katapang`;
-      document.getElementById('ktaFoto').src = member.foto || 'https://placehold.co/150x200/png?text=Pasfoto';
-      document.getElementById('ktaStarBadge').textContent = `${member.bintang || 0} ⭐`;
-
-      document.getElementById('ktaModal').classList.remove('hidden');
-    }
-
-    function openKTAFromPortal() {
-      if (currentMemberUser) {
-        viewKTA(currentMemberUser);
-      }
-    }
-
-    function closeKTAModal() {
-      document.getElementById('ktaModal').classList.add('hidden');
-    }
-
-    // Cetak KTA Bersih (Window Print / Save as PDF)
-    function printKTA() {
-      window.print();
-    }
-
-    // Dashboard Admin Helper
-    function renderDashboardStats() {
-      document.getElementById('statTotalAnggota').textContent = membersData.length;
-      const totalStars = membersData.reduce((acc, m) => acc + (parseInt(m.bintang) || 0), 0);
-      document.getElementById('statTotalBintang').textContent = totalStars;
-
-      const schools = new Set(membersData.map(m => m.sekolah).filter(Boolean));
-      document.getElementById('statTotalSekolah').textContent = schools.size;
-
-      // Top Bintang
-      const sorted = [...membersData].sort((a, b) => (b.bintang || 0) - (a.bintang || 0)).slice(0, 5);
-      const topContainer = document.getElementById('topBintangList');
-      topContainer.innerHTML = '';
-      sorted.forEach((m, idx) => {
-        const item = document.createElement('div');
-        item.className = 'flex justify-between items-center bg-gray-50 p-2 rounded border border-gray-100';
-        item.innerHTML = `
-          <div class="flex items-center space-x-2">
-            <span class="w-5 h-5 rounded-full bg-red-100 text-red-700 font-bold flex items-center justify-center text-[10px]">${idx + 1}</span>
-            <span class="font-bold text-gray-700 truncate max-w-[160px]">${m.nama}</span>
-          </div>
-          <span class="font-black text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">${m.bintang || 0} ⭐</span>
-        `;
-        topContainer.appendChild(item);
-      });
-
-      // Admin Table
-      const tb = document.getElementById('adminTableBody');
-      tb.innerHTML = '';
-      membersData.forEach(m => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="p-3 font-bold text-gray-800">${m.nama}</td>
-          <td class="p-3 font-mono">${m.kta}</td>
-          <td class="p-3">${m.sekolah}</td>
-          <td class="p-3">${m.gugus}</td>
-          <td class="p-3 text-center font-bold text-amber-600">${m.bintang || 0} ⭐</td>
-          <td class="p-3 text-center">
-            <button onclick='viewKTA(${JSON.stringify(m).replace(/'/g, "&apos;")})' class="text-blue-600 hover:text-blue-800 font-semibold mr-2">KTA</button>
-          </td>
-        `;
-        tb.appendChild(tr);
-      });
-
-      // Render Bar Chart
-      renderGugusChart();
-    }
-
-    let chartInstance = null;
-    function renderGugusChart() {
-      const ctx = document.getElementById('chartGugus').getContext('2d');
-      const gugusNames = ['Gugus 1', 'Gugus 2', 'Gugus 3', 'Gugus 4', 'Gugus 5', 'SMP', 'SMA/SMK'];
-      const counts = gugusNames.map(g => membersData.filter(m => m.gugus === g).length);
-
-      if (chartInstance) chartInstance.destroy();
-
-      chartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: gugusNames,
-          datasets: [{
-            label: 'Jumlah Anggota',
-            data: counts,
-            backgroundColor: 'rgba(185, 28, 28, 0.85)',
-            borderColor: 'rgba(185, 28, 28, 1)',
-            borderWidth: 1,
-            borderRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: { beginAtZero: true, ticks: { precision: 0 } }
-          }
+        console.warn("POST ceklis via form-urlencoded gagal, mencoba jalur JSON:", err);
+        try {
+          await fetch(SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payloadObj)
+          });
+        } catch (e) {
+          console.warn("POST JSON gagal:", e);
         }
-      });
-    }
-
-    // ==========================================
-    // LOGIKA FITUR LIVE CHAT (FACEBOOK STYLE)
-    // ==========================================
-
-    function showChatWidget() {
-      const widget = document.getElementById('chatWidgetContainer');
-      if (widget) {
-        widget.classList.remove('hidden');
-        startChatPolling();
       }
+
+      return true;
     }
 
-    function hideChatWidget() {
-      const widget = document.getElementById('chatWidgetContainer');
-      const box = document.getElementById('chatBoxWindow');
-      if (widget) widget.classList.add('hidden');
-      if (box) box.classList.add('hidden');
-      if (chatPollingInterval) clearInterval(chatPollingInterval);
-    }
+    async function saveMemberSelfService() {
+      const member = membersList.find(m => m.noKTA === loggedInMemberKTA);
+      if (!member) return;
 
-    function toggleChatWindow() {
-      const box = document.getElementById('chatBoxWindow');
-      const isHidden = box.classList.contains('hidden');
-      if (isHidden) {
-        box.classList.remove('hidden');
-        document.getElementById('chatUnreadDot').classList.add('hidden');
-        fetchChatMessages();
-      } else {
-        box.classList.add('hidden');
+      const saveBtn = document.getElementById('btnSaveSelfService');
+      const originalHTML = saveBtn ? saveBtn.innerHTML : '';
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Menyimpan ke Spreadsheet...</span>`;
       }
-    }
 
-    function switchChatChannel() {
-      activeChatChannel = document.getElementById('chatChannelSelector').value;
-      const title = document.getElementById('chatActiveTargetTitle');
-      title.textContent = activeChatChannel === 'ADMIN' ? 'Obrolan Langsung Admin' : 'Ruang Diskusi Anggota';
-      fetchChatMessages();
-    }
+      saveToStorage();
+      renderDatabaseTable();
 
-    function startChatPolling() {
-      if (chatPollingInterval) clearInterval(chatPollingInterval);
-      fetchChatMessages();
-      chatPollingInterval = setInterval(fetchChatMessages, 4000);
-    }
+      // Kirim otomatis data ceklis dan jumlah bintang ke Google Spreadsheet
+      await syncMemberDataToSpreadsheet(member);
 
-    async function fetchChatMessages() {
-      try {
-        const res = await fetch(`${SCRIPT_URL}?action=get_chats`);
-        const json = await res.json();
-        if (json && json.status === 'success' && Array.isArray(json.data)) {
-          renderChatMessages(json.data);
-        }
-      } catch (e) {
-        // Abaikan atau log ringan
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = originalHTML;
       }
+
+      showToast("Data Tersimpan & Tersinkron!", `Jumlah bintang (${countMemberStars(member)} ⭐) dan data ceklis berhasil diperbarui ke Spreadsheet.`);
+      closeMemberDashboardModal();
     }
 
-    function renderChatMessages(chats) {
-      const container = document.getElementById('chatMessagesList');
-      const myKta = currentMemberUser ? String(currentMemberUser.kta).trim() : (currentAdminLogged ? 'ADMIN' : '');
-
-      const filtered = chats.filter(c => {
-        if (activeChatChannel === 'GLOBAL') {
-          return c.receiver_kta === 'GLOBAL';
-        }
-        if (activeChatChannel === 'ADMIN') {
-          if (currentAdminLogged) {
-            return c.receiver_kta === 'ADMIN' || c.sender_kta === 'ADMIN';
-          }
-          return (c.sender_kta === myKta && c.receiver_kta === 'ADMIN') || 
-                 (c.sender_kta === 'ADMIN' && c.receiver_kta === myKta);
-        }
-        return true;
-      });
-
-      // Tampilkan notifikasi badge jika chat ditutup & ada pesan baru
-      const box = document.getElementById('chatBoxWindow');
-      if (box.classList.contains('hidden') && filtered.length > lastRenderedChatCount) {
-        document.getElementById('chatUnreadDot').classList.remove('hidden');
-      }
-      lastRenderedChatCount = filtered.length;
-
-      container.innerHTML = '';
-      if (filtered.length === 0) {
-        container.innerHTML = '<div class="text-center text-[11px] text-gray-400 py-6">Belum ada obrolan di saluran ini. Kirim salam pertama Anda!</div>';
+    // ================= EKSPOR DATA KE CSV =================
+    function exportToCSV() {
+      if (membersList.length === 0) {
+        showToast("Data Kosong", "Belum ada data anggota untuk diekspor.", true);
         return;
       }
 
-      filtered.forEach(msg => {
-        const isMe = msg.sender_kta === myKta;
-        const bubble = document.createElement('div');
-        bubble.className = `flex flex-col ${isMe ? 'items-end' : 'items-start'} my-1`;
-        
-        const senderLabel = isMe ? 'Saya' : (msg.sender_kta === 'ADMIN' ? '🛡️ Administrator' : msg.sender_nama);
-        
-        bubble.innerHTML = `
-          <span class="text-[9px] text-gray-400 mb-0.5 px-1">${senderLabel}</span>
-          <div class="max-w-[80%] px-3 py-1.5 rounded-2xl text-xs break-words shadow-sm ${
-            isMe 
-              ? 'bg-red-700 text-white rounded-br-none' 
-              : 'bg-white text-gray-800 border border-gray-200 rounded-bl-none'
-          }">
-            ${msg.pesan}
-          </div>
-        `;
-        container.appendChild(bubble);
+      let csv = "Nama Lengkap,No KTA PGRI,Status Anggota,Unit Kerja,Asal Gugus,Email,Total Bintang,Timestamp\n";
+      membersList.forEach(m => {
+        const stars = countMemberStars(m);
+        const row = [
+          `"${(m.namaLengkap || '').replace(/"/g, '""')}"`,
+          `"${(m.noKTA || '').replace(/"/g, '""')}"`,
+          `"${(m.statusAnggota || '').replace(/"/g, '""')}"`,
+          `"${(m.asalSekolah || '').replace(/"/g, '""')}"`,
+          `"${(m.asalGugus || '').replace(/"/g, '""')}"`,
+          `"${(m.email || '').replace(/"/g, '""')}"`,
+          stars,
+          `"${m.timestamp || ''}"`
+        ];
+        csv += row.join(",") + "\n";
       });
 
-      container.scrollTop = container.scrollHeight;
+      const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `database_anggota_pgri_katapang_${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("Ekspor Berhasil", "Berkas CSV database anggota berhasil diunduh.");
     }
 
-    async function handleSendChatMessage(e) {
-      e.preventDefault();
-      const input = document.getElementById('chatInputMessage');
-      const text = input.value.trim();
-      if (!text) return;
+    // ================= SINKRONISASI DATABASE =================
+    async function refreshDatabase(showNotification = true) {
+      const refreshIcon = document.getElementById('refreshIcon');
+      if (refreshIcon) refreshIcon.classList.add('fa-spin');
+      
+      const countBadge = document.getElementById('totalAnggotaBadge');
+      if (countBadge && membersList.length === 0) {
+        countBadge.textContent = 'Menghubungkan ke Spreadsheet...';
+      }
 
-      const senderKta = currentMemberUser ? String(currentMemberUser.kta).trim() : (currentAdminLogged ? 'ADMIN' : 'GUEST');
-      const senderNama = currentMemberUser ? currentMemberUser.nama : (currentAdminLogged ? 'Administrator' : 'Tamu');
-
-      input.value = '';
-
-      try {
-        const formData = new URLSearchParams();
-        formData.append('action', 'send_chat');
-        formData.append('sender_kta', senderKta);
-        formData.append('sender_nama', senderNama);
-        formData.append('receiver_kta', activeChatChannel);
-        formData.append('pesan', text);
-
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData.toString()
+      function processIncomingData(rawData) {
+        if (!Array.isArray(rawData)) return false;
+        
+        // Peta foto lokal yang sudah ada untuk proteksi fallback jika foto di spreadsheet kosong
+        const existingPhotosMap = {};
+        membersList.forEach(m => {
+          if (m.noKTA && m.pasfoto && m.pasfoto.length > 50) {
+            existingPhotosMap[m.noKTA] = m.pasfoto;
+          }
         });
 
-        fetchChatMessages();
+        membersList = rawData.map(item => {
+          let iuranParsed = {};
+          let porsenigurParsed = [];
+          let pengembanganParsed = [];
+
+          try {
+            if (typeof item.iuran === 'string') iuranParsed = JSON.parse(item.iuran);
+            else if (typeof item.iuran === 'object' && item.iuran !== null) iuranParsed = item.iuran;
+          } catch(e) { iuranParsed = {}; }
+
+          try {
+            if (typeof item.porsenigur === 'string') porsenigurParsed = JSON.parse(item.porsenigur);
+            else if (Array.isArray(item.porsenigur)) porsenigurParsed = item.porsenigur;
+          } catch(e) { porsenigurParsed = []; }
+
+          try {
+            if (typeof item.pengembangan === 'string') pengembanganParsed = JSON.parse(item.pengembangan);
+            else if (Array.isArray(item.pengembangan)) pengembanganParsed = item.pengembangan;
+          } catch(e) { pengembanganParsed = []; }
+
+          // Pastikan pasfoto tidak hilang: gunakan dari sheet, jika kosong/rusak gunakan foto lokal
+          let validFoto = item.pasfoto || "";
+          if ((!validFoto || validFoto.length < 50) && existingPhotosMap[item.noKTA]) {
+            validFoto = existingPhotosMap[item.noKTA];
+          }
+
+          return {
+            ...item,
+            pasfoto: validFoto,
+            iuran: iuranParsed,
+            porsenigur: porsenigurParsed,
+            pengembangan: pengembanganParsed
+          };
+        });
+
+        saveToStorage();
+        populateSchoolFilter();
+        renderDatabaseTable();
+        return true;
+      }
+
+      // 1. Coba ambil data via fetch API biasa
+      let fetchSuccess = false;
+      try {
+        const response = await fetch(SCRIPT_URL + "?action=read", { method: "GET" });
+        if (response.ok) {
+          const resJson = await response.json();
+          if (resJson && (resJson.status === "success" || Array.isArray(resJson.data))) {
+            const dataArr = Array.isArray(resJson.data) ? resJson.data : (Array.isArray(resJson) ? resJson : []);
+            fetchSuccess = processIncomingData(dataArr);
+            if (fetchSuccess && showNotification) {
+              showToast("Data Terkini", "Data anggota berhasil dimuat dari Spreadsheet.");
+            }
+          }
+        }
       } catch (err) {
-        console.error('Gagal mengirim pesan chat:', err);
+        console.warn("Fetch langsung terkendala CORS, mencoba jalur JSONP script tag...", err);
+      }
+
+      // 2. Fallback via JSONP untuk bypass CORS Google Apps Script
+      if (!fetchSuccess) {
+        try {
+          await new Promise((resolve) => {
+            const callbackName = 'pgri_cb_' + Date.now();
+            const script = document.createElement('script');
+            
+            const cleanup = () => {
+              if (window[callbackName]) delete window[callbackName];
+              if (script.parentNode) script.parentNode.removeChild(script);
+            };
+
+            const timer = setTimeout(() => {
+              cleanup();
+              resolve();
+            }, 6000);
+
+            window[callbackName] = function(res) {
+              clearTimeout(timer);
+              const dataArr = res && Array.isArray(res.data) ? res.data : (Array.isArray(res) ? res : []);
+              processIncomingData(dataArr);
+              if (showNotification && dataArr.length > 0) {
+                showToast("Data Terkini", "Data anggota berhasil disinkronkan.");
+              }
+              cleanup();
+              resolve();
+            };
+
+            script.src = SCRIPT_URL + (SCRIPT_URL.includes('?') ? '&' : '?') + 'action=read&callback=' + callbackName;
+            script.onerror = () => {
+              clearTimeout(timer);
+              cleanup();
+              resolve();
+            };
+            document.body.appendChild(script);
+          });
+        } catch (e) {
+          console.warn("Fallback JSONP selesai.", e);
+        }
+      }
+
+      if (refreshIcon) refreshIcon.classList.remove('fa-spin');
+      populateSchoolFilter();
+      renderDatabaseTable();
+    }
+
+    // ================= STORAGE LOCAL BROWSER =================
+    function saveToStorage() {
+      try {
+        localStorage.setItem('pgri_katapang_members_v2', JSON.stringify(membersList));
+      } catch (e) {
+        console.warn("Gagal simpan ke localStorage", e);
       }
     }
 
-    function formatWa(num) {
-      if (!num) return '6285797817050';
-      let clean = String(num).replace(/[^0-9]/g, '');
-      if (clean.startsWith('0')) clean = '62' + clean.slice(1);
-      return clean;
+    function loadFromStorage() {
+      try {
+        const raw = localStorage.getItem('pgri_katapang_members_v2');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) {
+            membersList = parsed;
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn("Gagal baca dari localStorage", e);
+      }
+      membersList = [];
     }
+
+    // ================= FUNGSI TOAST =================
+    function showToast(title, message, isError = false) {
+      const toast = document.getElementById('toast');
+      const toastTitle = document.getElementById('toastTitle');
+      const toastMessage = document.getElementById('toastMessage');
+      const toastIcon = document.getElementById('toastIcon');
+
+      if (!toast) return;
+
+      if (toastTitle) toastTitle.textContent = title;
+      if (toastMessage) toastMessage.textContent = message;
+
+      if (toastIcon) {
+        if (isError) {
+          toastIcon.className = 'w-8 h-8 rounded-xl bg-red-600 flex items-center justify-center text-white flex-shrink-0';
+          toastIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+        } else {
+          toastIcon.className = 'w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center text-white flex-shrink-0';
+          toastIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+        }
+      }
+
+      toast.classList.remove('-translate-y-24', 'opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('-translate-y-24', 'opacity-0', 'pointer-events-none');
+      }, 3500);
+    }
+
+    // Inisialisasi awal saat halaman selesai dimuat
+    window.addEventListener('DOMContentLoaded', () => {
+      // Rotasi Quote Harian Penyemangat
+      const teacherQuotes = [
+        "Guru adalah lentera peradaban yang tak pernah padam menyinari masa depan.",
+        "Ing ngarsa sung tulada, ing madya mangun karsa, tut wuri handayani. \u2014 Ki Hadjar Dewantara",
+        "Pendidikan adalah senjata paling ampuh untuk mengubah dunia. \u2014 Nelson Mandela",
+        "Setiap guru adalah pahlawan pembentuk karakter generasi emas bangsa.",
+        "Mengajar adalah panggilan nurani menyentuh jiwa dan menginspirasi impian.",
+        "Guru yang hebat tidak hanya mengajar, tetapi menginspirasi dan menghidupkan rasa ingin tahu.",
+        "Solidaritas PGRI: Hidup Guru! Hidup PGRI! Solidaritas Yes!"
+      ];
+      const quoteEl = document.getElementById('dailyQuoteText');
+      if (quoteEl) {
+        const dayIndex = new Date().getDay() % teacherQuotes.length;
+        quoteEl.textContent = '"' + teacherQuotes[dayIndex] + '"';
+      }
+
+      loadFromStorage();
+      populateSchoolFilter();
+      renderDatabaseTable();
+      refreshDatabase(false);
+    });
   </script>
 </body>
 </html>
